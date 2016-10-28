@@ -1,0 +1,39 @@
+<div class="ContentSideSections Implementation">
+    <p-panel header="SolutionComponent Details">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="solutionComponent" ngForm #solutionComponentForm="ngForm">
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="name">Name  *</label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="name" [(ngModel)]="solutionComponent.name"  required placeholder="Required"  name="name" #name="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!name.valid && name.dirty && name.errors.required">
+                        <i class="fa fa-close"></i>
+                        Name is required
+                    </div>
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="packageInfo">Package Info</label></div>
+                <div class="ui-grid-col-4">
+                    <packageInfo-auto-complete [(ngModel)]="solutionComponent.packageInfo" id="packageInfo" name="packageInfo" [disabled]="sub"></packageInfo-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoPackageInfo" type="button" (click)="gotoPackageInfo()" *ngIf="solutionComponent.packageInfo" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearPackageInfo" type="button" (click)="clearPackageInfo()" *ngIf="solutionComponent.packageInfo" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+            </div>
+             <div class="ui-g">
+                <div class="ui-g-2" *ngIf="sub">
+                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
+                </div>
+                <div class="ui-g-2">
+                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!solutionComponentForm.form.valid"></button>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+
+</div>

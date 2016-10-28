@@ -1,0 +1,51 @@
+<div class="ContentSideSections Implementation">
+    <p-panel header="Server Details">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="server" ngForm #serverForm="ngForm">
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="name">Name  *</label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="name" [(ngModel)]="server.name"  required placeholder="Required"  name="name" #name="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!name.valid && name.dirty && name.errors.required">
+                        <i class="fa fa-close"></i>
+                        Name is required
+                    </div>
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="serverType">Server Type</label></div>
+                <div class="ui-grid-col-4">
+                    <serverType-auto-complete [(ngModel)]="server.serverType" id="serverType" name="serverType" [disabled]="sub"></serverType-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoServerType" type="button" (click)="gotoServerType()" *ngIf="server.serverType" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearServerType" type="button" (click)="clearServerType()" *ngIf="server.serverType" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="environment">Environment</label></div>
+                <div class="ui-grid-col-4">
+                    <environment-auto-complete [(ngModel)]="server.environment" id="environment" name="environment" [disabled]="sub"></environment-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoEnvironment" type="button" (click)="gotoEnvironment()" *ngIf="server.environment" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearEnvironment" type="button" (click)="clearEnvironment()" *ngIf="server.environment" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+            </div>
+             <div class="ui-g">
+                <div class="ui-g-2" *ngIf="sub">
+                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
+                </div>
+                <div class="ui-g-2">
+                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!serverForm.form.valid"></button>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+
+</div>

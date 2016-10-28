@@ -1,0 +1,43 @@
+<div class="ContentSideSections Implementation">
+    <p-panel header="Globalconfig Details">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="globalconfig" ngForm #globalconfigForm="ngForm">
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="parameter">Parameter  *</label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="parameter" [(ngModel)]="globalconfig.parameter"  required placeholder="Required"  name="parameter" #parameter="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!parameter.valid && parameter.dirty && parameter.errors.required">
+                        <i class="fa fa-close"></i>
+                        Parameter is required
+                    </div>
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="value">Value </label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="value" [(ngModel)]="globalconfig.value"   name="value" #value="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="hieraAddress">Hiera Address </label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="hieraAddress" [(ngModel)]="globalconfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-g">
+                <div class="ui-g-2" *ngIf="sub">
+                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
+                </div>
+                <div class="ui-g-2">
+                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!globalconfigForm.form.valid"></button>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+
+</div>

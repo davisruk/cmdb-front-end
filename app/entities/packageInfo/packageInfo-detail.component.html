@@ -1,0 +1,63 @@
+<div class="ContentSideSections Implementation">
+    <p-panel header="PackageInfo Details">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="packageInfo" ngForm #packageInfoForm="ngForm">
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="name">Name  *</label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="name" [(ngModel)]="packageInfo.name"  required placeholder="Required"  name="name" #name="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                    <div class="ui-message ui-messages-error ui-corner-all" *ngIf="!name.valid && name.dirty && name.errors.required">
+                        <i class="fa fa-close"></i>
+                        Name is required
+                    </div>
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="packageType">Package Type</label></div>
+                <div class="ui-grid-col-4">
+                    <packageType-auto-complete [(ngModel)]="packageInfo.packageType" id="packageType" name="packageType" [disabled]="sub"></packageType-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoPackageType" type="button" (click)="gotoPackageType()" *ngIf="packageInfo.packageType" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearPackageType" type="button" (click)="clearPackageType()" *ngIf="packageInfo.packageType" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="serverType">Server Type</label></div>
+                <div class="ui-grid-col-4">
+                    <serverType-auto-complete [(ngModel)]="packageInfo.serverType" id="serverType" name="serverType" [disabled]="sub"></serverType-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoServerType" type="button" (click)="gotoServerType()" *ngIf="packageInfo.serverType" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearServerType" type="button" (click)="clearServerType()" *ngIf="packageInfo.serverType" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="release">Release</label></div>
+                <div class="ui-grid-col-4">
+                    <release-auto-complete [(ngModel)]="packageInfo.release" id="release" name="release" [disabled]="sub"></release-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoRelease" type="button" (click)="gotoRelease()" *ngIf="packageInfo.release" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="packageInfo.release" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+            </div>
+             <div class="ui-g">
+                <div class="ui-g-2" *ngIf="sub">
+                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
+                </div>
+                <div class="ui-g-2">
+                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!packageInfoForm.form.valid"></button>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+
+</div>
