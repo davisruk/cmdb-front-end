@@ -46,6 +46,12 @@ import { ServerConfigDetailComponent } from './entities/serverConfig/serverConfi
 import { ServerTypeListComponent } from './entities/serverType/serverType-list.component';
 import { ServerTypeDetailComponent } from './entities/serverType/serverType-detail.component';
 
+import { RoleListComponent } from './entities/role/role-list.component';
+import { RoleDetailComponent } from './entities/role/role-detail.component';
+
+import { UserListComponent } from './entities/user/user-list.component';
+import { UserDetailComponent } from './entities/user/user-detail.component';
+
 import { SolutionComponentListComponent } from './entities/solutionComponent/solutionComponent-list.component';
 import { SolutionComponentDetailComponent } from './entities/solutionComponent/solutionComponent-detail.component';
 
@@ -87,6 +93,12 @@ export const routes: Routes = [
     ,
     {path: 'serverType-list', component: ServerTypeListComponent },
     {path: 'serverType/:id', component: ServerTypeDetailComponent }
+    ,
+    {path: 'role-list', component: RoleListComponent },
+    {path: 'role/:id', component: RoleDetailComponent }
+    ,
+    {path: 'user-list', component: UserListComponent },
+    {path: 'user/:id', component: UserDetailComponent }
     ,
     {path: 'solutionComponent-list', component: SolutionComponentListComponent },
     {path: 'solutionComponent/:id', component: SolutionComponentDetailComponent }

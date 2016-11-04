@@ -10,7 +10,11 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { HttpModule  }    from '@angular/http';
 import { RouterModule  }  from '@angular/router';
-import { FileUploadModule, PanelModule, GrowlModule, MenubarModule, DialogModule, ButtonModule, AutoCompleteModule, DataTableModule, SharedModule, DropdownModule,PickListModule,CheckboxModule,TriStateCheckboxModule, InputTextModule,InputTextareaModule,CalendarModule,PasswordModule,TabViewModule } from 'primeng/primeng';
+import { FileUploadModule, PanelModule, GrowlModule, MenubarModule,
+        DialogModule, ButtonModule, AutoCompleteModule, DataTableModule,
+        SharedModule, DropdownModule,PickListModule,CheckboxModule,
+        TriStateCheckboxModule, InputTextModule,InputTextareaModule,
+        CalendarModule,PasswordModule,TabViewModule, InputSwitchModule } from 'primeng/primeng';
 import { AppComponent }   from './app.component';
 import { HomeComponent }  from './home.component';
 import { MessageService } from './service/message.service';
@@ -89,6 +93,14 @@ import { ServerTypeDetailComponent } from './entities/serverType/serverType-deta
 import { ServerTypeLineComponent } from './entities/serverType/serverType-line.component';
 import { ServerTypeCompleteComponent } from './entities/serverType/serverType-auto-complete.component';
 
+import { RoleService } from './entities/role/role.service';
+import { RoleListComponent } from './entities/role/role-list.component';
+import { RoleDetailComponent } from './entities/role/role-detail.component';
+
+import { UserService } from './entities/user/user.service';
+import { UserListComponent } from './entities/user/user-list.component';
+import { UserDetailComponent } from './entities/user/user-detail.component';
+
 import { SolutionComponentService } from './entities/solutionComponent/solutionComponent.service';
 import { SolutionComponentListComponent } from './entities/solutionComponent/solutionComponent-list.component';
 import { SolutionComponentDetailComponent } from './entities/solutionComponent/solutionComponent-detail.component';
@@ -120,6 +132,8 @@ import { SolutionComponentCompleteComponent } from './entities/solutionComponent
         CalendarModule,
         PasswordModule,
         TabViewModule,
+        InputSwitchModule,
+
 // our app
         routing
     ],
@@ -188,6 +202,12 @@ import { SolutionComponentCompleteComponent } from './entities/solutionComponent
         ServerTypeLineComponent,
         ServerTypeCompleteComponent
         ,
+        RoleListComponent,
+        RoleDetailComponent
+        ,
+        UserListComponent,
+        UserDetailComponent
+        ,
         SolutionComponentListComponent,
         SolutionComponentDetailComponent,
         SolutionComponentLineComponent,
@@ -207,6 +227,8 @@ import { SolutionComponentCompleteComponent } from './entities/solutionComponent
         ,ServerService
         ,ServerConfigService
         ,ServerTypeService
+        ,RoleService
+        ,UserService
         ,SolutionComponentService
     ],
     bootstrap: [ AppComponent ]

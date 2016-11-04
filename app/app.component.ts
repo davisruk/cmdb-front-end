@@ -21,7 +21,7 @@ import { MessageService} from './service/message.service';
         <p-growl [value]="msgs"></p-growl>
 
         <div class="ui-g layout">
-            <div class="ui-g-12 ui-md-1">The West...</div>
+            <div class="ui-g-12 ui-md-1">Sidebar</div>
             <div class="ui-g-12 ui-md-11 ui-g-nopad">
                 <div class="ui-g-12 ui-g-nopad">
                     <p-menubar [model]="items"></p-menubar>
@@ -30,8 +30,8 @@ import { MessageService} from './service/message.service';
                     <router-outlet></router-outlet>
                 </div>
                 <div class="ui-g-12" style="text-align: center;">
-                    <i class="fa fa-twitter"></i> <a href="https://twitter.com/jaxiosoft">@jaxiosoft</a> -
-                    <i class="fa fa-github-alt"></i> <a href="https://github.com/jaxio/celerio-angular-quickstart">https://github.com/jaxio/celerio-angular-quickstart</a>
+                    <i class="fa fa-twitter"></i> <a href="https://twitter.com/davisr_uk">@davisr_uk</a> -
+                    <i class="fa fa-github-alt"></i> <a href="https://github.com/davisruk/cmdb-front-end">https://github.com/davisruk/cmdb-front-end</a>
                 </div>
             </div>
         </div>
@@ -123,7 +123,14 @@ export class AppComponent implements OnInit {
                     {label: "Spring Data JPA", icon: 'fa-external-link', url:"http://projects.spring.io/spring-data-jpa/"},
                     {label: "TypeScript", icon: 'fa-external-link', url:"https://www.typescriptlang.org/"}
                 ]
-            }
+            },
+             { label: 'Admin',
+                icon: 'fa-gears',
+                items: [
+                    {label: "Roles", icon: 'fa-unlock-alt', routerLink: ['/role-list']},
+                    {label: "Users", icon: 'fa-users', routerLink: ['/user-list']},
+                ]
+             }
         ];
 
         this.isAuthenticated().
