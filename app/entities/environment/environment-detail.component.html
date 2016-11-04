@@ -35,5 +35,12 @@
             </div>
         </div>
     </p-panel>
+    <div class="panel-body">
+        <ul>
+            <li *ngFor = "let hieraValues of hieraValuesList">
+                <span>{{hieraValues.value}}</span> {{hieraValues.address}}
+            </li>
+        </ul>
+    </div>
 
 </div>

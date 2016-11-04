@@ -12,7 +12,7 @@ import { MessageService} from '../../service/message.service';
 import {Environment} from './environment';
 import {EnvironmentService} from './environment.service';
 import {Release} from '../release/release';
-
+import {HieraValues} from '../hiera/hieraValues';
 @Component({
     moduleId: module.id,
 	templateUrl: 'environment-detail.component.html',
@@ -22,7 +22,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     environment : Environment;
 
     private params_subscription: any;
-
+    private hieraValuesList: HieraValues[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -51,7 +51,8 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             } else {
                 this.environmentService.getEnvironment(id)
                     .subscribe(
-                        environment => this.environment = environment,
+                        environment => {this.environment = environment;
+                            this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p)},
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }

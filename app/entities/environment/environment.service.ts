@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Environment } from './environment';
+import { HieraValues } from '../hiera/hieraValues';
 
 @Injectable()
 export class EnvironmentService {
@@ -26,6 +27,12 @@ export class EnvironmentService {
     getEnvironment(id : any) : Observable<Environment> {
         return this.http.get('http://localhost:8080/api/environments/' + id)
             .map(response => <Environment> response.json())
+            .catch(this.handleError);
+    }
+
+    getHieraValues(name : String) : Observable<HieraValues[]> {
+        return this.http.get('http://localhost:8080/api/environments/configs/' + name)
+            .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
 
