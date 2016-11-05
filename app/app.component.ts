@@ -35,8 +35,7 @@ import { MessageService} from './service/message.service';
                 </div>
             </div>
         </div>
-        <p-dialog header="Please login" [visible]="displayLoginDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="false" *ngIf="!authenticated">
-            <p>When using the sample database, use admin/admin</p>
+        <p-dialog header="Please login" width="400" [visible]="displayLoginDialog" [responsive]="true" showEffect="fade" [modal]="true" [closable]="false" *ngIf="!authenticated">
             <div ngForm class="ui-g">
                 <div class="ui-g-12" *ngIf="loginFailed">
                     <div class="ui-message ui-messages-error ui-corner-all">
@@ -62,7 +61,7 @@ import { MessageService} from './service/message.service';
             </div>
             <footer>
                 <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                    <button pButton (click)="login()" icon="fa-sign-in" label="Login"></button>
+                    <button type="submit" pButton (click)="login()" icon="fa-sign-in" label="Login"></button>
                 </div>
             </footer>
         </p-dialog>
@@ -82,8 +81,8 @@ export class AppComponent implements OnInit {
     displayLoginDialog : boolean = false;
     loginFailed : boolean = false;
     authenticated : boolean = false;
-    j_username : string = "admin";
-    j_password : string = "admin";
+    j_username : string = "";
+    j_password : string = "";
 
     constructor(private http: Http, private messageService: MessageService) {
         messageService.messageSource$.subscribe(
