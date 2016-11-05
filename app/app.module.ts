@@ -14,7 +14,8 @@ import { FileUploadModule, PanelModule, GrowlModule, MenubarModule,
         DialogModule, ButtonModule, AutoCompleteModule, DataTableModule,
         SharedModule, DropdownModule,PickListModule,CheckboxModule,
         TriStateCheckboxModule, InputTextModule,InputTextareaModule,
-        CalendarModule,PasswordModule,TabViewModule, InputSwitchModule, InplaceModule } from 'primeng/primeng';
+        CalendarModule,PasswordModule,TabViewModule, InputSwitchModule,
+        FieldsetModule, InplaceModule } from 'primeng/primeng';
 import { AppComponent }   from './app.component';
 import { HomeComponent }  from './home.component';
 import { MessageService } from './service/message.service';
@@ -141,6 +142,7 @@ import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/release
         TabViewModule,
         InputSwitchModule,
         InplaceModule,
+        FieldsetModule,
 // our app
         routing
     ],

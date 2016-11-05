@@ -30,8 +30,8 @@ export class ReleaseService {
             .catch(this.handleError);
     }
 
-    getHieraValues(name : String) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/environments/configs/' + name)
+    getHieraValues(name : string) : Observable<HieraValues[]> {
+        return this.http.get('http://localhost:8080/api/releases/configs/' + name)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
