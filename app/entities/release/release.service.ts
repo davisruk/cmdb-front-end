@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Release } from './release';
+import { HieraValues } from '../hiera/hieraValues';
 
 @Injectable()
 export class ReleaseService {
@@ -28,6 +29,13 @@ export class ReleaseService {
             .map(response => <Release> response.json())
             .catch(this.handleError);
     }
+
+    getHieraValues(name : String) : Observable<HieraValues[]> {
+        return this.http.get('http://localhost:8080/api/environments/configs/' + name)
+            .map(response => <HieraValues[]> response.json())
+            .catch(this.handleError);
+    }
+
 
     /**
      * Update the passed release.

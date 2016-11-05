@@ -1,0 +1,51 @@
+<div class="ContentSideSections Implementation">
+    <p-panel header="ReleaseConfig Details">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="releaseConfig" ngForm #releaseConfigForm="ngForm">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="release">Release</label></div>
+                <div class="ui-grid-col-4">
+                    <release-auto-complete [(ngModel)]="releaseConfig.release" id="release" name="release" [disabled]="sub"></release-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoRelease" type="button" (click)="gotoRelease()" *ngIf="releaseConfig.release" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="releaseConfig.release" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+            </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="parameter">Parameter </label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="parameter" [(ngModel)]="releaseConfig.parameter"   name="parameter" #parameter="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="value">Value </label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="value" [(ngModel)]="releaseConfig.value"   name="value" #value="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="hieraAddress">Hiera Address </label></div>
+                <div class="ui-grid-col-6">
+                    <input pInputText id="hieraAddress" [(ngModel)]="releaseConfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-g">
+                <div class="ui-g-2" *ngIf="sub">
+                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
+                </div>
+                <div class="ui-g-2">
+                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!releaseConfigForm.form.valid"></button>
+                </div>
+            </div>
+        </div>
+    </p-panel>
+
+</div>

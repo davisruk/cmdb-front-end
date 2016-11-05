@@ -14,7 +14,7 @@ import { FileUploadModule, PanelModule, GrowlModule, MenubarModule,
         DialogModule, ButtonModule, AutoCompleteModule, DataTableModule,
         SharedModule, DropdownModule,PickListModule,CheckboxModule,
         TriStateCheckboxModule, InputTextModule,InputTextareaModule,
-        CalendarModule,PasswordModule,TabViewModule, InputSwitchModule } from 'primeng/primeng';
+        CalendarModule,PasswordModule,TabViewModule, InputSwitchModule, InplaceModule } from 'primeng/primeng';
 import { AppComponent }   from './app.component';
 import { HomeComponent }  from './home.component';
 import { MessageService } from './service/message.service';
@@ -107,6 +107,13 @@ import { SolutionComponentDetailComponent } from './entities/solutionComponent/s
 import { SolutionComponentLineComponent } from './entities/solutionComponent/solutionComponent-line.component';
 import { SolutionComponentCompleteComponent } from './entities/solutionComponent/solutionComponent-auto-complete.component';
 
+import { ReleaseConfigService } from './entities/releaseConfig/releaseConfig.service';
+import { ReleaseConfigListComponent } from './entities/releaseConfig/releaseConfig-list.component';
+import { ReleaseConfigDetailComponent } from './entities/releaseConfig/releaseConfig-detail.component';
+import { ReleaseConfigLineComponent } from './entities/releaseConfig/releaseConfig-line.component';
+import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/releaseConfig-auto-complete.component';
+
+
 @NgModule({
     imports: [
 // angular
@@ -133,7 +140,7 @@ import { SolutionComponentCompleteComponent } from './entities/solutionComponent
         PasswordModule,
         TabViewModule,
         InputSwitchModule,
-
+        InplaceModule,
 // our app
         routing
     ],
@@ -212,6 +219,13 @@ import { SolutionComponentCompleteComponent } from './entities/solutionComponent
         SolutionComponentDetailComponent,
         SolutionComponentLineComponent,
         SolutionComponentCompleteComponent
+        ,
+        ReleaseConfigListComponent,
+        ReleaseConfigDetailComponent,
+        ReleaseConfigLineComponent,
+        ReleaseConfigCompleteComponent
+        ,
+
     ],
     providers: [
         MessageService
@@ -230,6 +244,7 @@ import { SolutionComponentCompleteComponent } from './entities/solutionComponent
         ,RoleService
         ,UserService
         ,SolutionComponentService
+        ,ReleaseConfigService
     ],
     bootstrap: [ AppComponent ]
 })

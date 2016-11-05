@@ -24,4 +24,15 @@
         </div>
     </p-panel>
 
+    <p-inplace>
+        <span pInplaceDisplay>
+            <span class="fa fa-table"></span><span style="margin-left:8px">View Hiera Data</span>
+        </span>
+        <span pInplaceContent>
+            <p-dataTable [value]="hieraValuesList">
+                <p-column field="address" header="Hiera Address"></p-column>
+                <p-column field="value" header="Hiera Value"></p-column>
+            </p-dataTable>
+        </span>
+    </p-inplace>
 </div>

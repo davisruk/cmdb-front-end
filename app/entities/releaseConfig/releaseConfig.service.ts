@@ -11,74 +11,67 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
-import { Server } from './server';
-import { HieraValues } from '../hiera/hieraValues';
+import { ReleaseConfig } from './releaseConfig';
 
 @Injectable()
-export class ServerService {
+export class ReleaseConfigService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
     /**
-     * Get a Server by id.
+     * Get a ReleaseConfig by id.
      */
-    getServer(id : any) : Observable<Server> {
-        return this.http.get('http://localhost:8080/api/servers/' + id)
-            .map(response => <Server> response.json())
-            .catch(this.handleError);
-    }
-
-    getHieraValues(name : String) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/servers/configs/' + name)
-            .map(response => <HieraValues[]> response.json())
+    getReleaseConfig(id : any) : Observable<ReleaseConfig> {
+        return this.http.get('http://localhost:8080/api/releaseConfigs/' + id)
+            .map(response => <ReleaseConfig> response.json())
             .catch(this.handleError);
     }
 
     /**
-     * Update the passed server.
+     * Update the passed releaseConfig.
      */
-    update(server : Server) : Observable<Server> {
-        let body = JSON.stringify(server);
+    update(releaseConfig : ReleaseConfig) : Observable<ReleaseConfig> {
+        let body = JSON.stringify(releaseConfig);
 
-        return this.http.put('http://localhost:8080/api/servers/', body, this.options)
-            .map(response => <Server> response.json())
+        return this.http.put('http://localhost:8080/api/releaseConfigs/', body, this.options)
+            .map(response => <ReleaseConfig> response.json())
             .catch(this.handleError);
     }
 
     /**
-     * Load a page (for paginated datatable) of Server using the passed
-     * server as an example for the search by example facility.
+     * Load a page (for paginated datatable) of ReleaseConfig using the passed
+     * releaseConfig as an example for the search by example facility.
      */
-    getPage(server : Server, event : LazyLoadEvent) : Observable<PageResponse<Server>> {
-        let req = new PageRequestByExample(server, event);
+    getPage(releaseConfig : ReleaseConfig, event : LazyLoadEvent) : Observable<PageResponse<ReleaseConfig>> {
+        let req = new PageRequestByExample(releaseConfig, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/servers/page', body, this.options)
+        return this.http.post('http://localhost:8080/api/releaseConfigs/page', body, this.options)
             .map(response => {
-                let pr = <PageResponse<Server>> response.json();
-                return new PageResponse<Server>(pr.totalPages, pr.totalElements, pr.content);
+                let pr = <PageResponse<ReleaseConfig>> response.json();
+                return new PageResponse<ReleaseConfig>(pr.totalPages, pr.totalElements, pr.content);
             })
             .catch(this.handleError);
     }
 
     /**
      * Performs a search by example on 1 attribute (defined on server side) and returns at most 10 results.
-     * Used by ServerCompleteComponent.
+     * Used by ReleaseConfigCompleteComponent.
      */
-    complete(query : string) : Observable<Server[]> {
+    complete(query : string) : Observable<ReleaseConfig[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/servers/complete', body, this.options)
-            .map(response => <Server[]> response.json())
+        return this.http.post('http://localhost:8080/api/releaseConfigs/complete', body, this.options)
+            .map(response => <ReleaseConfig[]> response.json())
             .catch(this.handleError);
     }
 
     /**
-     * Delete an Server by id.
+     * Delete an ReleaseConfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/servers/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/releaseConfigs/' + id).catch(this.handleError);
     }
 
     // sample method from angular doc

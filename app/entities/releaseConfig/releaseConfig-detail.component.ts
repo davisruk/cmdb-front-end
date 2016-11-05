@@ -9,27 +9,32 @@ import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angula
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
-import {Release} from './release';
-import {ReleaseService} from './release.service';
-import {HieraValues} from '../hiera/hieraValues';
+import {ReleaseConfig} from './releaseConfig';
+import {ReleaseConfigService} from './releaseConfig.service';
+import {Release} from '../release/release';
 
 @Component({
     moduleId: module.id,
-	templateUrl: 'release-detail.component.html',
-	selector: 'release-detail',
+	templateUrl: 'releaseConfig-detail.component.html',
+	selector: 'releaseConfig-detail',
 })
-export class ReleaseDetailComponent implements OnInit, OnDestroy {
-    release : Release;
+export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
+    releaseConfig : ReleaseConfig;
 
     private params_subscription: any;
-    private hieraValuesList: HieraValues[];
 
 
     @Input() sub : boolean = false;
-    @Output() onSaveClicked = new EventEmitter<Release>();
+    @Input() // used to pass the parent when creating a new ReleaseConfig
+    set release(release : Release) {
+        this.releaseConfig = new ReleaseConfig();
+        this.releaseConfig.release = release;
+    }
+
+    @Output() onSaveClicked = new EventEmitter<ReleaseConfig>();
     @Output() onCancelClicked = new EventEmitter();
 
-    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private releaseService: ReleaseService) {
+    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private releaseConfigService: ReleaseConfigService) {
     }
 
     ngOnInit() {
@@ -39,17 +44,15 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
 
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
-            console.log('ngOnInit for release-detail ' + id);
+            console.log('ngOnInit for releaseConfig-detail ' + id);
 
             if (id === 'new') {
-                this.release = new Release();
+                this.releaseConfig = new ReleaseConfig();
             } else {
-                this.releaseService.getRelease(id)
+                this.releaseConfigService.getReleaseConfig(id)
                     .subscribe(
-                        release => {this.release = release,
-                            this.releaseService.getHieraValues(this.release.name).subscribe(p => this.hieraValuesList = p)},
+                        releaseConfig => this.releaseConfig = releaseConfig,
                         error =>  this.messageService.error('ngOnInit error', error)
-
                     );
             }
         });
@@ -61,13 +64,21 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    gotoRelease() {
+        this.router.navigate(['/release', this.releaseConfig.release.id]);
+    }
+
+    clearRelease() {
+        this.releaseConfig.release = null;
+    }
+
     onSave() {
-        this.releaseService.update(this.release).
+        this.releaseConfigService.update(this.releaseConfig).
             subscribe(
-                release => {
-                    this.release = release;
+                releaseConfig => {
+                    this.releaseConfig = releaseConfig;
                     if (this.sub) {
-                        this.onSaveClicked.emit(this.release);
+                        this.onSaveClicked.emit(this.releaseConfig);
                         this.messageService.info('Saved OK and msg emitted', 'PrimeNG Rocks ;-)')
                     } else {
                         this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')

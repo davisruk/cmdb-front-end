@@ -109,7 +109,9 @@ export class AppComponent implements OnInit {
                 {label: 'Server List', routerLink: ['/server-list']},
                 {label: 'ServerConfig List', routerLink: ['/serverConfig-list']},
                 {label: 'ServerType List', routerLink: ['/serverType-list']},
-                {label: 'SolutionComponent List', routerLink: ['/solutionComponent-list']}                ]
+                {label: 'SolutionComponent List', routerLink: ['/solutionComponent-list']},
+                {label: 'ReleaseConfig List', routerLink: ['/releaseConfig-list']},
+                ]
             },
             { label: 'Swagger', url : "/swagger-ui.html", icon: 'fa-gear' },
             { label: 'Documentation',

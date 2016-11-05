@@ -13,6 +13,7 @@ import {Server} from './server';
 import {ServerService} from './server.service';
 import {ServerType} from '../serverType/serverType';
 import {Environment} from '../environment/environment';
+import {HieraValues} from '../hiera/hieraValues';
 
 @Component({
     moduleId: module.id,
@@ -23,7 +24,7 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
     server : Server;
 
     private params_subscription: any;
-
+    private hieraValuesList: HieraValues[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Server
@@ -58,7 +59,8 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
             } else {
                 this.serverService.getServer(id)
                     .subscribe(
-                        server => this.server = server,
+                        server => {this.server = server;
+                            this.serverService.getHieraValues(this.server.environment.name).subscribe(p => this.hieraValuesList = p)}, 
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
