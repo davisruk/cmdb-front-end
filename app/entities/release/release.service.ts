@@ -30,13 +30,19 @@ export class ReleaseService {
             .catch(this.handleError);
     }
 
-    getHieraValues(name : string) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/releases/configs/' + name)
+    getHieraValues(releaseName : string) : Observable<HieraValues[]> {
+        return this.http.get('http://localhost:8080/api/releases/configs/' + releaseName)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
 
-
+    downloadHieraCSV(releaseName : string) : Observable<Blob[]> {
+          var headers = new Headers();
+          headers.append('responseType', 'arraybuffer');
+          return this.http.get('http://localhost:8080/api/releases/configdownload/' + releaseName)
+            .map(res => new Blob([res],{ type: 'text/csv' }))
+            .catch(this.handleError);
+    }
     /**
      * Update the passed release.
      */

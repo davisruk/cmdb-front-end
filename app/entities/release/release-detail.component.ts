@@ -84,4 +84,13 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    onDownload(){
+        window.location.href='http://localhost:8080/api/releases/configdownload/' + this.release.name;
+/*
+        this.releaseService.downloadHieraCSV(this.release.name)
+      .subscribe(data => window.open(window.URL.createObjectURL(data)),
+                  error => console.log("Error downloading the file."),
+                  () => console.log('Completed file download.'));
+*/        
+    }
 }
