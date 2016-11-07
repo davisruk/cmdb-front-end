@@ -100,4 +100,9 @@ export class EnvironmentListComponent {
                 error => this.messageService.error('Could not delete!', error)
             );
     }
+
+    onDownload(){
+        window.location.href='http://localhost:8080/api/environments/configdownloadall/';
+    }
+    
 }

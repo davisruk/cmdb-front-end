@@ -60,7 +60,7 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
                 this.serverService.getServer(id)
                     .subscribe(
                         server => {this.server = server;
-                            this.serverService.getHieraValues(this.server.environment.name).subscribe(p => this.hieraValuesList = p)}, 
+                            this.serverService.getHieraValues(this.server.name).subscribe(p => this.hieraValuesList = p)}, 
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }

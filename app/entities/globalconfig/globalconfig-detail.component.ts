@@ -79,5 +79,4 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
             this.messageService.info('Cancel clicked and msg emitted', 'PrimeNG Rocks ;-)')
         }
     }
-
-}
+ }
