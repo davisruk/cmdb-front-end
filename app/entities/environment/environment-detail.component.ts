@@ -96,4 +96,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    onDownload(){
+        window.location.href='http://localhost:8080/api/environments/configdownload/' + this.environment.name;
+    }
 }

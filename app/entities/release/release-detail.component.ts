@@ -93,4 +93,7 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
                   () => console.log('Completed file download.'));
 */        
     }
+    onDownloadAll(){
+        window.location.href='http://localhost:8080/api/releases/configdownloadall/' + this.release.name;
+    }
 }

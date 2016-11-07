@@ -12,6 +12,7 @@ import { MessageService} from '../../service/message.service';
 import {SolutionComponent} from './solutionComponent';
 import {SolutionComponentService} from './solutionComponent.service';
 import {PackageInfo} from '../packageInfo/packageInfo';
+import {HieraValues} from '../hiera/hieravalues';
 
 @Component({
     moduleId: module.id,
@@ -22,7 +23,7 @@ export class SolutionComponentDetailComponent implements OnInit, OnDestroy {
     solutionComponent : SolutionComponent;
 
     private params_subscription: any;
-
+    private hieraValuesList: HieraValues[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new SolutionComponent
@@ -51,7 +52,9 @@ export class SolutionComponentDetailComponent implements OnInit, OnDestroy {
             } else {
                 this.solutionComponentService.getSolutionComponent(id)
                     .subscribe(
-                        solutionComponent => this.solutionComponent = solutionComponent,
+                        solutionComponent => {
+                            this.solutionComponent = solutionComponent;
+                            this.solutionComponentService.getHieraValues(this.solutionComponent.id).subscribe(p => this.hieraValuesList = p)},
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
@@ -94,5 +97,7 @@ export class SolutionComponentDetailComponent implements OnInit, OnDestroy {
             this.messageService.info('Cancel clicked and msg emitted', 'PrimeNG Rocks ;-)')
         }
     }
-
+    onDownload(){
+        window.location.href='http://localhost:8080/api/solutionComponents/configdownload/' + this.solutionComponent.id;
+    }
 }

@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { SolutionComponent } from './solutionComponent';
+import { HieraValues } from '../hiera/hieravalues';
 
 @Injectable()
 export class SolutionComponentService {
@@ -26,6 +27,12 @@ export class SolutionComponentService {
     getSolutionComponent(id : any) : Observable<SolutionComponent> {
         return this.http.get('http://localhost:8080/api/solutionComponents/' + id)
             .map(response => <SolutionComponent> response.json())
+            .catch(this.handleError);
+    }
+
+    getHieraValues(id : number) : Observable<HieraValues[]> {
+        return this.http.get('http://localhost:8080/api/solutionComponents/configs/' + id)
+            .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
 

@@ -21,8 +21,12 @@
                     <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!releaseForm.form.valid"></button>
                 </div>
                 <div class="ui-g-2">
-                    <button pButton type="button" (click)="onDownload()" icon="fa-floppy-o" label="Download HieraValues"></button>
+                    <button pButton type="button" (click)="onDownload()" icon="fa-floppy-o" label="Download Release Only"></button>
                 </div>
+                <div class="ui-g-2">
+                    <button pButton type="button" (click)="onDownloadAll()" icon="fa-floppy-o" label="Download Complete Release"></button>
+                </div>
+                
             </div>
         </div>
     </p-panel>
