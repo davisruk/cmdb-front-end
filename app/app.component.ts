@@ -11,7 +11,7 @@ import { HttpModule, RequestOptions, Headers, Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Message, MenuItem } from 'primeng/primeng';
 import { MessageService} from './service/message.service';
-
+import { Authority } from './entities/role/authority';
 /**
  * The Root component. Defines the main layout and handles user login in a dialog.
  */
@@ -81,6 +81,8 @@ export class AppComponent implements OnInit {
     displayLoginDialog : boolean = false;
     loginFailed : boolean = false;
     authenticated : boolean = false;
+    userAuthorities : Authority[];
+    isAdmin: boolean = false;
     j_username : string = "";
     j_password : string = "";
 
@@ -124,14 +126,7 @@ export class AppComponent implements OnInit {
                     {label: "Spring Data JPA", icon: 'fa-external-link', url:"http://projects.spring.io/spring-data-jpa/"},
                     {label: "TypeScript", icon: 'fa-external-link', url:"https://www.typescriptlang.org/"}
                 ]
-            },
-             { label: 'Admin',
-                icon: 'fa-gears',
-                items: [
-                    {label: "Roles", icon: 'fa-unlock-alt', routerLink: ['/role-list']},
-                    {label: "Users", icon: 'fa-users', routerLink: ['/user-list']},
-                ]
-             }
+            }
         ];
 
         this.isAuthenticated().
@@ -157,6 +152,12 @@ export class AppComponent implements OnInit {
             catch(this.handleError);
     }
 
+    getUserRoles() : Observable<Authority[]> {
+        return this.http.get('http://localhost:8080/api/currentUserAuthorities/' + this.j_username).
+            map(response => <Authority[]> response.json()).
+            catch(this.handleError);
+   }
+
     login() {
         console.log("login for " + this.j_username);
         let body = 'j_username=' + this.j_username + '&j_password=' + this.j_password + '&submit=Login';
@@ -171,6 +172,27 @@ export class AppComponent implements OnInit {
                             this.items.push({label: 'Sign out', url: 'http://localhost:8080/api/logout', icon: 'fa-sign-out' });
                             this.loginFailed = false;
                             this.messageService.info('You are now logged in.', '');
+                            this.getUserRoles().subscribe(
+                            rolesResp =>
+                            {
+                                this.userAuthorities = rolesResp;
+                                rolesResp.forEach(element => {
+                                    if (element.authority == "ROLE_ADMIN")
+                                        this.isAdmin = true;
+                                });
+                                
+                                if (this.isAdmin)
+                                    this.items.splice(4,0,{ label: 'Admin',
+                                        icon: 'fa-gears',
+                                        items: [
+                                            {label: "Roles", icon: 'fa-unlock-alt', routerLink: ['/role-list']},
+                                            {label: "Users", icon: 'fa-users', routerLink: ['/user-list']},
+                                        ]
+                                    }
+                                )
+                            }
+                        )
+                            
                         } else {
                             this.loginFailed = true;
                             this.displayLoginDialog = true;

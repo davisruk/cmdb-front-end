@@ -40,7 +40,7 @@
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="enabled">Roles </label></div>
                 <div class="ui-grid-col-6">
-                    <p-pickList [source]="assignedRoles" [target]="availableRoles" sourceHeader="Assigned" targetHeader="Available" [responsive]="true">
+                    <p-pickList [source]="user.roles" [target]="availableRoles" sourceHeader="Assigned" targetHeader="Available" [responsive]="true">
                         <template let-role>
                             <div class="ui-helper-clearfix">
                                 <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{role.name}}</div>

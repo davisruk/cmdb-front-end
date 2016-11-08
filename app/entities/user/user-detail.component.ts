@@ -43,7 +43,6 @@ export class UserDetailComponent implements OnInit, OnDestroy {
                 this.userService.getUser(id)
                     .subscribe(
                         user => {this.user = user;
-                                 this.roleService.getAssignedRolesForUser(this.user).subscribe(p => this.assignedRoles = p);
                                  this.roleService.getUnassignedRolesForUser(this.user).subscribe(p => this.availableRoles = p);
                         },
                         error =>  this.messageService.error('ngOnInit error', error)
