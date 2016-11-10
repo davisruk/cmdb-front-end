@@ -91,7 +91,7 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
       .subscribe(data => window.open(window.URL.createObjectURL(data)),
                   error => console.log("Error downloading the file."),
                   () => console.log('Completed file download.'));
-*/        
+  */      
     }
     onDownloadAll(){
         window.location.href='http://localhost:8080/api/releases/configdownloadall/' + this.release.name;

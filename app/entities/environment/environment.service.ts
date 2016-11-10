@@ -17,7 +17,7 @@ import { HieraValues } from '../hiera/hieraValues';
 @Injectable()
 export class EnvironmentService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -25,13 +25,13 @@ export class EnvironmentService {
      * Get a Environment by id.
      */
     getEnvironment(id : any) : Observable<Environment> {
-        return this.http.get('http://localhost:8080/api/environments/' + id)
+        return this.http.get('http://localhost:8080/api/environments/' + id, this.options)
             .map(response => <Environment> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(name : String) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/environments/configs/' + name)
+        return this.http.get('http://localhost:8080/api/environments/configs/' + name, this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -78,7 +78,7 @@ export class EnvironmentService {
      * Delete an Environment by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/environments/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/environments/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

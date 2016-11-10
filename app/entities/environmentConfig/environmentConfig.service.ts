@@ -16,7 +16,7 @@ import { EnvironmentConfig } from './environmentConfig';
 @Injectable()
 export class EnvironmentConfigService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -24,7 +24,7 @@ export class EnvironmentConfigService {
      * Get a EnvironmentConfig by id.
      */
     getEnvironmentConfig(id : any) : Observable<EnvironmentConfig> {
-        return this.http.get('http://localhost:8080/api/environmentConfigs/' + id)
+        return this.http.get('http://localhost:8080/api/environmentConfigs/' + id, this.options)
             .map(response => <EnvironmentConfig> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +71,7 @@ export class EnvironmentConfigService {
      * Delete an EnvironmentConfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/environmentConfigs/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/environmentConfigs/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

@@ -10,7 +10,7 @@ import { User } from '../user/user';
 @Injectable()
 export class RoleService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -18,7 +18,7 @@ export class RoleService {
      * Get a ServerType by id.
      */
     getRole(id : any) : Observable<Role> {
-        return this.http.get('http://localhost:8080/api/roles/' + id)
+        return this.http.get('http://localhost:8080/api/roles/' + id, this.options)
             .map(response => <Role> response.json())
             .catch(this.handleError);
     }
@@ -26,7 +26,7 @@ export class RoleService {
     // not using the /api so we're not just getting Role[] but full HATEOS json
     // need to extract the Role[]
     getAssignedRolesForUser(user : User) : Observable<Role[]>{
-        return this.http.get('http://localhost:8080/users/' + user.id + '/roles')
+        return this.http.get('http://localhost:8080/users/' + user.id + '/roles', this.options)
             .map(response => <Role[]> response.json()._embedded.roles)
             .catch(this.handleError);
     }    
@@ -34,7 +34,7 @@ export class RoleService {
     // not using the /api so we're not just getting Role[] but full HATEOS json
     // need to extract the Role[]
     getUnassignedRolesForUser(user : User) : Observable<Role[]>{
-        return this.http.get('http://localhost:8080/api/unassignedrolesforuser/' + user.id)
+        return this.http.get('http://localhost:8080/api/unassignedrolesforuser/' + user.id, this.options)
             .map(response => <Role[]> response.json())
             .catch(this.handleError);
     }    
@@ -81,7 +81,7 @@ export class RoleService {
      * Delete an ServerType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/roles/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/roles/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

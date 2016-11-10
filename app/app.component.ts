@@ -6,7 +6,7 @@
 // Template pack-angular:src/main/webapp/app/app.component.ts.p.vm
 //
 import { Component,OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpModule, RequestOptions, Headers, Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Message, MenuItem } from 'primeng/primeng';
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
     j_password : string = "";
     token : string ="";
 
-    constructor(private http: Http, private messageService: MessageService) {
+    constructor(private http: Http, private messageService: MessageService, private router: Router) {
         messageService.messageSource$.subscribe(
             msg => {
                 this.msgs.push(msg);
@@ -117,7 +117,7 @@ export class AppComponent implements OnInit {
                 {label: 'ReleaseConfig List', routerLink: ['/releaseConfig-list']},
                 ]
             },
-            { label: 'Swagger', url : "/swagger-ui.html", icon: 'fa-gear' },
+            { label: 'Swagger', command: (swagger)=>this.openSwagger(), icon: 'fa-gear' },
             { label: 'Documentation',
                 icon: 'fa-book',
                 items: [
@@ -131,31 +131,7 @@ export class AppComponent implements OnInit {
                 ]
             }
         ];
-/*
-        this.isAuthenticated().
-            subscribe(
-                resp =>
-                    {
-                        this.authenticated = resp;
-                        this.displayLoginDialog = !this.authenticated;
-                        if (this.authenticated) {
-                            this.items.push({label: 'Sign out', url: 'http://localhost:8080/api/logout', icon: 'fa-sign-out' });
-                            console.log('You are authenticated...', '');
-                        } else {
-                            console.log('You are NOT authenticated...', '');
-                        }
-                    },
-                error =>  this.messageService.error('isAuthenticated Error', error)
-            );
-*/
     }
-/*
-    isAuthenticated() : Observable<boolean> {
-        return this.http.get('http://localhost:8080/api/authenticated').
-            map(response => <boolean> response.json()).
-            catch(this.handleError);
-    }
-*/
     getUserRoles() : Observable<Authority[]> {
         let token:string = localStorage.getItem('JWTToken');
         this.options.headers.append('Authorization',token);
@@ -175,31 +151,11 @@ export class AppComponent implements OnInit {
                         if (tokenRes != undefined) {
                             this.displayLoginDialog = false;
                             this.authenticated = true;
-                            this.items.push({label: 'Sign out', url: 'http://localhost:8080/api/logout', icon: 'fa-sign-out' });
+                            this.items.push({label: 'Sign out', command: (logout)=>this.logout(), icon: 'fa-sign-out' });
                             this.loginFailed = false;
                             this.messageService.info('You are now logged in.', '');
-                            localStorage.setItem('JWTToken', tokenRes.token)
-                            this.getUserRoles().subscribe(
-                            rolesResp =>
-                            {
-                                this.userAuthorities = rolesResp;
-                                rolesResp.forEach(element => {
-                                    if (element.authority == "ROLE_ADMIN")
-                                        this.isAdmin = true;
-                                });
-                                
-                                if (this.isAdmin)
-                                    this.items.splice(4,0,{ label: 'Admin',
-                                        icon: 'fa-gears',
-                                        items: [
-                                            {label: "Roles", icon: 'fa-unlock-alt', routerLink: ['/role-list']},
-                                            {label: "Users", icon: 'fa-users', routerLink: ['/user-list']},
-                                        ]
-                                    }
-                                )
-                            }
-                        )
-                            
+                            localStorage.setItem('JWTToken', tokenRes.token);
+                            this.getUserRoles().subscribe(rolesResp => this.processUserRights(rolesResp));
                         } else {
                             this.loginFailed = true;
                             this.displayLoginDialog = true;
@@ -215,11 +171,41 @@ export class AppComponent implements OnInit {
         );
     }
 
+    processUserRights(rolesResp:any[])
+    {
+        this.userAuthorities = rolesResp;
+        rolesResp.forEach(element => {
+            if (element.authority == "ROLE_ADMIN")
+                this.isAdmin = true;
+        });
+        
+        if (this.isAdmin)
+            this.items.splice(4,0,{ label: 'Admin',
+                icon: 'fa-gears',
+                items: [
+                    {label: "Roles", icon: 'fa-unlock-alt', routerLink: ['/role-list']},
+                    {label: "Users", icon: 'fa-users', routerLink: ['/user-list']},
+                ]
+            }
+        )
+    }
+
+    logout(){
+        this.items.pop;
+        localStorage.removeItem ("JWTToken");
+        this.isAdmin = false;
+        this.authenticated = false;
+        window.location.href="http://localhost:3000/logout.html";
+    }
     // sample method from angular doc
     private handleError (error: any) {
         let errMsg = (error.message) ? error.message :
         error.status ? `Status: ${error.status} - Text: ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
+    }
+
+    openSwagger(){
+        window.open("http://localhost:8080/swagger-ui/index.html");
     }
 }

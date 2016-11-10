@@ -17,7 +17,7 @@ import { HieraValues } from '../hiera/hieraValues';
 @Injectable()
 export class ServerService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -25,13 +25,13 @@ export class ServerService {
      * Get a Server by id.
      */
     getServer(id : any) : Observable<Server> {
-        return this.http.get('http://localhost:8080/api/servers/' + id)
+        return this.http.get('http://localhost:8080/api/servers/' + id, this.options)
             .map(response => <Server> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(name : String) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/servers/configs/' + name)
+        return this.http.get('http://localhost:8080/api/servers/configs/' + name, this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -78,7 +78,7 @@ export class ServerService {
      * Delete an Server by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/servers/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/servers/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

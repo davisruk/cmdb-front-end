@@ -17,7 +17,7 @@ import { HieraValues } from '../hiera/hieravalues';
 @Injectable()
 export class SolutionComponentService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -25,13 +25,13 @@ export class SolutionComponentService {
      * Get a SolutionComponent by id.
      */
     getSolutionComponent(id : any) : Observable<SolutionComponent> {
-        return this.http.get('http://localhost:8080/api/solutionComponents/' + id)
+        return this.http.get('http://localhost:8080/api/solutionComponents/' + id, this.options)
             .map(response => <SolutionComponent> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(id : number) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/solutionComponents/configs/' + id)
+        return this.http.get('http://localhost:8080/api/solutionComponents/configs/' + id, this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -78,7 +78,7 @@ export class SolutionComponentService {
      * Delete an SolutionComponent by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/solutionComponents/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/solutionComponents/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

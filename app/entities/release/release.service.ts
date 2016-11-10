@@ -17,7 +17,7 @@ import { HieraValues } from '../hiera/hieraValues';
 @Injectable()
 export class ReleaseService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -25,13 +25,13 @@ export class ReleaseService {
      * Get a Release by id.
      */
     getRelease(id : any) : Observable<Release> {
-        return this.http.get('http://localhost:8080/api/releases/' + id)
+        return this.http.get('http://localhost:8080/api/releases/' + id, this.options)
             .map(response => <Release> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(releaseName : string) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/releases/configs/' + releaseName)
+        return this.http.get('http://localhost:8080/api/releases/configs/' + releaseName, this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -39,7 +39,7 @@ export class ReleaseService {
     downloadHieraCSV(releaseName : string) : Observable<Blob[]> {
           var headers = new Headers();
           headers.append('responseType', 'arraybuffer');
-          return this.http.get('http://localhost:8080/api/releases/configdownload/' + releaseName)
+          return this.http.get('http://localhost:8080/api/releases/configdownload/' + releaseName, this.options)
             .map(res => new Blob([res],{ type: 'text/csv' }))
             .catch(this.handleError);
     }
@@ -85,7 +85,7 @@ export class ReleaseService {
      * Delete an Release by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/releases/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/releases/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

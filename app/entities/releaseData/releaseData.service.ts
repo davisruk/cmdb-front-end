@@ -16,7 +16,7 @@ import { ReleaseData } from './releaseData';
 @Injectable()
 export class ReleaseDataService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -24,7 +24,7 @@ export class ReleaseDataService {
      * Get a ReleaseData by id.
      */
     getReleaseData(id : any) : Observable<ReleaseData> {
-        return this.http.get('http://localhost:8080/api/releaseDatas/' + id)
+        return this.http.get('http://localhost:8080/api/releaseDatas/' + id, this.options)
             .map(response => <ReleaseData> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +71,7 @@ export class ReleaseDataService {
      * Delete an ReleaseData by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/releaseDatas/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/releaseDatas/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

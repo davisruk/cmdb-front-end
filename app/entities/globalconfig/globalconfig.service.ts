@@ -16,7 +16,7 @@ import { Globalconfig } from './globalconfig';
 @Injectable()
 export class GlobalconfigService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -24,7 +24,7 @@ export class GlobalconfigService {
      * Get a Globalconfig by id.
      */
     getGlobalconfig(id : any) : Observable<Globalconfig> {
-        return this.http.get('http://localhost:8080/api/globalconfigs/' + id)
+        return this.http.get('http://localhost:8080/api/globalconfigs/' + id, this.options)
             .map(response => <Globalconfig> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +71,7 @@ export class GlobalconfigService {
      * Delete an Globalconfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/globalconfigs/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/globalconfigs/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

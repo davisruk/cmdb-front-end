@@ -16,7 +16,7 @@ import { ServerType } from './serverType';
 @Injectable()
 export class ServerTypeService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -24,7 +24,7 @@ export class ServerTypeService {
      * Get a ServerType by id.
      */
     getServerType(id : any) : Observable<ServerType> {
-        return this.http.get('http://localhost:8080/api/serverTypes/' + id)
+        return this.http.get('http://localhost:8080/api/serverTypes/' + id, this.options)
             .map(response => <ServerType> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +71,7 @@ export class ServerTypeService {
      * Delete an ServerType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/serverTypes/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/serverTypes/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

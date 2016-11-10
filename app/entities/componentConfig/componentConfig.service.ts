@@ -16,7 +16,7 @@ import { ComponentConfig } from './componentConfig';
 @Injectable()
 export class ComponentConfigService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -24,7 +24,7 @@ export class ComponentConfigService {
      * Get a ComponentConfig by id.
      */
     getComponentConfig(id : any) : Observable<ComponentConfig> {
-        return this.http.get('http://localhost:8080/api/componentConfigs/' + id)
+        return this.http.get('http://localhost:8080/api/componentConfigs/' + id, this.options)
             .map(response => <ComponentConfig> response.json())
             .catch(this.handleError);
     }
@@ -34,7 +34,7 @@ export class ComponentConfigService {
      */
     update(componentConfig : ComponentConfig) : Observable<ComponentConfig> {
         let body = JSON.stringify(componentConfig);
-
+        
         return this.http.put('http://localhost:8080/api/componentConfigs/', body, this.options)
             .map(response => <ComponentConfig> response.json())
             .catch(this.handleError);
@@ -62,6 +62,7 @@ export class ComponentConfigService {
      */
     complete(query : string) : Observable<ComponentConfig[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
+
         return this.http.post('http://localhost:8080/api/componentConfigs/complete', body, this.options)
             .map(response => <ComponentConfig[]> response.json())
             .catch(this.handleError);
@@ -71,7 +72,7 @@ export class ComponentConfigService {
      * Delete an ComponentConfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/componentConfigs/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/componentConfigs/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc
@@ -82,4 +83,5 @@ export class ComponentConfigService {
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
     }
+
 }

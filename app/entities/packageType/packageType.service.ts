@@ -16,7 +16,7 @@ import { PackageType } from './packageType';
 @Injectable()
 export class PackageTypeService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -24,7 +24,7 @@ export class PackageTypeService {
      * Get a PackageType by id.
      */
     getPackageType(id : any) : Observable<PackageType> {
-        return this.http.get('http://localhost:8080/api/packageTypes/' + id)
+        return this.http.get('http://localhost:8080/api/packageTypes/' + id, this.options)
             .map(response => <PackageType> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +71,7 @@ export class PackageTypeService {
      * Delete an PackageType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/packageTypes/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/packageTypes/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

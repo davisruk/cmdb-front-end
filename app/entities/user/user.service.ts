@@ -9,7 +9,7 @@ import { User } from './user';
 @Injectable()
 export class UserService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
     constructor(private http: Http, private messageService : MessageService) {}
 
@@ -17,7 +17,7 @@ export class UserService {
      * Get a ServerType by id.
      */
     getUser(id : any) : Observable<User> {
-        return this.http.get('http://localhost:8080/api/users/' + id)
+        return this.http.get('http://localhost:8080/api/users/' + id, this.options)
             .map(response => <User> response.json())
             .catch(this.handleError);
     }
@@ -64,7 +64,7 @@ export class UserService {
      * Delete an ServerType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/users/' + id).catch(this.handleError);
+        return this.http.delete('http://localhost:8080/api/users/' + id, this.options).catch(this.handleError);
     }
 
     // sample method from angular doc
