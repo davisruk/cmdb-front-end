@@ -5,10 +5,7 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        "**/*.js":true,
         "**/*.js.*":true
     },
-    "http.proxy": "http://CENTRE1%5Crichard.davis:5c4rl3ttD4v!5@gateway.zscalertwo.net:9480/",
-    "http.proxyStrictSSL": false,
     "typescript.tsdk": "./node_modules/typescript/lib"
 }

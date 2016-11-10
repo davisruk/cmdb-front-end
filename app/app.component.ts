@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { Message, MenuItem } from 'primeng/primeng';
 import { MessageService} from './service/message.service';
 import { Authority } from './entities/role/authority';
+import { LoginDetails } from './entities/authentication/login-details';
 /**
  * The Root component. Defines the main layout and handles user login in a dialog.
  */
@@ -74,17 +75,19 @@ import { Authority } from './entities/role/authority';
     `]
 })
 export class AppComponent implements OnInit {
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' })});
+    //private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' })});
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json' }) });
     private items : MenuItem[] = [{label: 'hello'}];
     msgs : Message[] = [];
 
-    displayLoginDialog : boolean = false;
+    displayLoginDialog : boolean = true;
     loginFailed : boolean = false;
     authenticated : boolean = false;
     userAuthorities : Authority[];
     isAdmin: boolean = false;
     j_username : string = "";
     j_password : string = "";
+    token : string ="";
 
     constructor(private http: Http, private messageService: MessageService) {
         messageService.messageSource$.subscribe(
@@ -128,7 +131,7 @@ export class AppComponent implements OnInit {
                 ]
             }
         ];
-
+/*
         this.isAuthenticated().
             subscribe(
                 resp =>
@@ -144,34 +147,38 @@ export class AppComponent implements OnInit {
                     },
                 error =>  this.messageService.error('isAuthenticated Error', error)
             );
+*/
     }
-
+/*
     isAuthenticated() : Observable<boolean> {
         return this.http.get('http://localhost:8080/api/authenticated').
             map(response => <boolean> response.json()).
             catch(this.handleError);
     }
-
+*/
     getUserRoles() : Observable<Authority[]> {
-        return this.http.get('http://localhost:8080/api/currentUserAuthorities/' + this.j_username).
+        let token:string = localStorage.getItem('JWTToken');
+        this.options.headers.append('Authorization',token);
+        return this.http.get('http://localhost:8080/api/currentUserAuthorities', this.options).
             map(response => <Authority[]> response.json()).
             catch(this.handleError);
    }
 
     login() {
         console.log("login for " + this.j_username);
-        let body = 'j_username=' + this.j_username + '&j_password=' + this.j_password + '&submit=Login';
-
+        let loginData = new LoginDetails(this.j_username, this.j_password);
+        let body = JSON.stringify(loginData)
         this.http.post('http://localhost:8080/api/login', body, this.options).
-        map( res => res.status == 200).catch(this.handleError).
+        map( res => res.json()).catch(this.handleError).
         subscribe(
-            loginOk => {
-                        if (loginOk) {
+            tokenRes => {
+                        if (tokenRes != undefined) {
                             this.displayLoginDialog = false;
                             this.authenticated = true;
                             this.items.push({label: 'Sign out', url: 'http://localhost:8080/api/logout', icon: 'fa-sign-out' });
                             this.loginFailed = false;
                             this.messageService.info('You are now logged in.', '');
+                            localStorage.setItem('JWTToken', tokenRes.token)
                             this.getUserRoles().subscribe(
                             rolesResp =>
                             {

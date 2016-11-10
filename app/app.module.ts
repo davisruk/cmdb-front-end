@@ -114,13 +114,13 @@ import { ReleaseConfigDetailComponent } from './entities/releaseConfig/releaseCo
 import { ReleaseConfigLineComponent } from './entities/releaseConfig/releaseConfig-line.component';
 import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/releaseConfig-auto-complete.component';
 
-
 @NgModule({
     imports: [
 // angular
         BrowserModule,
         FormsModule,
         HttpModule,
+
 // primeng
         FileUploadModule,
         PanelModule,
