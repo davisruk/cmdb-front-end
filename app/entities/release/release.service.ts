@@ -13,25 +13,26 @@ import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Release } from './release';
 import { HieraValues } from '../hiera/hieraValues';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class ReleaseService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings: Configuration) {}
 
     /**
      * Get a Release by id.
      */
     getRelease(id : any) : Observable<Release> {
-        return this.http.get('http://localhost:8080/api/releases/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/releases/' + id), this.options)
             .map(response => <Release> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(releaseName : string) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/releases/configs/' + releaseName, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/releases/configs/' + releaseName), this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -39,7 +40,7 @@ export class ReleaseService {
     downloadHieraCSV(releaseName : string) : Observable<Blob[]> {
           var headers = new Headers();
           headers.append('responseType', 'arraybuffer');
-          return this.http.get('http://localhost:8080/api/releases/configdownload/' + releaseName, this.options)
+          return this.http.get(this.settings.createBackendURLFor('api/releases/configdownload/' + releaseName), this.options)
             .map(res => new Blob([res],{ type: 'text/csv' }))
             .catch(this.handleError);
     }
@@ -49,7 +50,7 @@ export class ReleaseService {
     update(release : Release) : Observable<Release> {
         let body = JSON.stringify(release);
 
-        return this.http.put('http://localhost:8080/api/releases/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/releases/'), body, this.options)
             .map(response => <Release> response.json())
             .catch(this.handleError);
     }
@@ -62,7 +63,7 @@ export class ReleaseService {
         let req = new PageRequestByExample(release, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/releases/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/releases/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<Release>> response.json();
                 return new PageResponse<Release>(pr.totalPages, pr.totalElements, pr.content);
@@ -76,7 +77,7 @@ export class ReleaseService {
      */
     complete(query : string) : Observable<Release[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/releases/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/releases/complete'), body, this.options)
             .map(response => <Release[]> response.json())
             .catch(this.handleError);
     }
@@ -85,7 +86,7 @@ export class ReleaseService {
      * Delete an Release by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/releases/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/releases/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

@@ -12,19 +12,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { ServerConfig } from './serverConfig';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class ServerConfigService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a ServerConfig by id.
      */
     getServerConfig(id : any) : Observable<ServerConfig> {
-        return this.http.get('http://localhost:8080/api/serverConfigs/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/serverConfigs/' + id), this.options)
             .map(response => <ServerConfig> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +36,7 @@ export class ServerConfigService {
     update(serverConfig : ServerConfig) : Observable<ServerConfig> {
         let body = JSON.stringify(serverConfig);
 
-        return this.http.put('http://localhost:8080/api/serverConfigs/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/serverConfigs/'), body, this.options)
             .map(response => <ServerConfig> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +49,7 @@ export class ServerConfigService {
         let req = new PageRequestByExample(serverConfig, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/serverConfigs/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/serverConfigs/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<ServerConfig>> response.json();
                 return new PageResponse<ServerConfig>(pr.totalPages, pr.totalElements, pr.content);
@@ -62,7 +63,7 @@ export class ServerConfigService {
      */
     complete(query : string) : Observable<ServerConfig[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/serverConfigs/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/serverConfigs/complete'), body, this.options)
             .map(response => <ServerConfig[]> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +72,7 @@ export class ServerConfigService {
      * Delete an ServerConfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/serverConfigs/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/serverConfigs/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

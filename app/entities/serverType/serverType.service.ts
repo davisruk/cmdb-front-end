@@ -12,19 +12,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { ServerType } from './serverType';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class ServerTypeService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings:Configuration) {}
 
     /**
      * Get a ServerType by id.
      */
     getServerType(id : any) : Observable<ServerType> {
-        return this.http.get('http://localhost:8080/api/serverTypes/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/serverTypes/' + id), this.options)
             .map(response => <ServerType> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +36,7 @@ export class ServerTypeService {
     update(serverType : ServerType) : Observable<ServerType> {
         let body = JSON.stringify(serverType);
 
-        return this.http.put('http://localhost:8080/api/serverTypes/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/serverTypes/'), body, this.options)
             .map(response => <ServerType> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +49,7 @@ export class ServerTypeService {
         let req = new PageRequestByExample(serverType, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/serverTypes/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/serverTypes/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<ServerType>> response.json();
                 return new PageResponse<ServerType>(pr.totalPages, pr.totalElements, pr.content);
@@ -62,7 +63,7 @@ export class ServerTypeService {
      */
     complete(query : string) : Observable<ServerType[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/serverTypes/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/serverTypes/complete'), body, this.options)
             .map(response => <ServerType[]> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +72,7 @@ export class ServerTypeService {
      * Delete an ServerType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/serverTypes/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/serverTypes/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

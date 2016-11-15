@@ -12,19 +12,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { PackageInfo } from './packageInfo';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class PackageInfoService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a PackageInfo by id.
      */
     getPackageInfo(id : any) : Observable<PackageInfo> {
-        return this.http.get('http://localhost:8080/api/packageInfos/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/packageInfos/' + id), this.options)
             .map(response => <PackageInfo> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +36,7 @@ export class PackageInfoService {
     update(packageInfo : PackageInfo) : Observable<PackageInfo> {
         let body = JSON.stringify(packageInfo);
 
-        return this.http.put('http://localhost:8080/api/packageInfos/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/packageInfos/'), body, this.options)
             .map(response => <PackageInfo> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +49,7 @@ export class PackageInfoService {
         let req = new PageRequestByExample(packageInfo, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/packageInfos/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/packageInfos/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<PackageInfo>> response.json();
                 return new PageResponse<PackageInfo>(pr.totalPages, pr.totalElements, pr.content);
@@ -62,7 +63,7 @@ export class PackageInfoService {
      */
     complete(query : string) : Observable<PackageInfo[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/packageInfos/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/packageInfos/complete'), body, this.options)
             .map(response => <PackageInfo[]> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +72,7 @@ export class PackageInfoService {
      * Delete an PackageInfo by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/packageInfos/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/packageInfos/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

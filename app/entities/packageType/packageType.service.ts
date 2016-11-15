@@ -12,19 +12,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { PackageType } from './packageType';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class PackageTypeService {
 
 private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a PackageType by id.
      */
     getPackageType(id : any) : Observable<PackageType> {
-        return this.http.get('http://localhost:8080/api/packageTypes/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/packageTypes/' + id), this.options)
             .map(response => <PackageType> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +36,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
     update(packageType : PackageType) : Observable<PackageType> {
         let body = JSON.stringify(packageType);
 
-        return this.http.put('http://localhost:8080/api/packageTypes/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/packageTypes/'), body, this.options)
             .map(response => <PackageType> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +49,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
         let req = new PageRequestByExample(packageType, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/packageTypes/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/packageTypes/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<PackageType>> response.json();
                 return new PageResponse<PackageType>(pr.totalPages, pr.totalElements, pr.content);
@@ -71,7 +72,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
      * Delete an PackageType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/packageTypes/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/packageTypes/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

@@ -13,25 +13,26 @@ import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Server } from './server';
 import { HieraValues } from '../hiera/hieraValues';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class ServerService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings:Configuration) {}
 
     /**
      * Get a Server by id.
      */
     getServer(id : any) : Observable<Server> {
-        return this.http.get('http://localhost:8080/api/servers/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/servers/' + id), this.options)
             .map(response => <Server> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(name : String) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/servers/configs/' + name, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/servers/configs/' + name), this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -42,7 +43,7 @@ export class ServerService {
     update(server : Server) : Observable<Server> {
         let body = JSON.stringify(server);
 
-        return this.http.put('http://localhost:8080/api/servers/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/servers/'), body, this.options)
             .map(response => <Server> response.json())
             .catch(this.handleError);
     }
@@ -55,7 +56,7 @@ export class ServerService {
         let req = new PageRequestByExample(server, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/servers/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/servers/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<Server>> response.json();
                 return new PageResponse<Server>(pr.totalPages, pr.totalElements, pr.content);
@@ -69,7 +70,7 @@ export class ServerService {
      */
     complete(query : string) : Observable<Server[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/servers/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/servers/complete'), body, this.options)
             .map(response => <Server[]> response.json())
             .catch(this.handleError);
     }
@@ -78,7 +79,7 @@ export class ServerService {
      * Delete an Server by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/servers/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/servers/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

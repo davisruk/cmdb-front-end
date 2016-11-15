@@ -13,6 +13,7 @@ import {Environment} from './environment';
 import {EnvironmentService} from './environment.service';
 import {Release} from '../release/release';
 import {HieraValues} from '../hiera/hieraValues';
+import {Configuration} from '../../support/configuration';
 @Component({
     moduleId: module.id,
 	templateUrl: 'environment-detail.component.html',
@@ -34,7 +35,9 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     @Output() onSaveClicked = new EventEmitter<Environment>();
     @Output() onCancelClicked = new EventEmitter();
 
-    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private environmentService: EnvironmentService) {
+    constructor(private route: ActivatedRoute, private router: Router, 
+                private messageService: MessageService, private environmentService: EnvironmentService,
+                private settings : Configuration) {
     }
 
     ngOnInit() {
@@ -97,6 +100,6 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     }
 
     onDownload(){
-        window.location.href='http://localhost:8080/api/environments/configdownload/' + this.environment.name;
+        window.location.href=this.settings.createBackendURLFor('api/environments/configdownload/' + this.environment.name);
     }
 }

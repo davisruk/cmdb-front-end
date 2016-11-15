@@ -12,19 +12,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { ComponentConfig } from './componentConfig';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class ComponentConfigService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a ComponentConfig by id.
      */
     getComponentConfig(id : any) : Observable<ComponentConfig> {
-        return this.http.get('http://localhost:8080/api/componentConfigs/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/componentConfigs/' + id), this.options)
             .map(response => <ComponentConfig> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +36,7 @@ export class ComponentConfigService {
     update(componentConfig : ComponentConfig) : Observable<ComponentConfig> {
         let body = JSON.stringify(componentConfig);
         
-        return this.http.put('http://localhost:8080/api/componentConfigs/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/componentConfigs/'), body, this.options)
             .map(response => <ComponentConfig> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +49,7 @@ export class ComponentConfigService {
         let req = new PageRequestByExample(componentConfig, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/componentConfigs/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/componentConfigs/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<ComponentConfig>> response.json();
                 return new PageResponse<ComponentConfig>(pr.totalPages, pr.totalElements, pr.content);
@@ -63,7 +64,7 @@ export class ComponentConfigService {
     complete(query : string) : Observable<ComponentConfig[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
 
-        return this.http.post('http://localhost:8080/api/componentConfigs/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/componentConfigs/complete'), body, this.options)
             .map(response => <ComponentConfig[]> response.json())
             .catch(this.handleError);
     }
@@ -72,7 +73,7 @@ export class ComponentConfigService {
      * Delete an ComponentConfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/componentConfigs/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/componentConfigs/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

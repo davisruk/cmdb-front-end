@@ -12,19 +12,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { ReleaseConfig } from './releaseConfig';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class ReleaseConfigService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a ReleaseConfig by id.
      */
     getReleaseConfig(id : any) : Observable<ReleaseConfig> {
-        return this.http.get('http://localhost:8080/api/releaseConfigs/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/releaseConfigs/' + id), this.options)
             .map(response => <ReleaseConfig> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +36,7 @@ export class ReleaseConfigService {
     update(releaseConfig : ReleaseConfig) : Observable<ReleaseConfig> {
         let body = JSON.stringify(releaseConfig);
 
-        return this.http.put('http://localhost:8080/api/releaseConfigs/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/releaseConfigs/'), body, this.options)
             .map(response => <ReleaseConfig> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +49,7 @@ export class ReleaseConfigService {
         let req = new PageRequestByExample(releaseConfig, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/releaseConfigs/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/releaseConfigs/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<ReleaseConfig>> response.json();
                 return new PageResponse<ReleaseConfig>(pr.totalPages, pr.totalElements, pr.content);
@@ -62,7 +63,7 @@ export class ReleaseConfigService {
      */
     complete(query : string) : Observable<ReleaseConfig[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/releaseConfigs/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/releaseConfigs/complete'), body, this.options)
             .map(response => <ReleaseConfig[]> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +72,7 @@ export class ReleaseConfigService {
      * Delete an ReleaseConfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/releaseConfigs/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/releaseConfigs/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

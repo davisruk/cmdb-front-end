@@ -13,6 +13,7 @@ import {SolutionComponent} from './solutionComponent';
 import {SolutionComponentService} from './solutionComponent.service';
 import {PackageInfo} from '../packageInfo/packageInfo';
 import {HieraValues} from '../hiera/hieravalues';
+import { Configuration } from '../../support/configuration';
 
 @Component({
     moduleId: module.id,
@@ -35,7 +36,8 @@ export class SolutionComponentDetailComponent implements OnInit, OnDestroy {
     @Output() onSaveClicked = new EventEmitter<SolutionComponent>();
     @Output() onCancelClicked = new EventEmitter();
 
-    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private solutionComponentService: SolutionComponentService) {
+    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService,
+                private solutionComponentService: SolutionComponentService, private settings : Configuration) {
     }
 
     ngOnInit() {
@@ -98,6 +100,6 @@ export class SolutionComponentDetailComponent implements OnInit, OnDestroy {
         }
     }
     onDownload(){
-        window.location.href='http://localhost:8080/api/solutionComponents/configdownload/' + this.solutionComponent.id;
+        window.location.href=this.settings.createBackendURLFor('api/solutionComponents/configdownload/' + this.solutionComponent.id);
     }
 }

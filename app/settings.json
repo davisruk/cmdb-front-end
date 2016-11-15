@@ -1,0 +1,6 @@
+{
+    "frontEndHostName":"localhost",
+    "frontEndHostPort":"3000",
+    "backEndHostName":"localhost",
+    "backEndHostPort":8080
+}

@@ -57,6 +57,7 @@ import { SolutionComponentDetailComponent } from './entities/solutionComponent/s
 
 import { ReleaseConfigListComponent } from './entities/releaseConfig/releaseConfig-list.component';
 import { ReleaseConfigDetailComponent } from './entities/releaseConfig/releaseConfig-detail.component';
+import { LogoutComponent } from './logout/logout-component';
 
 export const routes: Routes = [
     { path : '',  component: HomeComponent }
@@ -109,7 +110,7 @@ export const routes: Routes = [
     {path: 'releaseConfig-list', component: ReleaseConfigListComponent },
     {path: 'releaseConfig/:id', component: ReleaseConfigDetailComponent }
     ,
-
+    {path: 'logout', component: LogoutComponent }
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(routes);

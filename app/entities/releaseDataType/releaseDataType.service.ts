@@ -12,19 +12,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { ReleaseDataType } from './releaseDataType';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class ReleaseDataTypeService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a ReleaseDataType by id.
      */
     getReleaseDataType(id : any) : Observable<ReleaseDataType> {
-        return this.http.get('http://localhost:8080/api/releaseDataTypes/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/releaseDataTypes/' + id), this.options)
             .map(response => <ReleaseDataType> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +36,7 @@ export class ReleaseDataTypeService {
     update(releaseDataType : ReleaseDataType) : Observable<ReleaseDataType> {
         let body = JSON.stringify(releaseDataType);
 
-        return this.http.put('http://localhost:8080/api/releaseDataTypes/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/releaseDataTypes/'), body, this.options)
             .map(response => <ReleaseDataType> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +49,7 @@ export class ReleaseDataTypeService {
         let req = new PageRequestByExample(releaseDataType, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/releaseDataTypes/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/releaseDataTypes/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<ReleaseDataType>> response.json();
                 return new PageResponse<ReleaseDataType>(pr.totalPages, pr.totalElements, pr.content);
@@ -62,7 +63,7 @@ export class ReleaseDataTypeService {
      */
     complete(query : string) : Observable<ReleaseDataType[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/releaseDataTypes/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/releaseDataTypes/complete'), body, this.options)
             .map(response => <ReleaseDataType[]> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +72,7 @@ export class ReleaseDataTypeService {
      * Delete an ReleaseDataType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/releaseDataTypes/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/releaseDataTypes/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

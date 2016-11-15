@@ -13,7 +13,7 @@ import { MessageService } from '../../service/message.service';
 import { Globalconfig } from './globalconfig';
 import { GlobalconfigDetailComponent } from './globalconfig-detail.component';
 import { GlobalconfigService } from './globalconfig.service';
-
+import { Configuration } from '../../support/configuration';
 
 @Component({
     moduleId: module.id,
@@ -40,7 +40,8 @@ export class GlobalconfigListComponent {
     currentPage : PageResponse<Globalconfig> = new PageResponse<Globalconfig>(0,0,[]);
 
 
-    constructor(private router:Router, private globalconfigService : GlobalconfigService, private messageService : MessageService) { }
+    constructor(private router:Router, private globalconfigService : GlobalconfigService,
+                private messageService : MessageService, private settings : Configuration) { }
 
     loadPage(event : LazyLoadEvent) {
         this.globalconfigService.getPage(this.example, event).
@@ -82,6 +83,6 @@ export class GlobalconfigListComponent {
     }
     
     onDownload(){
-        window.location.href='http://localhost:8080/api/globalconfigs/configdownload';
+        window.location.href=this.settings.createBackendURLFor('api/globalconfigs/configdownload');
     }    
 }

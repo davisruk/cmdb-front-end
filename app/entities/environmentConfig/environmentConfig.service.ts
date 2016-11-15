@@ -12,19 +12,19 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { EnvironmentConfig } from './environmentConfig';
-
+import { Configuration } from '../../support/configuration'
 @Injectable()
 export class EnvironmentConfigService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings:Configuration) {}
 
     /**
      * Get a EnvironmentConfig by id.
      */
     getEnvironmentConfig(id : any) : Observable<EnvironmentConfig> {
-        return this.http.get('http://localhost:8080/api/environmentConfigs/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/environmentConfigs/' + id), this.options)
             .map(response => <EnvironmentConfig> response.json())
             .catch(this.handleError);
     }
@@ -35,7 +35,7 @@ export class EnvironmentConfigService {
     update(environmentConfig : EnvironmentConfig) : Observable<EnvironmentConfig> {
         let body = JSON.stringify(environmentConfig);
 
-        return this.http.put('http://localhost:8080/api/environmentConfigs/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/environmentConfigs/'), body, this.options)
             .map(response => <EnvironmentConfig> response.json())
             .catch(this.handleError);
     }
@@ -48,7 +48,7 @@ export class EnvironmentConfigService {
         let req = new PageRequestByExample(environmentConfig, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/environmentConfigs/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/environmentConfigs/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<EnvironmentConfig>> response.json();
                 return new PageResponse<EnvironmentConfig>(pr.totalPages, pr.totalElements, pr.content);
@@ -62,7 +62,7 @@ export class EnvironmentConfigService {
      */
     complete(query : string) : Observable<EnvironmentConfig[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/environmentConfigs/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/environmentConfigs/complete'), body, this.options)
             .map(response => <EnvironmentConfig[]> response.json())
             .catch(this.handleError);
     }
@@ -71,7 +71,7 @@ export class EnvironmentConfigService {
      * Delete an EnvironmentConfig by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/environmentConfigs/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/environmentConfigs/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

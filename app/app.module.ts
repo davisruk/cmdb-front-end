@@ -114,6 +114,9 @@ import { ReleaseConfigDetailComponent } from './entities/releaseConfig/releaseCo
 import { ReleaseConfigLineComponent } from './entities/releaseConfig/releaseConfig-line.component';
 import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/releaseConfig-auto-complete.component';
 
+import { Configuration } from './support/configuration';
+import { LogoutComponent } from './logout/logout-component';
+
 @NgModule({
     imports: [
 // angular
@@ -225,9 +228,8 @@ import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/release
         ReleaseConfigListComponent,
         ReleaseConfigDetailComponent,
         ReleaseConfigLineComponent,
-        ReleaseConfigCompleteComponent
-        ,
-
+        ReleaseConfigCompleteComponent,
+        LogoutComponent
     ],
     providers: [
         MessageService
@@ -247,6 +249,7 @@ import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/release
         ,UserService
         ,SolutionComponentService
         ,ReleaseConfigService
+        ,Configuration
     ],
     bootstrap: [ AppComponent ]
 })

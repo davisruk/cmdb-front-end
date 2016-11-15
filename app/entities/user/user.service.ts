@@ -5,19 +5,20 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { User } from './user';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class UserService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a ServerType by id.
      */
     getUser(id : any) : Observable<User> {
-        return this.http.get('http://localhost:8080/api/users/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/users/' + id), this.options)
             .map(response => <User> response.json())
             .catch(this.handleError);
     }
@@ -28,7 +29,7 @@ export class UserService {
     update(user : User) : Observable<User> {
         let body = JSON.stringify(user);
 
-        return this.http.put('http://localhost:8080/api/users/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/users/'), body, this.options)
             .map(response => <User> response.json())
             .catch(this.handleError);
     }
@@ -41,7 +42,7 @@ export class UserService {
         let req = new PageRequestByExample(user, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/users/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/users/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<User>> response.json();
                 return new PageResponse<User>(pr.totalPages, pr.totalElements, pr.content);
@@ -55,7 +56,7 @@ export class UserService {
      */
     complete(query : string) : Observable<User[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/users/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/users/complete'), body, this.options)
             .map(response => <User[]> response.json())
             .catch(this.handleError);
     }
@@ -64,7 +65,7 @@ export class UserService {
      * Delete an ServerType by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/users/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/users/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

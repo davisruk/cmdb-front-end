@@ -13,6 +13,8 @@ import { Message, MenuItem } from 'primeng/primeng';
 import { MessageService} from './service/message.service';
 import { Authority } from './entities/role/authority';
 import { LoginDetails } from './entities/authentication/login-details';
+import { Configuration } from './support/configuration';
+
 /**
  * The Root component. Defines the main layout and handles user login in a dialog.
  */
@@ -22,9 +24,9 @@ import { LoginDetails } from './entities/authentication/login-details';
         <p-growl [value]="msgs"></p-growl>
 
         <div class="ui-g layout">
-            <div class="ui-g-12 ui-md-1">Sidebar</div>
+            <div *ngIf="authenticated" class="ui-g-12 ui-md-1">Sidebar</div>
             <div class="ui-g-12 ui-md-11 ui-g-nopad">
-                <div class="ui-g-12 ui-g-nopad">
+                <div  *ngIf="authenticated" class="ui-g-12 ui-g-nopad">
                     <p-menubar [model]="items"></p-menubar>
                 </div>
                 <div class="ui-g-12">
@@ -89,7 +91,8 @@ export class AppComponent implements OnInit {
     j_password : string = "";
     token : string ="";
 
-    constructor(private http: Http, private messageService: MessageService, private router: Router) {
+    constructor(private http: Http, private messageService: MessageService,
+                private router: Router, private settings:Configuration) {
         messageService.messageSource$.subscribe(
             msg => {
                 this.msgs.push(msg);
@@ -135,7 +138,8 @@ export class AppComponent implements OnInit {
     getUserRoles() : Observable<Authority[]> {
         let token:string = localStorage.getItem('JWTToken');
         this.options.headers.append('Authorization',token);
-        return this.http.get('http://localhost:8080/api/currentUserAuthorities', this.options).
+        
+        return this.http.get(this.settings.createBackendURLFor('api/currentUserAuthorities'), this.options).
             map(response => <Authority[]> response.json()).
             catch(this.handleError);
    }
@@ -144,7 +148,7 @@ export class AppComponent implements OnInit {
         console.log("login for " + this.j_username);
         let loginData = new LoginDetails(this.j_username, this.j_password);
         let body = JSON.stringify(loginData)
-        this.http.post('http://localhost:8080/api/login', body, this.options).
+        this.http.post(this.settings.createBackendURLFor('api/login'), body, this.options).
         map( res => res.json()).catch(this.handleError).
         subscribe(
             tokenRes => {
@@ -195,7 +199,8 @@ export class AppComponent implements OnInit {
         localStorage.removeItem ("JWTToken");
         this.isAdmin = false;
         this.authenticated = false;
-        window.location.href="http://localhost:3000/logout.html";
+        // window.location.href=this.settings.createFrontendURLFor('logout.html');
+        this.router.navigate(['/logout']);
     }
     // sample method from angular doc
     private handleError (error: any) {
@@ -206,6 +211,6 @@ export class AppComponent implements OnInit {
     }
 
     openSwagger(){
-        window.open("http://localhost:8080/swagger-ui/index.html");
+        window.open(this.settings.createBackendURLFor('swagger-ui/index.html'));
     }
 }

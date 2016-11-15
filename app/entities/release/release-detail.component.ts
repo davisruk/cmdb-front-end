@@ -12,7 +12,7 @@ import { MessageService} from '../../service/message.service';
 import {Release} from './release';
 import {ReleaseService} from './release.service';
 import {HieraValues} from '../hiera/hieraValues';
-
+import { Configuration } from '../../support/configuration';
 @Component({
     moduleId: module.id,
 	templateUrl: 'release-detail.component.html',
@@ -29,7 +29,9 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
     @Output() onSaveClicked = new EventEmitter<Release>();
     @Output() onCancelClicked = new EventEmitter();
 
-    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private releaseService: ReleaseService) {
+    constructor(private route: ActivatedRoute, private router: Router, 
+                private messageService: MessageService, private releaseService: ReleaseService,
+                private settings : Configuration) {
     }
 
     ngOnInit() {
@@ -85,7 +87,7 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
     }
 
     onDownload(){
-        window.location.href='http://localhost:8080/api/releases/configdownload/' + this.release.name;
+        window.location.href=this.settings.createBackendURLFor('api/releases/configdownload/' + this.release.name);
 /*
         this.releaseService.downloadHieraCSV(this.release.name)
       .subscribe(data => window.open(window.URL.createObjectURL(data)),
@@ -94,6 +96,6 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
   */      
     }
     onDownloadAll(){
-        window.location.href='http://localhost:8080/api/releases/configdownloadall/' + this.release.name;
+        window.location.href=this.settings.createBackendURLFor('api/releases/configdownloadall/' + this.release.name);
     }
 }

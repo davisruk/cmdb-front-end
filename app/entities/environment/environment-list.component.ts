@@ -16,6 +16,7 @@ import { EnvironmentService } from './environment.service';
 
 import { Release } from '../release/release';
 import { ReleaseLineComponent } from '../release/release-line.component';
+import { Configuration } from '../../support/configuration';
 
 @Component({
     moduleId: module.id,
@@ -45,7 +46,8 @@ export class EnvironmentListComponent {
     // as a one-to-many list by the other side.
     private _release : Release;
 
-    constructor(private router:Router, private environmentService : EnvironmentService, private messageService : MessageService) { }
+    constructor(private router:Router, private environmentService : EnvironmentService,
+                private messageService : MessageService, private settings: Configuration) { }
 
     loadPage(event : LazyLoadEvent) {
         this.environmentService.getPage(this.example, event).
@@ -102,7 +104,7 @@ export class EnvironmentListComponent {
     }
 
     onDownload(){
-        window.location.href='http://localhost:8080/api/environments/configdownloadall/';
+        window.location.href=this.settings.createBackendURLFor('api/environments/configdownloadall/');
     }
     
 }

@@ -13,25 +13,26 @@ import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { SolutionComponent } from './solutionComponent';
 import { HieraValues } from '../hiera/hieravalues';
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class SolutionComponentService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a SolutionComponent by id.
      */
     getSolutionComponent(id : any) : Observable<SolutionComponent> {
-        return this.http.get('http://localhost:8080/api/solutionComponents/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/solutionComponents/' + id), this.options)
             .map(response => <SolutionComponent> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(id : number) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/solutionComponents/configs/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/solutionComponents/configs/' + id), this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -42,7 +43,7 @@ export class SolutionComponentService {
     update(solutionComponent : SolutionComponent) : Observable<SolutionComponent> {
         let body = JSON.stringify(solutionComponent);
 
-        return this.http.put('http://localhost:8080/api/solutionComponents/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/solutionComponents/'), body, this.options)
             .map(response => <SolutionComponent> response.json())
             .catch(this.handleError);
     }
@@ -55,7 +56,7 @@ export class SolutionComponentService {
         let req = new PageRequestByExample(solutionComponent, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/solutionComponents/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/solutionComponents/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<SolutionComponent>> response.json();
                 return new PageResponse<SolutionComponent>(pr.totalPages, pr.totalElements, pr.content);
@@ -69,7 +70,7 @@ export class SolutionComponentService {
      */
     complete(query : string) : Observable<SolutionComponent[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('http://localhost:8080/api/solutionComponents/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/solutionComponents/complete'), body, this.options)
             .map(response => <SolutionComponent[]> response.json())
             .catch(this.handleError);
     }
@@ -78,7 +79,7 @@ export class SolutionComponentService {
      * Delete an SolutionComponent by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/solutionComponents/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/solutionComponents/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc

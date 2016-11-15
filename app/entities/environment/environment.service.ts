@@ -13,25 +13,26 @@ import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Environment } from './environment';
 import { HieraValues } from '../hiera/hieraValues';
+import { Configuration } from '../../support/configuration' 
 
 @Injectable()
 export class EnvironmentService {
 
 private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
-    constructor(private http: Http, private messageService : MessageService) {}
+    constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
      * Get a Environment by id.
      */
     getEnvironment(id : any) : Observable<Environment> {
-        return this.http.get('http://localhost:8080/api/environments/' + id, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/environments/' + id), this.options)
             .map(response => <Environment> response.json())
             .catch(this.handleError);
     }
 
     getHieraValues(name : String) : Observable<HieraValues[]> {
-        return this.http.get('http://localhost:8080/api/environments/configs/' + name, this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/environments/configs/' + name), this.options)
             .map(response => <HieraValues[]> response.json())
             .catch(this.handleError);
     }
@@ -42,7 +43,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
     update(environment : Environment) : Observable<Environment> {
         let body = JSON.stringify(environment);
 
-        return this.http.put('http://localhost:8080/api/environments/', body, this.options)
+        return this.http.put(this.settings.createBackendURLFor('api/environments/'), body, this.options)
             .map(response => <Environment> response.json())
             .catch(this.handleError);
     }
@@ -55,7 +56,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
         let req = new PageRequestByExample(environment, event);
         let body = JSON.stringify(req);
 
-        return this.http.post('http://localhost:8080/api/environments/page', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/environments/page'), body, this.options)
             .map(response => {
                 let pr = <PageResponse<Environment>> response.json();
                 return new PageResponse<Environment>(pr.totalPages, pr.totalElements, pr.content);
@@ -69,7 +70,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
      */
     complete(query : string) : Observable<Environment[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post('api/environments/complete', body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/environments/complete'), body, this.options)
             .map(response => <Environment[]> response.json())
             .catch(this.handleError);
     }
@@ -78,7 +79,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
      * Delete an Environment by id.
      */
     delete(id : any) {
-        return this.http.delete('http://localhost:8080/api/environments/' + id, this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/environments/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc
