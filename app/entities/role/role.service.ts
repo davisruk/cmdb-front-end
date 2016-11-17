@@ -32,8 +32,6 @@ export class RoleService {
             .catch(this.handleError);
     }    
 
-    // not using the /api so we're not just getting Role[] but full HATEOS json
-    // need to extract the Role[]
     getUnassignedRolesForUser(user : User) : Observable<Role[]>{
         return this.http.get(this.settings.createBackendURLFor('api/unassignedrolesforuser/' + user.id), this.options)
             .map(response => <Role[]> response.json())

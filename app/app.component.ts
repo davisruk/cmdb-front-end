@@ -124,8 +124,7 @@ export class AppComponent implements OnInit {
             { label: 'Documentation',
                 icon: 'fa-book',
                 items: [
-                    {label: "Source code", icon: 'fa-github-alt', url:"https://github.com/jaxio/celerio-angular-quickstart"},
-                    {label: "Celerio Documentation", icon: 'fa-external-link', url:"http://www.jaxio.com/documentation/celerio/"},
+                    {label: "Source code", icon: 'fa-github-alt', url:"https://github.com/davisruk/cmdb-front-end"},
                     {label: "PrimeNG Showcase", icon: 'fa-external-link', url:"http://www.primefaces.org/primeng"},
                     {label: "Angular JS 2", icon: 'fa-external-link', url:"http://angular.io/"},
                     {label: "Spring Boot", icon: 'fa-external-link', url:"http://projects.spring.io/spring-boot/"},

@@ -71,7 +71,7 @@ export class ServerListComponent {
         this.example.serverType = new ServerType();
         this.example.serverType.id = this._serverType.id;
     }
-
+/*
     @Input()
     set environment(environment : Environment) {
         if (environment == null) {
@@ -83,7 +83,7 @@ export class ServerListComponent {
         this.example.environment = new Environment();
         this.example.environment.id = this._environment.id;
     }
-
+*/
 
     onRowSelect(event : any) {
         this.router.navigate(['/server', event.data.id]);

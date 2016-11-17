@@ -14,6 +14,7 @@ import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Server } from './server';
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration';
+import { Environment } from '../environment/environment';
 
 @Injectable()
 export class ServerService {
@@ -48,6 +49,12 @@ export class ServerService {
             .catch(this.handleError);
     }
 
+    getUnassignedEnvironmentsForServer(server : Server) : Observable<Environment[]>{
+        return this.http.get(this.settings.createBackendURLFor('api/servers/available_environments/' + server.id), this.options)
+            .map(response => <Environment[]> response.json())
+            .catch(this.handleError);
+    }    
+    
     /**
      * Load a page (for paginated datatable) of Server using the passed
      * server as an example for the search by example facility.

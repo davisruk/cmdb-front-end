@@ -13,6 +13,7 @@ import {Server} from './server';
 import {ServerService} from './server.service';
 import {ServerType} from '../serverType/serverType';
 import {Environment} from '../environment/environment';
+import {EnvironmentService} from '../environment/environment.service';
 import {HieraValues} from '../hiera/hieraValues';
 
 @Component({
@@ -25,6 +26,7 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
 
     private params_subscription: any;
     private hieraValuesList: HieraValues[];
+    private availableEnvironments: Environment[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Server
@@ -33,16 +35,18 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
         this.server.serverType = serverType;
     }
 
+/*
     @Input() // used to pass the parent when creating a new Server
     set environment(environment : Environment) {
         this.server = new Server();
         this.server.environment = environment;
     }
-
+*/
     @Output() onSaveClicked = new EventEmitter<Server>();
     @Output() onCancelClicked = new EventEmitter();
 
-    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private serverService: ServerService) {
+    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, 
+                private serverService: ServerService, private environmentService: EnvironmentService) {
     }
 
     ngOnInit() {
@@ -56,11 +60,15 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
 
             if (id === 'new') {
                 this.server = new Server();
+                this.server.environments = new Array<Environment>();
+                this.environmentService.getAll().subscribe(p => this.availableEnvironments = p);
             } else {
                 this.serverService.getServer(id)
                     .subscribe(
                         server => {this.server = server;
-                            this.serverService.getHieraValues(this.server.name).subscribe(p => this.hieraValuesList = p)}, 
+                            this.serverService.getHieraValues(this.server.name).subscribe(p => this.hieraValuesList = p)
+                            this.serverService.getUnassignedEnvironmentsForServer(this.server).subscribe(p => this.availableEnvironments = p);
+                        }, 
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
@@ -79,10 +87,6 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
 
     clearServerType() {
         this.server.serverType = null;
-    }
-
-    gotoEnvironment() {
-        this.router.navigate(['/environment', this.server.environment.id]);
     }
 
     clearEnvironment() {

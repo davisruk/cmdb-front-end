@@ -31,6 +31,12 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .catch(this.handleError);
     }
 
+    getAll() : Observable<Environment[]> {
+        return this.http.post(this.settings.createBackendURLFor('api/environments/list/all'), this.options)
+            .map(response => <Environment[]> response.json())
+            .catch(this.handleError);
+    }
+
     getHieraValues(name : String) : Observable<HieraValues[]> {
         return this.http.get(this.settings.createBackendURLFor('api/environments/configs/' + name), this.options)
             .map(response => <HieraValues[]> response.json())

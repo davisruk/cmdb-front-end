@@ -14,5 +14,5 @@ export class Server {
     name : string;
     // x-to-one
     serverType : ServerType;
-    environment : Environment;
+    environments  : Environment[];
 }

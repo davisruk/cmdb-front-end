@@ -26,15 +26,15 @@
                 </div>
             </div>
              <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="environment">Environment</label></div>
-                <div class="ui-grid-col-4">
-                    <environment-auto-complete [(ngModel)]="server.environment" id="environment" name="environment" [disabled]="sub"></environment-auto-complete>
-                </div>
-                <div class="ui-grid-col-1" *ngIf="!sub">
-                    <button pButton id="gotoEnvironment" type="button" (click)="gotoEnvironment()" *ngIf="server.environment" icon="fa-pencil" label="Edit"></button>
-                </div>
-                <div class="ui-grid-col-1" *ngIf="!sub">
-                    <button pButton id="clearEnvironment" type="button" (click)="clearEnvironment()" *ngIf="server.environment" icon="fa-chain-broken" label="Clear"></button>
+                <div class="ui-grid-col-2"><label for="enabled">Environments </label></div>
+                <div class="ui-grid-col-6">
+                    <p-pickList [source]="server.environments" [target]="availableEnvironments" sourceHeader="Assigned" targetHeader="Available" [responsive]="true">
+                        <template let-environment>
+                            <div class="ui-helper-clearfix">
+                                <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{environment.name}}</div>
+                            </div>
+                        </template>
+                    </p-pickList>
                 </div>
             </div>
              <div class="ui-g">
