@@ -32,7 +32,7 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
     }
 
     getAll() : Observable<Environment[]> {
-        return this.http.post(this.settings.createBackendURLFor('api/environments/list/all'), this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/environments/'), this.options)
             .map(response => <Environment[]> response.json())
             .catch(this.handleError);
     }

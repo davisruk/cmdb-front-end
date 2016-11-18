@@ -89,15 +89,12 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
         this.server.serverType = null;
     }
 
-    clearEnvironment() {
-        this.server.environment = null;
-    }
-
     onSave() {
         this.serverService.update(this.server).
             subscribe(
                 server => {
                     this.server = server;
+                    this.serverService.getHieraValues(this.server.name).subscribe(p => this.hieraValuesList = p);
                     if (this.sub) {
                         this.onSaveClicked.emit(this.server);
                         this.messageService.info('Saved OK and msg emitted', 'PrimeNG Rocks ;-)')

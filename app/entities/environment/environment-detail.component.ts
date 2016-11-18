@@ -81,6 +81,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             subscribe(
                 environment => {
                     this.environment = environment;
+                    this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p);                    
                     if (this.sub) {
                         this.onSaveClicked.emit(this.environment);
                         this.messageService.info('Saved OK and msg emitted', 'PrimeNG Rocks ;-)')
