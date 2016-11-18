@@ -6,11 +6,12 @@
 // Template pack-angular:src/main/webapp/app/entities/entity.ts.e.vm
 //
 import {Release} from '../release/release';
-
+import {Server} from '../server/server';
 export class Environment {
     // Raw attributes
     id : number;
     name : string;
     // x-to-one
     release : Release;
+    servers : Server[];
 }

@@ -14,7 +14,9 @@ import { MessageService} from './service/message.service';
 import { Authority } from './entities/role/authority';
 import { LoginDetails } from './entities/authentication/login-details';
 import { Configuration } from './support/configuration';
+import {enableProdMode} from '@angular/core';
 
+enableProdMode();
 /**
  * The Root component. Defines the main layout and handles user login in a dialog.
  */

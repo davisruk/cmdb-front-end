@@ -30,6 +30,12 @@ export class ServerTypeService {
             .catch(this.handleError);
     }
 
+    getAll() : Observable<ServerType[]> {
+        return this.http.get(this.settings.createBackendURLFor('api/serverTypes/'), this.options)
+            .map(response => <ServerType> response.json())
+            .catch(this.handleError);
+    }
+    
     /**
      * Update the passed serverType.
      */

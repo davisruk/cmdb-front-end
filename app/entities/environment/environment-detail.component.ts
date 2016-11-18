@@ -14,6 +14,9 @@ import {EnvironmentService} from './environment.service';
 import {Release} from '../release/release';
 import {HieraValues} from '../hiera/hieraValues';
 import {Configuration} from '../../support/configuration';
+import {ServerType} from '../serverType/serverType';
+import {ServerTypeService} from '../serverType/serverType.service';
+
 @Component({
     moduleId: module.id,
 	templateUrl: 'environment-detail.component.html',
@@ -24,6 +27,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
 
     private params_subscription: any;
     private hieraValuesList: HieraValues[];
+    private tabs: ServerType[]; 
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -37,25 +41,25 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
 
     constructor(private route: ActivatedRoute, private router: Router, 
                 private messageService: MessageService, private environmentService: EnvironmentService,
-                private settings : Configuration) {
+                private stService: ServerTypeService, private settings : Configuration) {
     }
 
     ngOnInit() {
         if (this.sub) {
             return;
         }
-
+        this.stService.getAll().subscribe(tabs=>this.tabs=tabs);
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
             console.log('ngOnInit for environment-detail ' + id);
-
             if (id === 'new') {
                 this.environment = new Environment();
             } else {
                 this.environmentService.getEnvironment(id)
                     .subscribe(
                         environment => {this.environment = environment;
-                            this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p)},
+                            this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p);
+                        },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
