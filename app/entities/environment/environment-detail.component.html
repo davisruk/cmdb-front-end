@@ -25,16 +25,6 @@
                     <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="environment.release" icon="fa-chain-broken" label="Clear"></button>
                 </div>
             </div>
-<!--
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="release">Servers</label></div>
-                <p-tabView orientation="top">
-                    <p-tabPanel *ngFor="let tab of tabs" [header]="tab.name">
-                        Server Pick List goes here.
-                    </p-tabPanel>
-                </p-tabView>
-            </div>
--->            
              <div class="ui-g">
                 <div class="ui-g-2" *ngIf="sub">
                     <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
@@ -54,8 +44,15 @@
             <p-dataTable [value]="environment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb">
                 <header>List of Servers</header>
                 <p-column field="name" header="Server Name (startsWith)" [filter]="true"></p-column>
-                <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"></p-column> -->
+                <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"></p-column>
+            </p-dataTable>
+
+            <p-dataTable [value]="serversNotInEnv" [rows]="10" [paginator]="true">
+                <header>List of Available Servers</header>
+                <p-column field="name" header="Server Name (startsWith)" [filter]="true"></p-column>
+                <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"></p-column>
             </p-dataTable>            
+            
         </div>
     </p-panel>
 

@@ -32,6 +32,13 @@ export class ServerService {
             .catch(this.handleError);
     }
 
+    getServersNotInList(servers : Server[]) : Observable<Server[]> {
+        let body = JSON.stringify(servers);
+        return this.http.post(this.settings.createBackendURLFor('api/servers/notin'), body, this.options)
+            .map(response => <Server[]> response.json())
+            .catch(this.handleError);
+        
+    }
     getHieraValues(name : String) : Observable<HieraValues[]> {
         return this.http.get(this.settings.createBackendURLFor('api/servers/configs/' + name), this.options)
             .map(response => <HieraValues[]> response.json())
