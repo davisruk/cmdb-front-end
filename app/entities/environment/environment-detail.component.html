@@ -41,17 +41,18 @@
                 <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
                 <input #gb type="text" pInputText size="50" style="float:left" placeholder="Global Filter">
             </div>
-            <p-dataTable [value]="environment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb">
+            <p-dataTable [value]="environment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb" selectionMode="multiple" [(selection)]="serversToRemove">
                 <header>List of Servers</header>
-                <p-column field="name" header="Server Name (startsWith)" [filter]="true"></p-column>
-                <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"></p-column>
+                <p-column field="name" header="Server Name (startsWith)" [filter]="true" sortable="true"></p-column>
+                <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"sortable="true"></p-column>
             </p-dataTable>
-
-            <p-dataTable [value]="serversNotInEnv" [rows]="10" [paginator]="true">
+            <button pButton type="button" (click)="onRemoveServers()" label="Remove Server(s)"></button>
+            <p-dataTable [value]="serversNotInEnv" [rows]="10" [paginator]="true" selectionMode="multiple" [(selection)]="serversToAdd">
                 <header>List of Available Servers</header>
-                <p-column field="name" header="Server Name (startsWith)" [filter]="true"></p-column>
-                <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"></p-column>
-            </p-dataTable>            
+                <p-column field="name" header="Server Name (startsWith)" [filter]="true" sortable="true"></p-column>
+                <p-column field="serverType.name" header="Server Type (contains)" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+            </p-dataTable>
+            <button pButton type="button" (click)="onAddServers()" label="Add Server(s)"></button>            
             
         </div>
     </p-panel>

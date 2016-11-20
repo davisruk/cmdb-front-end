@@ -28,6 +28,8 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     private params_subscription: any;
     private hieraValuesList: HieraValues[];
     private serversNotInEnv: Server[]; 
+    private serversToAdd: Server[];
+    private serversToRemove: Server[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -53,7 +55,8 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             console.log('ngOnInit for environment-detail ' + id);
             if (id === 'new') {
                 this.environment = new Environment();
-                //this.sService.getAll().subscribe(p=>this.serversNotInEnv=p);
+                this.environment.servers = new Array<Server>();
+                this.sService.getAll().subscribe(p=>this.serversNotInEnv=p);
             } else {
                 this.environmentService.getEnvironment(id)
                     .subscribe(
@@ -65,6 +68,20 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                     );
             }
         });
+    }
+
+    onAddServers(){
+        for (var server of this.serversToAdd){
+            this.environment.servers.splice(0,0,server);
+            this.serversNotInEnv.splice(this.serversNotInEnv.findIndex(x=>x.id==server.id),1);
+        }
+    }
+
+    onRemoveServers(){
+        for (var server of this.serversToRemove){
+            this.serversNotInEnv.splice(0,0,server);
+            this.environment.servers.splice(this.environment.servers.findIndex(x=>x.id==server.id),1);
+        }
     }
 
     ngOnDestroy() {

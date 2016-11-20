@@ -39,6 +39,12 @@ export class ServerService {
             .catch(this.handleError);
         
     }
+    getAll() : Observable<Server[]> {
+    return this.http.get(this.settings.createBackendURLFor('api/servers/all'), this.options)
+        .map(response => <Server[]> response.json())
+        .catch(this.handleError);
+    }
+
     getHieraValues(name : String) : Observable<HieraValues[]> {
         return this.http.get(this.settings.createBackendURLFor('api/servers/configs/' + name), this.options)
             .map(response => <HieraValues[]> response.json())
