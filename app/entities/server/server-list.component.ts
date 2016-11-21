@@ -7,7 +7,7 @@
 //
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { LazyLoadEvent } from 'primeng/primeng';
+import { LazyLoadEvent, FilterMetadata } from 'primeng/primeng';
 import { PageResponse } from "../../support/paging";
 import { MessageService } from '../../service/message.service';
 import { Server } from './server';
@@ -51,6 +51,12 @@ export class ServerListComponent {
     constructor(private router:Router, private serverService : ServerService, private messageService : MessageService) { }
 
     loadPage(event : LazyLoadEvent) {
+        if (event.filters != undefined && event.filters["name"] != undefined){
+            this.example = new Server();
+            this.example.name = event.filters["name"].value;
+            event.filters["name"].matchMode="contains";
+            
+        }
         this.serverService.getPage(this.example, event).
             subscribe(
                 pageResponse => this.currentPage = pageResponse,
