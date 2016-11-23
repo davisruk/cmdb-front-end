@@ -7,7 +7,7 @@
 //
 import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem, LazyLoadEvent, FilterMetadata } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {Environment} from './environment';
 import {EnvironmentService} from './environment.service';
@@ -16,6 +16,7 @@ import {HieraValues} from '../hiera/hieraValues';
 import {Configuration} from '../../support/configuration';
 import {Server} from '../server/server';
 import {ServerService} from '../server/server.service';
+import { PageResponse } from "../../support/paging";
 
 @Component({
     moduleId: module.id,
@@ -27,9 +28,9 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
 
     private params_subscription: any;
     private hieraValuesList: HieraValues[];
-    private serversNotInEnv: Server[]; 
     private serversToAdd: Server[];
     private serversToRemove: Server[];
+    private currentPage : PageResponse<Server> = new PageResponse<Server>(0,0,[]);
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -56,13 +57,11 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             if (id === 'new') {
                 this.environment = new Environment();
                 this.environment.servers = new Array<Server>();
-                this.sService.getAll().subscribe(p=>this.serversNotInEnv=p);
             } else {
                 this.environmentService.getEnvironment(id)
                     .subscribe(
                         environment => {this.environment = environment;
                             this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p);
-                            this.sService.getServersNotInList(this.environment.servers).subscribe(p => this.serversNotInEnv = p);
                         },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
@@ -70,17 +69,29 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         });
     }
 
+    loadPage(event : LazyLoadEvent) {
+        this.sService.getServersNotInListByPage(this.environment, event).
+            subscribe(
+                pageResponse => this.currentPage = pageResponse,
+                error => this.messageService.error('Could not get the results', error)
+            );
+    }
+
     onAddServers(){
         for (var server of this.serversToAdd){
             this.environment.servers.splice(0,0,server);
-            this.serversNotInEnv.splice(this.serversNotInEnv.findIndex(x=>x.id==server.id),1);
+            this.currentPage.content.splice(this.currentPage.content.findIndex(x=>x.id==server.id),1);
+            // this should really reload the servers page again to populate to 10
         }
     }
 
     onRemoveServers(){
         for (var server of this.serversToRemove){
-            this.serversNotInEnv.splice(0,0,server);
+            this.currentPage.content.splice(0,0,server);
+            // remove the 11th element as our page size is 10
+            this.currentPage.content.splice(10,1);
             this.environment.servers.splice(this.environment.servers.findIndex(x=>x.id==server.id),1);
+
         }
     }
 

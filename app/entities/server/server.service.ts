@@ -84,6 +84,19 @@ export class ServerService {
             .catch(this.handleError);
     }
 
+    getServersNotInListByPage(environment : Environment, event : LazyLoadEvent) : Observable<PageResponse<Server>> {
+        let req = new PageRequestByExample(environment, event);
+        let body = JSON.stringify(req);
+
+        return this.http.post(this.settings.createBackendURLFor('api/servers/notinpageable'), body, this.options)
+            .map(response => {
+                let pr = <PageResponse<Server>> response.json();
+                return new PageResponse<Server>(pr.totalPages, pr.totalElements, pr.content);
+            })
+            .catch(this.handleError);
+    }
+
+
     /**
      * Performs a search by example on 1 attribute (defined on server side) and returns at most 10 results.
      * Used by ServerCompleteComponent.
