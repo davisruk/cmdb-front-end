@@ -87,10 +87,12 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             this.environment.servers.splice(0,0,server);
             this.currentPage.content.splice(this.currentPage.content.findIndex(x=>x.id==server.id),1);
         }
-        if (this.serversToAdd.length > 0){
-            // refresh this page's data as our list will be depleted
-            this.getAvailableServers(this.environment, this.lastLazyLoadEvent);
-        }
+        if (this.serversToAdd.length > 0 &&
+                this.currentPage.totalElements - this.serversToAdd.length < this.lastLazyLoadEvent.rows){
+            // set to page 1 as we have fewer servers than rows on a page    
+            this.lastLazyLoadEvent.first = 0;
+        }    
+        this.getAvailableServers(this.environment, this.lastLazyLoadEvent);
     }
 
     onRemoveServers(){
@@ -99,7 +101,11 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             // remove the 11th element as our page size is 10
             this.currentPage.content.splice(10,1);
             this.environment.servers.splice(this.environment.servers.findIndex(x=>x.id==server.id),1);
-
+        }
+        if (this.serversToRemove.length > 0 && 
+            this.currentPage.totalElements + this.serversToRemove.length > this.lastLazyLoadEvent.rows){
+            // need to get data from the db because we've gone over our page size
+            this.getAvailableServers(this.environment, this.lastLazyLoadEvent);
         }
     }
 
