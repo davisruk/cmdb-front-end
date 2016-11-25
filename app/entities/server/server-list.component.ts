@@ -59,7 +59,9 @@ export class ServerListComponent {
         }
         this.serverService.getPage(this.example, event).
             subscribe(
-                pageResponse => this.currentPage = pageResponse,
+                pageResponse => {
+                                    this.currentPage = pageResponse;
+                                },
                 error => this.messageService.error('Could not get the results', error)
             );
     }

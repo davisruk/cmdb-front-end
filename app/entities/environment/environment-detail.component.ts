@@ -31,6 +31,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     private serversToAdd: Server[];
     private serversToRemove: Server[];
     private currentPage : PageResponse<Server> = new PageResponse<Server>(0,0,[]);
+    private lastLazyLoadEvent : LazyLoadEvent;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -70,18 +71,25 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     }
 
     loadPage(event : LazyLoadEvent) {
-        this.sService.getServersNotInListByPage(this.environment, event).
+        this.lastLazyLoadEvent = event;
+        this.getAvailableServers(this.environment, event);
+    }
+
+    getAvailableServers(env : Environment, evt : LazyLoadEvent){
+        this.sService.getServersNotInListByPage(env, evt).
             subscribe(
                 pageResponse => this.currentPage = pageResponse,
                 error => this.messageService.error('Could not get the results', error)
             );
     }
-
     onAddServers(){
         for (var server of this.serversToAdd){
             this.environment.servers.splice(0,0,server);
             this.currentPage.content.splice(this.currentPage.content.findIndex(x=>x.id==server.id),1);
-            // this should really reload the servers page again to populate to 10
+        }
+        if (this.serversToAdd.length > 0){
+            // refresh this page's data as our list will be depleted
+            this.getAvailableServers(this.environment, this.lastLazyLoadEvent);
         }
     }
 
