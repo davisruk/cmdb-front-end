@@ -6,13 +6,12 @@
 // Template pack-angular:src/main/webapp/app/entities/entity.ts.e.vm
 //
 import {ServerType} from '../serverType/serverType';
-import {Environment} from '../environment/environment';
-
+import {Node} from '../node/node';
 export class Server {
     // Raw attributes
     id : number;
     name : string;
     // x-to-one
     serverType : ServerType;
-    environments  : Environment[];
+    node : Node;
 }

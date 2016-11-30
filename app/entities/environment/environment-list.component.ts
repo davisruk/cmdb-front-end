@@ -50,11 +50,12 @@ export class EnvironmentListComponent {
                 private messageService : MessageService, private settings: Configuration) { }
 
     loadPage(event : LazyLoadEvent) {
-        this.environmentService.getPage(this.example, event).
-            subscribe(
-                pageResponse => this.currentPage = pageResponse,
-                error => this.messageService.error('Could not get the results', error)
-            );
+        // if there is no previous event then send to server
+            this.environmentService.getPage(this.example, event).
+                subscribe(
+                    pageResponse => this.currentPage = pageResponse,
+                    error => this.messageService.error('Could not get the results', error)
+                );
     }
 
     // Many to one: input param is used to filter the list when displayed

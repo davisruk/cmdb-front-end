@@ -12,6 +12,7 @@ import { MessageService} from '../../service/message.service';
 import {Server} from './server';
 import {ServerService} from './server.service';
 import {ServerType} from '../serverType/serverType';
+import {SubEnvironment} from '../environment/subEnvironment';
 import {Environment} from '../environment/environment';
 import {EnvironmentService} from '../environment/environment.service';
 import {HieraValues} from '../hiera/hieraValues';
@@ -60,7 +61,7 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
 
             if (id === 'new') {
                 this.server = new Server();
-                this.server.environments = new Array<Environment>();
+                this.server.node.subEnvironments = new Array<SubEnvironment>();
                 this.environmentService.getAll().subscribe(p => this.availableEnvironments = p);
             } else {
                 this.serverService.getServer(id)

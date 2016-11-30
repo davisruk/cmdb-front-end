@@ -58,8 +58,8 @@
                                 [rowsPerPageOptions]="[5,10,20,50,100]"
                                 [responsive]="true">
                         <header>Available Servers</header>
-                        <p-column field="name" header="Server Name" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
-                        <p-column field="serverType.name" header="Server Type" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
+                        <p-column field="name" header="Server Name" sortable="true" [filter]="true" filterDelay="400" filterMatchMode="contains"></p-column>
+                        <p-column field="serverType.name" header="Server Type" sortable="true" filterDelay="400" [filter]="true" filterMatchMode="contains"></p-column>
                     </p-dataTable>
                     <button pButton type="button" (click)="onAddServers()" label="Add Server(s)"></button>
                 </div>

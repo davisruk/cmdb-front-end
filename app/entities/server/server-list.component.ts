@@ -47,21 +47,36 @@ export class ServerListComponent {
     // as a one-to-many list by the other side.
     private _serverType : ServerType;
     private _environment : Environment;
+    private lastEvent : LazyLoadEvent;
 
     constructor(private router:Router, private serverService : ServerService, private messageService : MessageService) { }
 
     loadPage(event : LazyLoadEvent) {
+        let sendEventToServer:boolean = false;
         if (event.filters != undefined && event.filters["name"] != undefined){
-            this.example = new Server();
-            this.example.name = event.filters["name"].value;
-            event.filters["name"].matchMode="contains";
-            
+            if (this.example == undefined || this.example.name != event.filters["name"].value){
+                this.example = new Server();
+                this.example.name = event.filters["name"].value;
+                event.filters["name"].matchMode="contains";
+                sendEventToServer = true;
+            }
         }
-        this.serverService.getPage(this.example, event).
-            subscribe(
-                pageResponse => this.currentPage = pageResponse,
-                error => this.messageService.error('Could not get the results', error)
-            );
+        if (event.first == undefined || this.lastEvent == undefined || this.lastEvent.first != event.first)
+        {
+            sendEventToServer = true;
+        }
+        
+        if (sendEventToServer)
+            this.serverService.getPage(this.example, event).
+        subscribe(
+            pageResponse => {
+                                this.currentPage = pageResponse;
+                                this.lastEvent = event;
+            },
+
+            error => this.messageService.error('Could not get the results', error)
+        );
+
     }
 
     // Many to one: input param is used to filter the list when displayed
