@@ -11,7 +11,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
-import { Environment } from './environment';
+import { Environment, EnvironmentType } from './environment';
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration' 
 
@@ -36,7 +36,17 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .map(response => <Environment[]> response.json())
             .catch(this.handleError);
     }
+    
+    getAllEnvTypes() : Observable<EnvironmentType[]> {
+        return this.http.get(this.settings.createBackendURLFor('api/environments/envTypes'), this.options)
+            .map(response => {
+                let r = response.json()
+                return <EnvironmentType[]> r;
+            })
+            .catch(this.handleError);
 
+    }
+    
     getHieraValues(name : String) : Observable<HieraValues[]> {
         return this.http.get(this.settings.createBackendURLFor('api/environments/configs/' + name), this.options)
             .map(response => <HieraValues[]> response.json())

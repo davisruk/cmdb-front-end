@@ -9,7 +9,8 @@ import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angula
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem, LazyLoadEvent, FilterMetadata } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
-import {Environment} from './environment';
+import {Environment, EnvironmentType} from './environment';
+import {SubEnvironment} from './subEnvironment';
 import {EnvironmentService} from './environment.service';
 import {Release} from '../release/release';
 import {HieraValues} from '../hiera/hieraValues';
@@ -31,6 +32,9 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     private serversToAdd: Server[];
     private serversToRemove: Server[];
     private currentPage : PageResponse<Server> = new PageResponse<Server>(0,0,[]);
+    private envTypes : EnvironmentType[];
+    private selectedEnvType : string;
+    private listEnvTypes : SelectItem[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -56,19 +60,30 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             console.log('ngOnInit for environment-detail ' + id);
             if (id === 'new') {
                 this.environment = new Environment();
-                this.environment.servers = new Array<Server>();
+                //this.environment.servers = new Array<Server>();
             } else {
                 this.environmentService.getEnvironment(id)
                     .subscribe(
-                        environment => {this.environment = environment;
-                            this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p);
+                        environment => {
+                            this.environment = environment;
+                            this.environmentService.getAllEnvTypes().subscribe(p => {
+                                    this.envTypes = p
+                                    // build envType SelectItem Array
+                                    this.listEnvTypes = [];
+                                    this.listEnvTypes.push({label:'Select Env Type', value:null});
+                                    this.envTypes.forEach(element => {
+                                        this.listEnvTypes.push(({label: element.name, value:element.name}));
+                                    });
+                                    this.selectedEnvType = "" + this.environment.type.name;
+                                }
+                            );
                         },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
         });
     }
-
+/*
     loadPage(event : LazyLoadEvent) {
         this.sService.getServersNotInListByPage(this.environment, event).
             subscribe(
@@ -94,13 +109,13 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
 
         }
     }
-
+*/
     ngOnDestroy() {
         if (!this.sub) {
             this.params_subscription.unsubscribe();
         }
     }
-
+/*
     gotoRelease() {
         this.router.navigate(['/release', this.environment.release.id]);
     }
@@ -108,7 +123,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     clearRelease() {
         this.environment.release = null;
     }
-
+*/
     onSave() {
         this.environmentService.update(this.environment).
             subscribe(
@@ -133,6 +148,9 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    downLoadHiera(subEnvironment:SubEnvironment){
+        window.location.href=this.settings.createBackendURLFor('api/environments/subconfigdownload/' + subEnvironment.id);
+    }    
     onDownload(){
         window.location.href=this.settings.createBackendURLFor('api/environments/configdownload/' + this.environment.name);
     }

@@ -14,6 +14,35 @@
                 </div>
             </div>
              <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="name">Type  *</label></div>
+                <div class="ui-grid-col-2"><p-dropdown [style]="{'width': 'invalidate' }" scrollHeight="300" name="envType" [options]="listEnvTypes" [(ngModel)]="selectedEnvType"></p-dropdown></div>
+            </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="name">Sub Environments</label></div>
+                <div class="ui-grid-col-4">
+                    <p-dataList [value]="environment.subEnvironments">
+                        <header>SubEnvironments</header>
+                         <template let-subEnvironment>
+                            <div class="ui-grid-row">
+                                <div class="ui-grid-col-1">{{subEnvironment.subEnvironmentType.name}}</div>
+                                <div class="ui-grid-col-3">
+                                    <button pButton id="downloadHiera" type="button" icon="fa-floppy-o" label="Download HieraValues" (click)="downLoadHiera(subEnvironment)"></button>
+                                </div>
+                            </div>
+                         </template>
+                    </p-dataList>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-2" *ngIf="sub">
+                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
+                </div>
+                <div class="ui-g-3">
+                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!environmentForm.form.valid"></button>
+                </div>
+            </div>
+            <!--
+             <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="release">Release</label></div>
                 <div class="ui-grid-col-4">
                     <release-auto-complete [(ngModel)]="environment.release" id="release" name="release" [disabled]="sub"></release-auto-complete>
@@ -25,18 +54,11 @@
                     <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="environment.release" icon="fa-chain-broken" label="Clear"></button>
                 </div>
             </div>
-             <div class="ui-g">
-                <div class="ui-g-2" *ngIf="sub">
-                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
-                </div>
-                <div class="ui-g-2">
-                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!environmentForm.form.valid"></button>
-                </div>
                     <div class="ui-g-2">
                     <button pButton type="button" (click)="onDownload()" icon="fa-floppy-o" label="Download HieraValues"></button>
                 </div>
 
-            </div>
+            
              <div class="ui-grid-row">
                 <div class="ui-grid-col-5">
                     <p-dataTable [value]="environment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb" selectionMode="multiple" [(selection)]="serversToRemove">
@@ -63,19 +85,10 @@
                     </p-dataTable>
                     <button pButton type="button" (click)="onAddServers()" label="Add Server(s)"></button>
                 </div>
-                <!--                
-                <div class="ui-grid-col-5">
-                    <p-dataTable [value]="serversNotInEnv" [rows]="10" [paginator]="true" selectionMode="multiple" [(selection)]="serversToAdd">
-                        <header>List of Available Servers</header>
-                        <p-column field="name" header="Server Name (startsWith)" [filter]="true" sortable="true"></p-column>
-                        <p-column field="serverType.name" header="Server Type (contains)" sortable="true" [filter]="true" filterMatchMode="contains"></p-column>
-                    </p-dataTable>
-                </div>
-                -->            
             </div>
+            -->
         </div>
     </p-panel>
-
     <div style="margin-top:8px">
         <p-fieldset legend="Hiera Data" toggleable="true" collapsed="true">
                 <p-dataTable [value]="hieraValuesList">

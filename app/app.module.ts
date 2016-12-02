@@ -12,7 +12,7 @@ import { HttpModule  }    from '@angular/http';
 import { RouterModule  }  from '@angular/router';
 import { FileUploadModule, PanelModule, GrowlModule, MenubarModule,
         DialogModule, ButtonModule, AutoCompleteModule, DataTableModule,
-        SharedModule, DropdownModule,PickListModule,CheckboxModule,
+        DataListModule, SharedModule, DropdownModule,PickListModule,CheckboxModule,
         TriStateCheckboxModule, InputTextModule,InputTextareaModule,
         CalendarModule,PasswordModule,TabViewModule, InputSwitchModule,
         FieldsetModule, InplaceModule } from 'primeng/primeng';
@@ -133,6 +133,7 @@ import { LogoutComponent } from './logout/logout-component';
         ButtonModule,
         AutoCompleteModule,
         DataTableModule,
+        DataListModule,
         SharedModule,
         DropdownModule,
         PickListModule,
