@@ -31,7 +31,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     private hieraValuesList: HieraValues[];
     private serversToAdd: Server[];
     private serversToRemove: Server[];
-    private currentPage : PageResponse<Server> = new PageResponse<Server>(0,0,[]);
+    //private currentPage : PageResponse<Server> = new PageResponse<Server>(0,0,[]);
     private envTypes : EnvironmentType[];
     private selectedEnvType : string;
     private listEnvTypes : SelectItem[];
@@ -40,7 +40,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     @Input() // used to pass the parent when creating a new Environment
     set release(release : Release) {
         this.environment = new Environment();
-        this.environment.release = release;
+        //this.environment.release = release;
     }
 
     @Output() onSaveClicked = new EventEmitter<Environment>();
@@ -83,6 +83,53 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             }
         });
     }
+    ngOnDestroy() {
+        if (!this.sub) {
+            this.params_subscription.unsubscribe();
+        }
+    }
+
+    editSubEnv(subEnv:SubEnvironment) {
+        this.router.navigate(['/subEnv', subEnv.id]);
+    }
+
+       
+    onSave() {
+        this.environment.type = this.envTypes.find(this.checkEnvType, this); 
+        this.environmentService.update(this.environment).
+            subscribe(
+                environment => {
+                    this.environment = environment;
+                    this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p);                    
+                    if (this.sub) {
+                        this.onSaveClicked.emit(this.environment);
+                        this.messageService.info('Saved OK and msg emitted', 'PrimeNG Rocks ;-)')
+                    } else {
+                        this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')
+                    }
+                },
+                error =>  this.messageService.error('Could not save', error)
+            );
+    }
+
+    checkEnvType(currentValue:EnvironmentType, ):boolean{
+        return currentValue.name == this.selectedEnvType;
+    }
+    onCancel() {
+        if (this.sub) {
+            this.onCancelClicked.emit("cancel");
+            this.messageService.info('Cancel clicked and msg emitted', 'PrimeNG Rocks ;-)')
+        }
+    }
+
+    downLoadHiera(subEnvironment:SubEnvironment){
+        window.location.href=this.settings.createBackendURLFor('api/environments/subconfigdownload/' + subEnvironment.id);
+    }    
+    onDownload(){
+        window.location.href=this.settings.createBackendURLFor('api/environments/configdownload/' + this.environment.name);
+    }
+}
+
 /*
     loadPage(event : LazyLoadEvent) {
         this.sService.getServersNotInListByPage(this.environment, event).
@@ -110,11 +157,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         }
     }
 */
-    ngOnDestroy() {
-        if (!this.sub) {
-            this.params_subscription.unsubscribe();
-        }
-    }
+
 /*
     gotoRelease() {
         this.router.navigate(['/release', this.environment.release.id]);
@@ -124,34 +167,3 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         this.environment.release = null;
     }
 */
-    onSave() {
-        this.environmentService.update(this.environment).
-            subscribe(
-                environment => {
-                    this.environment = environment;
-                    this.environmentService.getHieraValues(this.environment.name).subscribe(p => this.hieraValuesList = p);                    
-                    if (this.sub) {
-                        this.onSaveClicked.emit(this.environment);
-                        this.messageService.info('Saved OK and msg emitted', 'PrimeNG Rocks ;-)')
-                    } else {
-                        this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')
-                    }
-                },
-                error =>  this.messageService.error('Could not save', error)
-            );
-    }
-
-    onCancel() {
-        if (this.sub) {
-            this.onCancelClicked.emit("cancel");
-            this.messageService.info('Cancel clicked and msg emitted', 'PrimeNG Rocks ;-)')
-        }
-    }
-
-    downLoadHiera(subEnvironment:SubEnvironment){
-        window.location.href=this.settings.createBackendURLFor('api/environments/subconfigdownload/' + subEnvironment.id);
-    }    
-    onDownload(){
-        window.location.href=this.settings.createBackendURLFor('api/environments/configdownload/' + this.environment.name);
-    }
-}

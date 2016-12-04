@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Environment, EnvironmentType } from './environment';
+import { SubEnvironment } from './subEnvironment'
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration' 
 
@@ -76,6 +77,18 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .map(response => {
                 let pr = <PageResponse<Environment>> response.json();
                 return new PageResponse<Environment>(pr.totalPages, pr.totalElements, pr.content);
+            })
+            .catch(this.handleError);
+    }
+
+    getSubEnvironmentsNotInListByPage(environment : Environment, event : LazyLoadEvent) : Observable<PageResponse<SubEnvironment>> {
+        let req = new PageRequestByExample(environment, event);
+        let body = JSON.stringify(req);
+
+        return this.http.post(this.settings.createBackendURLFor('api/environments/notinpageable'), body, this.options)
+            .map(response => {
+                let pr = <PageResponse<SubEnvironment>> response.json();
+                return new PageResponse<SubEnvironment>(pr.totalPages, pr.totalElements, pr.content);
             })
             .catch(this.handleError);
     }

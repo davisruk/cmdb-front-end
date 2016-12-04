@@ -7,8 +7,8 @@ export class Environment {
     name : string;
     type : EnvironmentType;
     // x-to-one
-    release : Release;
-    servers : Server[];
+    //release : Release;
+    //servers : Server[];
 
     subEnvironments : SubEnvironment[];
 }

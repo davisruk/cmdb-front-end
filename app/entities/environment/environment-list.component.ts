@@ -44,7 +44,7 @@ export class EnvironmentListComponent {
 
     // Many to one: input param is used to filter the list when displayed
     // as a one-to-many list by the other side.
-    private _release : Release;
+    //private _release : Release;
 
     constructor(private router:Router, private environmentService : EnvironmentService,
                 private messageService : MessageService, private settings: Configuration) { }
@@ -60,7 +60,9 @@ export class EnvironmentListComponent {
 
     // Many to one: input param is used to filter the list when displayed
     // as a one-to-many list by the other side.
+/*
     @Input()
+
     set release(release : Release) {
         if (release == null) {
             return;
@@ -71,7 +73,7 @@ export class EnvironmentListComponent {
         this.example.release = new Release();
         this.example.release.id = this._release.id;
     }
-
+*/
 
     onRowSelect(event : any) {
         this.router.navigate(['/environment', event.data.id]);

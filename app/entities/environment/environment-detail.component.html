@@ -3,7 +3,7 @@
         <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="environment" ngForm #environmentForm="ngForm">
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="name">Name  *</label></div>
-                <div class="ui-grid-col-6">
+                <div class="ui-grid-col-2">
                     <input pInputText id="name" [(ngModel)]="environment.name"  required placeholder="Required"  name="name" #name="ngModel"/>
                 </div>
                 <div class="ui-grid-col-4">
@@ -15,33 +15,52 @@
             </div>
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="name">Type  *</label></div>
-                <div class="ui-grid-col-2"><p-dropdown [style]="{'width': 'invalidate' }" scrollHeight="300" name="envType" [options]="listEnvTypes" [(ngModel)]="selectedEnvType"></p-dropdown></div>
+                <div class="ui-grid-col-2">
+                    <p-dropdown [style]="{'width': 'invalidate' }" scrollHeight="300" name="envType" [options]="listEnvTypes" [(ngModel)]="selectedEnvType"></p-dropdown>
+                </div>
             </div>
             <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="name">Sub Environments</label></div>
-                <div class="ui-grid-col-4">
+                <div class="ui-grid-col-3">
                     <p-dataList [value]="environment.subEnvironments">
                         <header>SubEnvironments</header>
                          <template let-subEnvironment>
-                            <div class="ui-grid-row">
-                                <div class="ui-grid-col-1">{{subEnvironment.subEnvironmentType.name}}</div>
-                                <div class="ui-grid-col-3">
-                                    <button pButton id="downloadHiera" type="button" icon="fa-floppy-o" label="Download HieraValues" (click)="downLoadHiera(subEnvironment)"></button>
+                            <div class="ui-grid ui-grid-responsive ui-fluid">
+                                <div class="ui-grid-row">
+                                    <div style="text-align:center;margin-top:12px" class="ui-grid-col-4">{{subEnvironment.subEnvironmentType.name}}</div>
+                                    <div class="ui-g-4" *ngIf="!sub">
+                                        <button pButton id="editSubEnv" type="button" (click)="editSubEnv(subEnvironment)" icon="fa-pencil" label="Edit"></button>
+                                    </div>
+                                    <div class="ui-g-8">
+                                            <button pButton id="downloadHiera"
+                                                type="button" icon="fa-floppy-o" label="Hiera Data" (click)="downLoadHiera(subEnvironment)"></button>
+                                    </div>
                                 </div>
                             </div>
                          </template>
+                        <footer>
+                            <div class="ui-helper-clearfix" style="width:100%">
+                                <!--
+                                <button type="button" pButton icon="fa-plus" style="float:left" (click)="showMaintainSubEnvs()" label="Add"></button>
+                                -->
+                            </div>
+                        </footer>
                     </p-dataList>
                 </div>
             </div>
             <div class="ui-g">
-                <div class="ui-g-2" *ngIf="sub">
-                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
+                <div class="ui-g-2">
+                    <button *ngIf="sub" pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
                 </div>
-                <div class="ui-g-3">
+                <div class="ui-g-2">
                     <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!environmentForm.form.valid"></button>
                 </div>
             </div>
-            <!--
+        </div>
+    </p-panel>
+
+</div>
+<!--
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="release">Release</label></div>
                 <div class="ui-grid-col-4">
@@ -86,9 +105,6 @@
                     <button pButton type="button" (click)="onAddServers()" label="Add Server(s)"></button>
                 </div>
             </div>
-            -->
-        </div>
-    </p-panel>
     <div style="margin-top:8px">
         <p-fieldset legend="Hiera Data" toggleable="true" collapsed="true">
                 <p-dataTable [value]="hieraValuesList">
@@ -97,4 +113,5 @@
                 </p-dataTable>
         </p-fieldset>
     </div>
-</div>
+            
+            -->
