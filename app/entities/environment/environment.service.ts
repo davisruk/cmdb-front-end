@@ -32,12 +32,24 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .catch(this.handleError);
     }
 
+    getSubEnvironment(id : any) : Observable<SubEnvironment> {
+        return this.http.get(this.settings.createBackendURLFor('api/subenvironments/' + id), this.options)
+            .map(response => <SubEnvironment> response.json())
+            .catch(this.handleError);
+    }
+
     getAll() : Observable<Environment[]> {
         return this.http.get(this.settings.createBackendURLFor('api/environments/'), this.options)
             .map(response => <Environment[]> response.json())
             .catch(this.handleError);
     }
     
+    getAllSubEnvs() : Observable<SubEnvironment[]> {
+        return this.http.get(this.settings.createBackendURLFor('api/subenvironments/'), this.options)
+            .map(response => <SubEnvironment[]> response.json())
+            .catch(this.handleError);
+    }
+
     getAllEnvTypes() : Observable<EnvironmentType[]> {
         return this.http.get(this.settings.createBackendURLFor('api/environments/envTypes'), this.options)
             .map(response => {
@@ -62,6 +74,13 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
 
         return this.http.put(this.settings.createBackendURLFor('api/environments/'), body, this.options)
             .map(response => <Environment> response.json())
+            .catch(this.handleError);
+    }
+
+    updateSubEnvironment(subEnvironment : SubEnvironment) : Observable<SubEnvironment> {
+        let body = JSON.stringify(subEnvironment);
+        return this.http.put(this.settings.createBackendURLFor('api/subenvironments/'), body, this.options)
+            .map(response => <SubEnvironment> response.json())
             .catch(this.handleError);
     }
 

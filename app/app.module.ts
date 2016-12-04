@@ -31,6 +31,7 @@ import { ComponentConfigCompleteComponent } from './entities/componentConfig/com
 import { EnvironmentService } from './entities/environment/environment.service';
 import { EnvironmentListComponent } from './entities/environment/environment-list.component';
 import { EnvironmentDetailComponent } from './entities/environment/environment-detail.component';
+import { SubEnvironmentDetailComponent } from './entities/environment/subEnvironment-detail.component';
 import { EnvironmentLineComponent } from './entities/environment/environment-line.component';
 import { EnvironmentCompleteComponent } from './entities/environment/environment-auto-complete.component';
 
@@ -163,7 +164,8 @@ import { LogoutComponent } from './logout/logout-component';
         EnvironmentListComponent,
         EnvironmentDetailComponent,
         EnvironmentLineComponent,
-        EnvironmentCompleteComponent
+        EnvironmentCompleteComponent,
+        SubEnvironmentDetailComponent
         ,
         EnvironmentConfigListComponent,
         EnvironmentConfigDetailComponent,

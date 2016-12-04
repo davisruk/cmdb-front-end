@@ -7,11 +7,10 @@
 //
 import {ServerType} from '../serverType/serverType';
 import {Node} from '../node/node';
-export class Server {
+export class Server extends Node{
     // Raw attributes
-    id : number;
+    serverId : number;
     name : string;
     // x-to-one
     serverType : ServerType;
-    node : Node;
 }

@@ -27,7 +27,7 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
 
     private params_subscription: any;
     private hieraValuesList: HieraValues[];
-    private availableEnvironments: Environment[];
+    private availableSubEnvironments: SubEnvironment[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Server
@@ -61,14 +61,14 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
 
             if (id === 'new') {
                 this.server = new Server();
-                this.server.node.subEnvironments = new Array<SubEnvironment>();
-                this.environmentService.getAll().subscribe(p => this.availableEnvironments = p);
+                this.server.subEnvironments = new Array<SubEnvironment>();
+                //this.environmentService.getAllSubEnvs().subscribe(p => this.availableSubEnvironments = p);
             } else {
                 this.serverService.getServer(id)
                     .subscribe(
                         server => {this.server = server;
                             this.serverService.getHieraValues(this.server.name).subscribe(p => this.hieraValuesList = p)
-                            this.serverService.getUnassignedEnvironmentsForServer(this.server).subscribe(p => this.availableEnvironments = p);
+                            this.serverService.getUnassignedEnvironmentsForServer(this.server).subscribe(p => this.availableSubEnvironments = p);
                         }, 
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
