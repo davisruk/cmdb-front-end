@@ -9,6 +9,7 @@ import {Release} from '../release/release';
 import {HieraValues} from '../hiera/hieraValues';
 import {Configuration} from '../../support/configuration';
 import {Server} from '../server/server';
+import {ServerType} from '../serverType/serverType';
 import {ServerService} from '../server/server.service';
 import { PageResponse } from "../../support/paging";
 
@@ -110,12 +111,36 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     }
 
     getAvailableServers(env : SubEnvironment, evt : LazyLoadEvent){
-        this.sService.getServersNotInListByPage(env, evt).
-            subscribe(
+        if (this.subEnvironment.servers == undefined || this.subEnvironment.servers.length == 0){
+            // there are no assigned servers so fetch all (paginated obviously)
+            // also apply any filters the user has created - use by example search
+            let example : Server = new Server();
+            if (evt.filters != undefined){
+                if (evt.filters["name"] != undefined){
+                    example.name = evt.filters["name"].value;
+                }
+                if (evt.filters["serverType.name"]){
+                    example.serverType = new ServerType();
+                    example.serverType.name = evt.filters["serverType.name"].value;
+                }
+            } 
+            this.sService.getPage(example, evt).subscribe(
                 pageResponse => this.currentPage = pageResponse,
                 error => this.messageService.error('Could not get the results', error)
             );
+        }
+        else{
+            // there are assigned servers so we need to exclude them
+            // again applying filters carried by the event but this
+            // time we can't use by example query
+            this.sService.getServersNotInListByPage(env, evt).
+                subscribe(
+                    pageResponse => this.currentPage = pageResponse,
+                    error => this.messageService.error('Could not get the results', error)
+                );
+        }
     }
+
     onAddServers(){
         for (var server of this.serversToAdd){
             this.subEnvironment.servers.splice(0,0,server);

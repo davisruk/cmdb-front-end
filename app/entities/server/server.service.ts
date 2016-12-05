@@ -97,7 +97,6 @@ export class ServerService {
             .catch(this.handleError);
     }
 
-
     /**
      * Performs a search by example on 1 attribute (defined on server side) and returns at most 10 results.
      * Used by ServerCompleteComponent.
