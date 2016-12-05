@@ -75,6 +75,10 @@ export class EnvironmentListComponent {
     }
 */
 
+    downloadAllHieraByEnv(environment:Environment){
+        window.location.href=this.settings.createBackendURLFor('api/environments/configdownloadall/' + environment.id);
+    }
+
     onRowSelect(event : any) {
         this.router.navigate(['/environment', event.data.id]);
     }
@@ -106,7 +110,7 @@ export class EnvironmentListComponent {
             );
     }
 
-    onDownload(){
+    downloadAllHieraData(){
         window.location.href=this.settings.createBackendURLFor('api/environments/configdownloadall/');
     }
     

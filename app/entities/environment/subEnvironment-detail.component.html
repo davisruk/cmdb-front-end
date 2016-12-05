@@ -1,54 +1,56 @@
 <div class="ContentSideSections Implementation" *ngIf="subEnvironment">
-    <p-panel header="{{subEnvironment.environment.name}} SubEnvironment Details">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-2"><label for="release">Release</label></div>
-            <div class="ui-grid-col-2">
-                <release-auto-complete [(ngModel)]="subEnvironment.release" id="release" name="release" [disabled]="sub"></release-auto-complete>
+    <p-panel header="{{subEnvironment.environment.name}} {{subEnvironment.subEnvironmentType.name}} Sub Environment Details">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" ngForm #subEnvironmentForm="ngForm">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="release">Release</label></div>
+                <div class="ui-grid-col-2">
+                    <release-auto-complete [(ngModel)]="subEnvironment.release" id="release" name="release" [disabled]="sub"></release-auto-complete>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="gotoRelease" type="button" (click)="gotoRelease()" *ngIf="subEnvironment.release" icon="fa-pencil" label="Edit"></button>
+                </div>
+                <div class="ui-grid-col-1" *ngIf="!sub">
+                    <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="subEnvironment.release" icon="fa-chain-broken" label="Clear"></button>
+                </div>
+                <div class="ui-grid-col-1">
+                    <button pButton type="button" (click)="onDownload()" icon="fa-floppy-o" label="Download HieraValues"></button>
+                </div>
             </div>
-            <div class="ui-grid-col-1" *ngIf="!sub">
-                <button pButton id="gotoRelease" type="button" (click)="gotoRelease()" *ngIf="subEnvironment.release" icon="fa-pencil" label="Edit"></button>
-            </div>
-            <div class="ui-grid-col-1" *ngIf="!sub">
-                <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="subEnvironment.release" icon="fa-chain-broken" label="Clear"></button>
-            </div>
-            <div class="ui-grid-col-1">
-                <button pButton type="button" (click)="onDownload()" icon="fa-floppy-o" label="Download HieraValues"></button>
-            </div>
-        </div>
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-5">
-                <p-dataTable [value]="subEnvironment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb" selectionMode="multiple" [(selection)]="serversToRemove">
-                    <header>List of Servers</header>
-                    <p-column field="name" header="Server Name (startsWith)" [filter]="true" sortable="true"></p-column>
-                    <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"sortable="true"></p-column>
-                </p-dataTable>
-                <button pButton type="button" (click)="onRemoveServers()" label="Remove Server(s)"></button>
-            </div>
-            <div class="ui-grid-col-5">
-                <p-dataTable [value]="currentPage.content"
-                                [lazy]="true"
-                                [rows]="10"
-                                [paginator]="currentPage.totalElements > 10"
-                                [totalRecords]="currentPage.totalElements"
-                                (onLazyLoad)="loadPage($event)"
-                                selectionMode="multiple"
-                                [(selection)]="serversToAdd"
-                                [rowsPerPageOptions]="[5,10,20,50,100]"
-                                [responsive]="true">
-                        <header>Available Servers</header>
-                        <p-column field="name" header="Server Name" sortable="true" [filter]="true" filterDelay="400" filterMatchMode="contains"></p-column>
-                        <p-column field="serverType.name" header="Server Type" sortable="true" filterDelay="400" [filter]="true" filterMatchMode="contains"></p-column>
-                </p-dataTable>
-                <button pButton type="button" (click)="onAddServers()" label="Add Server(s)"></button>
-            </div>
-        </div>
-        <div style="margin-top:8px">
-            <p-fieldset legend="Hiera Data" toggleable="true" collapsed="true">
-                    <p-dataTable [value]="hieraValuesList">
-                        <p-column field="address" header="Hiera Address"></p-column>
-                        <p-column field="value" header="Hiera Value"></p-column>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-5">
+                    <p-dataTable [value]="subEnvironment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb" selectionMode="multiple" [(selection)]="serversToRemove">
+                        <header>List of Servers</header>
+                        <p-column field="name" header="Server Name (startsWith)" [filter]="true" sortable="true"></p-column>
+                        <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"sortable="true"></p-column>
                     </p-dataTable>
-            </p-fieldset>
+                    <button pButton type="button" (click)="onRemoveServers()" label="Remove Server(s)"></button>
+                </div>
+                <div class="ui-grid-col-5">
+                    <p-dataTable [value]="currentPage.content"
+                                    [lazy]="true"
+                                    [rows]="10"
+                                    [paginator]="currentPage.totalElements > 10"
+                                    [totalRecords]="currentPage.totalElements"
+                                    (onLazyLoad)="loadPage($event)"
+                                    selectionMode="multiple"
+                                    [(selection)]="serversToAdd"
+                                    [rowsPerPageOptions]="[5,10,20,50,100]"
+                                    [responsive]="true">
+                            <header>Available Servers</header>
+                            <p-column field="name" header="Server Name" sortable="true" [filter]="true" filterDelay="400" filterMatchMode="contains"></p-column>
+                            <p-column field="serverType.name" header="Server Type" sortable="true" filterDelay="400" [filter]="true" filterMatchMode="contains"></p-column>
+                    </p-dataTable>
+                    <button pButton type="button" (click)="onAddServers()" label="Add Server(s)"></button>
+                </div>
+            </div>
+            <div style="margin-top:8px">
+                <p-fieldset legend="Hiera Data" toggleable="true" collapsed="true">
+                        <p-dataTable [value]="hieraValuesList">
+                            <p-column field="address" header="Hiera Address"></p-column>
+                            <p-column field="value" header="Hiera Value"></p-column>
+                        </p-dataTable>
+                </p-fieldset>
+            </div>
         </div>
     </p-panel>
 </div>

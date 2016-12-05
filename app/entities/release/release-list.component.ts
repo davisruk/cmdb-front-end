@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { PageResponse } from "../../support/paging";
 import { MessageService } from '../../service/message.service';
+import { Configuration } from '../../support/configuration';
 import { Release } from './release';
 import { ReleaseDetailComponent } from './release-detail.component';
 import { ReleaseService } from './release.service';
@@ -40,7 +41,8 @@ export class ReleaseListComponent {
     currentPage : PageResponse<Release> = new PageResponse<Release>(0,0,[]);
 
 
-    constructor(private router:Router, private releaseService : ReleaseService, private messageService : MessageService) { }
+    constructor(private router:Router, private releaseService:ReleaseService,
+                    private messageService:MessageService, private settings: Configuration) { }
 
     loadPage(event : LazyLoadEvent) {
         this.releaseService.getPage(this.example, event).
@@ -48,6 +50,10 @@ export class ReleaseListComponent {
                 pageResponse => this.currentPage = pageResponse,
                 error => this.messageService.error('Could not get the results', error)
             );
+    }
+
+    downloadAllHieraForRelease(){
+        window.location.href=this.settings.createBackendURLFor('api/releases/configdownloadall/');
     }
 
     onRowSelect(event : any) {
