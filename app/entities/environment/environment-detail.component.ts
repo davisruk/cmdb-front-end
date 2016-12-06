@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem, LazyLoadEvent, FilterMetadata } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {Environment, EnvironmentType} from './environment';
-import {SubEnvironment} from './subEnvironment';
+import {SubEnvironment, SubEnvironmentType} from './subEnvironment';
 import {EnvironmentService} from './environment.service';
 import {Release} from '../release/release';
 import {HieraValues} from '../hiera/hieraValues';
@@ -28,6 +28,8 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     private envTypes : EnvironmentType[];
     private selectedEnvType : string;
     private listEnvTypes : SelectItem[];
+    private showAddSubEnv: boolean;
+    private availableSubEnvTypes: SubEnvironmentType[];
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -38,7 +40,8 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
 
     @Output() onSaveClicked = new EventEmitter<Environment>();
     @Output() onCancelClicked = new EventEmitter();
-
+    @Output() onAddNewClicked = new EventEmitter();
+    
     constructor(private route: ActivatedRoute, private router: Router, 
                 private messageService: MessageService, private environmentService: EnvironmentService,
                 private sService: ServerService, private settings : Configuration) {
@@ -54,6 +57,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             if (id === 'new') {
                 this.environment = new Environment();
                 //this.environment.servers = new Array<Server>();
+                this.showAddSubEnv = true;
             } else {
                 this.environmentService.getEnvironment(id)
                     .subscribe(
@@ -68,6 +72,15 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                                         this.listEnvTypes.push(({label: element.name, value:element.name}));
                                     });
                                     this.selectedEnvType = "" + this.environment.type.name;
+                                    this.environmentService.getAvailableSubEnvTypesForEnv(this.environment).subscribe(
+                                        p=>{
+                                            this.availableSubEnvTypes = p;
+                                            if (this.availableSubEnvTypes == undefined || this.availableSubEnvTypes.length == 0)
+                                                this.showAddSubEnv = false;
+                                            else
+                                                this.showAddSubEnv = true;
+                                        }
+                                    );
                                 }
                             );
                         },
@@ -86,6 +99,13 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         this.router.navigate(['/subEnv', subEnv.id]);
     }
 
+    addNewSubEnv() {
+        if (this.sub) {
+            this.onAddNewClicked.emit("addNew");
+        } else {
+            this.router.navigate(['/subEnv', 'new', this.environment.id]);
+        }
+    }
        
     onSave() {
         this.environment.type = this.envTypes.find(this.checkEnvType, this); 

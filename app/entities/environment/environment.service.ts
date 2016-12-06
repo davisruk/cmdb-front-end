@@ -59,9 +59,9 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .catch(this.handleError);
     }
 
-    getAvailableSubEnvTypes(subEnv:SubEnvironment) : Observable<SubEnvironmentType[]> {
+    getAvailableSubEnvTypesForEnvWith(subEnv:SubEnvironment) : Observable<SubEnvironmentType[]> {
         let body = JSON.stringify(subEnv);
-        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/subEnvTypesAvailableForEnv'), body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/subEnvTypesAvailableForEnvWithSubEnv'), body, this.options)
             .map(response => {
                 let r = response.json()
                 return <EnvironmentType[]> r;
@@ -69,6 +69,16 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .catch(this.handleError);
     }
     
+    getAvailableSubEnvTypesForEnv(env:Environment) : Observable<SubEnvironmentType[]> {
+        let body = JSON.stringify(env);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/subEnvTypesAvailableForEnv'), body, this.options)
+            .map(response => {
+                let r = response.json()
+                return <EnvironmentType[]> r;
+            })
+            .catch(this.handleError);
+    }
+
     getHieraValues(name : String) : Observable<HieraValues[]> {
         return this.http.get(this.settings.createBackendURLFor('api/environments/configs/' + name), this.options)
             .map(response => <HieraValues[]> response.json())

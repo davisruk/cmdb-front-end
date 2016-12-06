@@ -68,7 +68,8 @@ export const routes: Routes = [
     ,
     {path: 'environment-list', component: EnvironmentListComponent },
     {path: 'environment/:id', component: EnvironmentDetailComponent },
-    {path: 'subEnv/:id', component: SubEnvironmentDetailComponent }
+    {path: 'subEnv/:id', component: SubEnvironmentDetailComponent },
+    {path: 'subEnv/:id/:envId', component: SubEnvironmentDetailComponent }
     ,
     {path: 'environmentConfig-list', component: EnvironmentConfigListComponent },
     {path: 'environmentConfig/:id', component: EnvironmentConfigDetailComponent }

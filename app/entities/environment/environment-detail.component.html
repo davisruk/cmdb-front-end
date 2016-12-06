@@ -39,11 +39,7 @@
                             </div>
                          </template>
                         <footer>
-                            <div class="ui-helper-clearfix" style="width:100%">
-                                <!--
-                                <button type="button" pButton icon="fa-plus" style="float:left" (click)="showMaintainSubEnvs()" label="Add"></button>
-                                -->
-                            </div>
+                            <button *ngIf="showAddSubEnv" [style]="{'width': 'invalidate' }" type="button" pButton icon="fa-plus" style="float:left" (click)="addNewSubEnv()" label="Add SubEnv"></button>
                         </footer>
                     </p-dataList>
                 </div>

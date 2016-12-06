@@ -29,12 +29,14 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     private selectedSubEnvType : string;
     private listSubEnvTypes : SelectItem[];
     private lastLazyLoadEvent : LazyLoadEvent;
+    private header : string;
 
     @Input() sub : boolean = false;
-    @Input() // used to pass the parent when creating a new Environment
-    set release(release : Release) {
+    @Input() // used to pass the parent when creating a new SubEnvironment as a sub
+    set environment(environment : Environment) {
         this.subEnvironment = new SubEnvironment();
-        this.subEnvironment.release = release;
+        this.subEnvironment.environment = environment;
+        this.getSubEnvTypes(this.subEnvironment);
     }
 
     @Output() onSaveClicked = new EventEmitter<SubEnvironment>();
@@ -53,32 +55,46 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
             let id = params['id'];
             console.log('ngOnInit for subenvironment-detail ' + id);
             if (id === 'new') {
+                this.header = "New";
                 this.subEnvironment = new SubEnvironment();
                 this.subEnvironment.servers = new Array<Server>();
+                this.subEnvironment.environment = new Environment();
+                this.environmentService.getEnvironment(params['envId']).subscribe(p =>{
+                    this.subEnvironment.environment=p;
+                    this.getSubEnvTypes(this.subEnvironment);
+                });
             } else {
                 this.environmentService.getSubEnvironment(id)
                     .subscribe(
                         subEnvironment => {
                             this.subEnvironment = subEnvironment;
-                            // get all subenvtypes not in environment
-                            this.environmentService.getAvailableSubEnvTypes(subEnvironment).subscribe(
-                                p =>{
-                                        this.subEnvTypes = p
-                                        // build envType SelectItem Array
-                                        this.listSubEnvTypes = [];
-                                        this.listSubEnvTypes.push({label:'Select Env Type', value:null});
-                                        this.subEnvTypes.forEach(element => {
-                                            this.listSubEnvTypes.push(({label: element.name, value:element.name}));
-                                        });
-                                        this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
-                                    }
-                                )
+                            this.getSubEnvTypes(this.subEnvironment);
                             },
                             error =>  this.messageService.error('ngOnInit error', error)
                         );
             }
         });
     }
+    
+    getSubEnvTypes(subEnv:SubEnvironment){
+        // get available subenvtypes not in environment
+        this.environmentService.getAvailableSubEnvTypesForEnvWith(subEnv).subscribe(
+            p =>{
+                    this.subEnvTypes = p
+                    // build envType SelectItem Array
+                    this.listSubEnvTypes = [];
+                    this.listSubEnvTypes.push({label:'Select Env Type', value:null});
+                    this.subEnvTypes.forEach(element => {
+                        this.listSubEnvTypes.push(({label: element.name, value:element.name}));
+                    });
+                    if (this.subEnvironment.subEnvironmentType != undefined)
+                        this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
+                    else
+                        this.selectedSubEnvType = this.listSubEnvTypes[0].label;
+                }
+            );
+    }
+
     ngOnDestroy() {
         if (!this.sub) {
             this.params_subscription.unsubscribe();
@@ -172,6 +188,9 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
         this.getAvailableServers(this.subEnvironment, this.lastLazyLoadEvent);
     }
 
+    onDropChange(event:any){
+        this.header = event.value;
+    }
     onRemoveServers(){
         for (var server of this.serversToRemove){
             this.currentPage.content.splice(0,0,server);
