@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem, LazyLoadEvent, FilterMetadata } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {Environment, EnvironmentType} from './environment';
-import {SubEnvironment} from './subEnvironment';
+import {SubEnvironment, SubEnvironmentType} from './subEnvironment';
 import {EnvironmentService} from './environment.service';
 import {Release} from '../release/release';
 import {HieraValues} from '../hiera/hieraValues';
@@ -25,9 +25,9 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     private serversToAdd: Server[];
     private serversToRemove: Server[];
     private currentPage : PageResponse<Server> = new PageResponse<Server>(0,0,[]);
-    private envTypes : EnvironmentType[];
-    private selectedEnvType : string;
-    private listEnvTypes : SelectItem[];
+    private subEnvTypes : SubEnvironmentType[];
+    private selectedSubEnvType : string;
+    private listSubEnvTypes : SelectItem[];
     private lastLazyLoadEvent : LazyLoadEvent;
 
     @Input() sub : boolean = false;
@@ -60,9 +60,22 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
                     .subscribe(
                         subEnvironment => {
                             this.subEnvironment = subEnvironment;
-                        },
-                        error =>  this.messageService.error('ngOnInit error', error)
-                    );
+                            // get all subenvtypes not in environment
+                            this.environmentService.getAvailableSubEnvTypes(subEnvironment).subscribe(
+                                p =>{
+                                        this.subEnvTypes = p
+                                        // build envType SelectItem Array
+                                        this.listSubEnvTypes = [];
+                                        this.listSubEnvTypes.push({label:'Select Env Type', value:null});
+                                        this.subEnvTypes.forEach(element => {
+                                            this.listSubEnvTypes.push(({label: element.name, value:element.name}));
+                                        });
+                                        this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
+                                    }
+                                )
+                            },
+                            error =>  this.messageService.error('ngOnInit error', error)
+                        );
             }
         });
     }
@@ -78,6 +91,7 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
 
        
     onSave() {
+        this.subEnvironment.subEnvironmentType = this.subEnvTypes.find(this.checkSubEnvType, this);
         this.environmentService.updateSubEnvironment(this.subEnvironment).
             subscribe(
                 subEnvironment => {
@@ -92,6 +106,10 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
                 },
                 error =>  this.messageService.error('Could not save', error)
             );
+    }
+
+    checkSubEnvType(currentValue:SubEnvironmentType, ):boolean{
+        return currentValue.name == this.selectedSubEnvType;
     }
 
     onCancel() {

@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Environment, EnvironmentType } from './environment';
-import { SubEnvironment } from './subEnvironment'
+import { SubEnvironment, SubEnvironmentType } from './subEnvironment'
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration' 
 
@@ -57,7 +57,16 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
                 return <EnvironmentType[]> r;
             })
             .catch(this.handleError);
+    }
 
+    getAvailableSubEnvTypes(subEnv:SubEnvironment) : Observable<SubEnvironmentType[]> {
+        let body = JSON.stringify(subEnv);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/subEnvTypesAvailableForEnv'), body, this.options)
+            .map(response => {
+                let r = response.json()
+                return <EnvironmentType[]> r;
+            })
+            .catch(this.handleError);
     }
     
     getHieraValues(name : String) : Observable<HieraValues[]> {
