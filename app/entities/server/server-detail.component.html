@@ -26,17 +26,12 @@
                 </div>
             </div>
              <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="enabled">Environments </label></div>
-                <div class="ui-grid-col-6">
-                    <p-pickList [source]="server.environments" [target]="availableEnvironments" sourceHeader="Assigned" targetHeader="Available" [responsive]="true">
-                        <template let-environment>
-                            <div class="ui-helper-clearfix">
-                                <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{environment.name}}</div>
-                            </div>
-                        </template>
-                    </p-pickList>
-                </div>
-            </div>
+                <p-dataTable [value]="subEnvironments" [selection]="selectedSubEnvs" [rows]="10" [paginator]="true" (onRowSelect)="rowSelected($event)" (onRowUnselect)="rowUnselected($event)">
+                    <p-column field="environment.name" sortable="true" header="Environment" [filter]="true" filterMatchMode="contains"></p-column>
+                    <p-column field="subEnvironmentType.name" sortable="true" header="Type" [filter]="true" filterMatchMode="contains"></p-column>
+                    <p-column selectionMode="multiple"></p-column>
+                </p-dataTable>
+             </div>     
              <div class="ui-g">
                 <div class="ui-g-2" *ngIf="sub">
                     <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
@@ -47,6 +42,7 @@
             </div>
         </div>
     </p-panel>
+<!--
     <div style="margin-top:8px">
         <p-fieldset legend="Hiera Data" toggleable="true" collapsed="true">
                 <p-dataTable [value]="hieraValuesList">
@@ -55,5 +51,7 @@
                 </p-dataTable>
         </p-fieldset>
     </div>
-
+-->
 </div>
+<!--
+-->

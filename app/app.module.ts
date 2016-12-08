@@ -15,7 +15,7 @@ import { FileUploadModule, PanelModule, GrowlModule, MenubarModule,
         DataListModule, SharedModule, DropdownModule,PickListModule,CheckboxModule,
         TriStateCheckboxModule, InputTextModule,InputTextareaModule,
         CalendarModule,PasswordModule,TabViewModule, InputSwitchModule,
-        FieldsetModule, InplaceModule } from 'primeng/primeng';
+        FieldsetModule, InplaceModule, OverlayPanelModule } from 'primeng/primeng';
 import { AppComponent }   from './app.component';
 import { HomeComponent }  from './home.component';
 import { MessageService } from './service/message.service';
@@ -128,6 +128,7 @@ import { LogoutComponent } from './logout/logout-component';
 // primeng
         FileUploadModule,
         PanelModule,
+        OverlayPanelModule,
         GrowlModule,
         MenubarModule,
         DialogModule,

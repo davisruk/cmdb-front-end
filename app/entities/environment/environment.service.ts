@@ -12,9 +12,10 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Environment, EnvironmentType } from './environment';
-import { SubEnvironment, SubEnvironmentType } from './subEnvironment'
+import { SubEnvironment, SubEnvironmentType } from './subEnvironment';
+import { Server } from '../server/server';
 import { HieraValues } from '../hiera/hieraValues';
-import { Configuration } from '../../support/configuration' 
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class EnvironmentService {
@@ -45,7 +46,21 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
     }
     
     getAllSubEnvs() : Observable<SubEnvironment[]> {
-        return this.http.get(this.settings.createBackendURLFor('api/subenvironments/'), this.options)
+        return this.http.get(this.settings.createBackendURLFor('api/subenvironments/all'), this.options)
+            .map(response => <SubEnvironment[]> response.json())
+            .catch(this.handleError);
+    }
+
+    getSubEnvsWithoutServer(server:Server) : Observable<SubEnvironment[]> {
+        let body = JSON.stringify(server);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/withoutServer'), body, this.options)
+            .map(response => <SubEnvironment[]> response.json())
+            .catch(this.handleError);
+    }
+
+    getSubEnvsWithServer(server:Server) : Observable<SubEnvironment[]> {
+        let body = JSON.stringify(server);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/withServer'), body, this.options)
             .map(response => <SubEnvironment[]> response.json())
             .catch(this.handleError);
     }
