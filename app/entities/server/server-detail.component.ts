@@ -22,22 +22,24 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
     private hieraValuesList: HieraValues[];
     private subEnvironments: SubEnvironment[];
     private environment: Environment;
-    private environment1: Environment;
     private selectedSubEnvs: SubEnvironment[];
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Server
     set serverType(serverType : ServerType) {
-        this.server = new Server();
+        if (this.server == undefined)
+            this.server = new Server();
         this.server.serverType = serverType;
     }
 
-/*
     @Input() // used to pass the parent when creating a new Server
-    set environment(environment : Environment) {
-        this.server = new Server();
-        this.server.environment = environment;
+    set subEnvironment(subEnv : SubEnvironment[]) {
+        if (this.server == undefined)
+            this.server = new Server();
+        if (this.server.subEnvironments == undefined)
+            this.server.subEnvironments = new Array<SubEnvironment>();
+        this.server.subEnvironments = subEnv;
     }
-*/
+
     @Output() onSaveClicked = new EventEmitter<Server>();
     @Output() onCancelClicked = new EventEmitter();
 
