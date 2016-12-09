@@ -13,6 +13,8 @@ export class ReleaseConfig {
     parameter : string;
     value : string;
     hieraAddress : string;
+    recurseByEnv : boolean;
+    recurseBySubEnv : boolean;
     // x-to-one
     release : Release;
 }

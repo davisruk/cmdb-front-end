@@ -27,7 +27,8 @@
     "zone.js": "^0.6.21",
     "systemjs": "0.19.41",
 
-    "primeng": "1.0.0",
+    "primeng": "1.0.1",
+
     "primeui": "^4.1.15"
   },
   "devDependencies": {

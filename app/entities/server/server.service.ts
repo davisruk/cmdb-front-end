@@ -14,7 +14,7 @@ import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Server } from './server';
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration';
-import { Environment } from '../environment/environment';
+import { SubEnvironment } from '../environment/subEnvironment';
 
 @Injectable()
 export class ServerService {
@@ -62,9 +62,10 @@ export class ServerService {
             .catch(this.handleError);
     }
 
-    getUnassignedEnvironmentsForServer(server : Server) : Observable<Environment[]>{
+    getUnassignedEnvironmentsForServer(server : Server) : Observable<SubEnvironment[]>{
+        // NEEDS CHANGING rename to getUnassignedSubEnvironmentsForServer
         return this.http.get(this.settings.createBackendURLFor('api/servers/available_environments/' + server.id), this.options)
-            .map(response => <Environment[]> response.json())
+            .map(response => <SubEnvironment[]> response.json())
             .catch(this.handleError);
     }    
     
@@ -84,8 +85,8 @@ export class ServerService {
             .catch(this.handleError);
     }
 
-    getServersNotInListByPage(environment : Environment, event : LazyLoadEvent) : Observable<PageResponse<Server>> {
-        let req = new PageRequestByExample(environment, event);
+    getServersNotInListByPage(subEnvironment : SubEnvironment, event : LazyLoadEvent) : Observable<PageResponse<Server>> {
+        let req = new PageRequestByExample(subEnvironment, event);
         let body = JSON.stringify(req);
 
         return this.http.post(this.settings.createBackendURLFor('api/servers/notinpageable'), body, this.options)
@@ -95,7 +96,6 @@ export class ServerService {
             })
             .catch(this.handleError);
     }
-
 
     /**
      * Performs a search by example on 1 attribute (defined on server side) and returns at most 10 results.

@@ -11,9 +11,11 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
-import { Environment } from './environment';
+import { Environment, EnvironmentType } from './environment';
+import { SubEnvironment, SubEnvironmentType } from './subEnvironment';
+import { Server } from '../server/server';
 import { HieraValues } from '../hiera/hieraValues';
-import { Configuration } from '../../support/configuration' 
+import { Configuration } from '../../support/configuration';
 
 @Injectable()
 export class EnvironmentService {
@@ -31,9 +33,64 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .catch(this.handleError);
     }
 
+    getSubEnvironment(id : any) : Observable<SubEnvironment> {
+        return this.http.get(this.settings.createBackendURLFor('api/subenvironments/' + id), this.options)
+            .map(response => <SubEnvironment> response.json())
+            .catch(this.handleError);
+    }
+
     getAll() : Observable<Environment[]> {
         return this.http.get(this.settings.createBackendURLFor('api/environments/'), this.options)
             .map(response => <Environment[]> response.json())
+            .catch(this.handleError);
+    }
+    
+    getAllSubEnvs() : Observable<SubEnvironment[]> {
+        return this.http.get(this.settings.createBackendURLFor('api/subenvironments/all'), this.options)
+            .map(response => <SubEnvironment[]> response.json())
+            .catch(this.handleError);
+    }
+
+    getSubEnvsWithoutServer(server:Server) : Observable<SubEnvironment[]> {
+        let body = JSON.stringify(server);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/withoutServer'), body, this.options)
+            .map(response => <SubEnvironment[]> response.json())
+            .catch(this.handleError);
+    }
+
+    getSubEnvsWithServer(server:Server) : Observable<SubEnvironment[]> {
+        let body = JSON.stringify(server);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/withServer'), body, this.options)
+            .map(response => <SubEnvironment[]> response.json())
+            .catch(this.handleError);
+    }
+
+    getAllEnvTypes() : Observable<EnvironmentType[]> {
+        return this.http.get(this.settings.createBackendURLFor('api/environments/envTypes'), this.options)
+            .map(response => {
+                let r = response.json()
+                return <EnvironmentType[]> r;
+            })
+            .catch(this.handleError);
+    }
+
+    getAvailableSubEnvTypesForEnvWith(subEnv:SubEnvironment) : Observable<SubEnvironmentType[]> {
+        let body = JSON.stringify(subEnv);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/subEnvTypesAvailableForEnvWithSubEnv'), body, this.options)
+            .map(response => {
+                let r = response.json()
+                return <EnvironmentType[]> r;
+            })
+            .catch(this.handleError);
+    }
+    
+    getAvailableSubEnvTypesForEnv(env:Environment) : Observable<SubEnvironmentType[]> {
+        let body = JSON.stringify(env);
+        return this.http.post(this.settings.createBackendURLFor('api/subenvironments/subEnvTypesAvailableForEnv'), body, this.options)
+            .map(response => {
+                let r = response.json()
+                return <EnvironmentType[]> r;
+            })
             .catch(this.handleError);
     }
 
@@ -54,6 +111,13 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .catch(this.handleError);
     }
 
+    updateSubEnvironment(subEnvironment : SubEnvironment) : Observable<SubEnvironment> {
+        let body = JSON.stringify(subEnvironment);
+        return this.http.put(this.settings.createBackendURLFor('api/subenvironments/'), body, this.options)
+            .map(response => <SubEnvironment> response.json())
+            .catch(this.handleError);
+    }
+
     /**
      * Load a page (for paginated datatable) of Environment using the passed
      * environment as an example for the search by example facility.
@@ -66,6 +130,18 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .map(response => {
                 let pr = <PageResponse<Environment>> response.json();
                 return new PageResponse<Environment>(pr.totalPages, pr.totalElements, pr.content);
+            })
+            .catch(this.handleError);
+    }
+
+    getSubEnvironmentsNotInListByPage(environment : Environment, event : LazyLoadEvent) : Observable<PageResponse<SubEnvironment>> {
+        let req = new PageRequestByExample(environment, event);
+        let body = JSON.stringify(req);
+
+        return this.http.post(this.settings.createBackendURLFor('api/environments/notinpageable'), body, this.options)
+            .map(response => {
+                let pr = <PageResponse<SubEnvironment>> response.json();
+                return new PageResponse<SubEnvironment>(pr.totalPages, pr.totalElements, pr.content);
             })
             .catch(this.handleError);
     }

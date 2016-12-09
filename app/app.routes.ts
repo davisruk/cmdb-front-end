@@ -15,6 +15,7 @@ import { ComponentConfigDetailComponent } from './entities/componentConfig/compo
 
 import { EnvironmentListComponent } from './entities/environment/environment-list.component';
 import { EnvironmentDetailComponent } from './entities/environment/environment-detail.component';
+import { SubEnvironmentDetailComponent } from './entities/environment/subEnvironment-detail.component';
 
 import { EnvironmentConfigListComponent } from './entities/environmentConfig/environmentConfig-list.component';
 import { EnvironmentConfigDetailComponent } from './entities/environmentConfig/environmentConfig-detail.component';
@@ -66,7 +67,9 @@ export const routes: Routes = [
     {path: 'componentConfig/:id', component: ComponentConfigDetailComponent }
     ,
     {path: 'environment-list', component: EnvironmentListComponent },
-    {path: 'environment/:id', component: EnvironmentDetailComponent }
+    {path: 'environment/:id', component: EnvironmentDetailComponent },
+    {path: 'subEnv/:id', component: SubEnvironmentDetailComponent },
+    {path: 'subEnv/:id/:envId', component: SubEnvironmentDetailComponent }
     ,
     {path: 'environmentConfig-list', component: EnvironmentConfigListComponent },
     {path: 'environmentConfig/:id', component: EnvironmentConfigDetailComponent }

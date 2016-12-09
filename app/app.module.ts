@@ -12,10 +12,10 @@ import { HttpModule  }    from '@angular/http';
 import { RouterModule  }  from '@angular/router';
 import { FileUploadModule, PanelModule, GrowlModule, MenubarModule,
         DialogModule, ButtonModule, AutoCompleteModule, DataTableModule,
-        SharedModule, DropdownModule,PickListModule,CheckboxModule,
+        DataListModule, SharedModule, DropdownModule,PickListModule,CheckboxModule,
         TriStateCheckboxModule, InputTextModule,InputTextareaModule,
         CalendarModule,PasswordModule,TabViewModule, InputSwitchModule,
-        FieldsetModule, InplaceModule } from 'primeng/primeng';
+        FieldsetModule, InplaceModule, OverlayPanelModule } from 'primeng/primeng';
 import { AppComponent }   from './app.component';
 import { HomeComponent }  from './home.component';
 import { MessageService } from './service/message.service';
@@ -31,6 +31,7 @@ import { ComponentConfigCompleteComponent } from './entities/componentConfig/com
 import { EnvironmentService } from './entities/environment/environment.service';
 import { EnvironmentListComponent } from './entities/environment/environment-list.component';
 import { EnvironmentDetailComponent } from './entities/environment/environment-detail.component';
+import { SubEnvironmentDetailComponent } from './entities/environment/subEnvironment-detail.component';
 import { EnvironmentLineComponent } from './entities/environment/environment-line.component';
 import { EnvironmentCompleteComponent } from './entities/environment/environment-auto-complete.component';
 
@@ -127,12 +128,14 @@ import { LogoutComponent } from './logout/logout-component';
 // primeng
         FileUploadModule,
         PanelModule,
+        OverlayPanelModule,
         GrowlModule,
         MenubarModule,
         DialogModule,
         ButtonModule,
         AutoCompleteModule,
         DataTableModule,
+        DataListModule,
         SharedModule,
         DropdownModule,
         PickListModule,
@@ -162,7 +165,8 @@ import { LogoutComponent } from './logout/logout-component';
         EnvironmentListComponent,
         EnvironmentDetailComponent,
         EnvironmentLineComponent,
-        EnvironmentCompleteComponent
+        EnvironmentCompleteComponent,
+        SubEnvironmentDetailComponent
         ,
         EnvironmentConfigListComponent,
         EnvironmentConfigDetailComponent,
