@@ -31,15 +31,18 @@ import { ComponentConfigCompleteComponent } from './entities/componentConfig/com
 import { EnvironmentService } from './entities/environment/environment.service';
 import { EnvironmentListComponent } from './entities/environment/environment-list.component';
 import { EnvironmentDetailComponent } from './entities/environment/environment-detail.component';
-import { SubEnvironmentDetailComponent } from './entities/environment/subEnvironment-detail.component';
 import { EnvironmentLineComponent } from './entities/environment/environment-line.component';
 import { EnvironmentCompleteComponent } from './entities/environment/environment-auto-complete.component';
+import { SubEnvironmentDetailComponent } from './entities/environment/subEnvironment-detail.component';
+import { SubEnvironmentLineComponent } from './entities/environment/subEnvironment-line.component';
+import { SubEnvironmentCompleteComponent } from './entities/environment/subEnvironment-auto-complete.component';
 
-import { EnvironmentConfigService } from './entities/environmentConfig/environmentConfig.service';
-import { EnvironmentConfigListComponent } from './entities/environmentConfig/environmentConfig-list.component';
-import { EnvironmentConfigDetailComponent } from './entities/environmentConfig/environmentConfig-detail.component';
-import { EnvironmentConfigLineComponent } from './entities/environmentConfig/environmentConfig-line.component';
-import { EnvironmentConfigCompleteComponent } from './entities/environmentConfig/environmentConfig-auto-complete.component';
+
+import {SubEnvironmentConfigService} from './entities/environmentConfig/subEnvironmentConfig.service'
+import {SubEnvironmentConfigListComponent} from './entities/environmentConfig/subEnvironmentConfig-list.component'
+import {SubEnvironmentConfigDetailComponent } from './entities/environmentConfig/subEnvironmentConfig-detail.component';
+import { SubEnvironmentConfigLineComponent } from './entities/environmentConfig/subEnvironmentConfig-line.component';
+import { SubEnvironmentConfigCompleteComponent } from './entities/environmentConfig/subEnvironmentConfig-auto-complete.component';
 
 import { GlobalconfigService } from './entities/globalconfig/globalconfig.service';
 import { GlobalconfigListComponent } from './entities/globalconfig/globalconfig-list.component';
@@ -166,12 +169,16 @@ import { LogoutComponent } from './logout/logout-component';
         EnvironmentDetailComponent,
         EnvironmentLineComponent,
         EnvironmentCompleteComponent,
+
+
+        SubEnvironmentLineComponent,
+        SubEnvironmentCompleteComponent,
         SubEnvironmentDetailComponent
         ,
-        EnvironmentConfigListComponent,
-        EnvironmentConfigDetailComponent,
-        EnvironmentConfigLineComponent,
-        EnvironmentConfigCompleteComponent
+        SubEnvironmentConfigListComponent,
+        SubEnvironmentConfigDetailComponent,
+        SubEnvironmentConfigLineComponent,
+        SubEnvironmentConfigCompleteComponent
         ,
         GlobalconfigListComponent,
         GlobalconfigDetailComponent,
@@ -239,7 +246,7 @@ import { LogoutComponent } from './logout/logout-component';
         MessageService
         ,ComponentConfigService
         ,EnvironmentService
-        ,EnvironmentConfigService
+        ,SubEnvironmentConfigService
         ,GlobalconfigService
         ,PackageInfoService
         ,PackageTypeService

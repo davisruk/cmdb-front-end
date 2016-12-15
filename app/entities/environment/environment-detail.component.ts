@@ -57,6 +57,22 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             if (id === 'new') {
                 this.environment = new Environment();
                 //this.environment.servers = new Array<Server>();
+                this.environmentService.getAllEnvTypes().subscribe(p => {
+                        this.envTypes = p
+                        // build envType SelectItem Array
+                        this.listEnvTypes = [];
+                        this.listEnvTypes.push({label:'Select Env Type', value:null});
+                        this.envTypes.forEach(element => {
+                            this.listEnvTypes.push(({label: element.name, value:element.name}));
+                        });
+                        this.selectedEnvType = this.listEnvTypes[0].label;
+                        this.environmentService.getAvailableSubEnvTypesForEnv(this.environment).subscribe(
+                            p=>{
+                                this.availableSubEnvTypes = p;
+                            }
+                        );
+                    }
+                );
                 this.showAddSubEnv = true;
             } else {
                 this.environmentService.getEnvironment(id)

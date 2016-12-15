@@ -5,14 +5,14 @@
 // Need commercial support ? Contact us: info@jaxio.com
 // Template pack-angular:src/main/webapp/app/entities/entity.ts.e.vm
 //
-import {Environment} from '../environment/environment';
+import {SubEnvironment} from '../environment/subEnvironment';
 
-export class EnvironmentConfig {
+export class SubEnvironmentConfig {
     // Raw attributes
     id : number;
     parameter : string;
     value : string;
     hieraAddress : string;
     // x-to-one
-    environment : Environment;
+    subEnvironment : SubEnvironment;
 }

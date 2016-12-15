@@ -17,8 +17,8 @@ import { EnvironmentListComponent } from './entities/environment/environment-lis
 import { EnvironmentDetailComponent } from './entities/environment/environment-detail.component';
 import { SubEnvironmentDetailComponent } from './entities/environment/subEnvironment-detail.component';
 
-import { EnvironmentConfigListComponent } from './entities/environmentConfig/environmentConfig-list.component';
-import { EnvironmentConfigDetailComponent } from './entities/environmentConfig/environmentConfig-detail.component';
+import { SubEnvironmentConfigListComponent } from './entities/environmentConfig/subEnvironmentConfig-list.component';
+import { SubEnvironmentConfigDetailComponent } from './entities/environmentConfig/subEnvironmentConfig-detail.component';
 
 import { GlobalconfigListComponent } from './entities/globalconfig/globalconfig-list.component';
 import { GlobalconfigDetailComponent } from './entities/globalconfig/globalconfig-detail.component';
@@ -71,8 +71,8 @@ export const routes: Routes = [
     {path: 'subEnv/:id', component: SubEnvironmentDetailComponent },
     {path: 'subEnv/:id/:envId', component: SubEnvironmentDetailComponent }
     ,
-    {path: 'environmentConfig-list', component: EnvironmentConfigListComponent },
-    {path: 'environmentConfig/:id', component: EnvironmentConfigDetailComponent }
+    {path: 'subEnvironmentConfig-list', component: SubEnvironmentConfigListComponent },
+    {path: 'subEnvironmentConfig/:id', component: SubEnvironmentConfigDetailComponent }
     ,
     {path: 'globalconfig-list', component: GlobalconfigListComponent },
     {path: 'globalconfig/:id', component: GlobalconfigDetailComponent }

@@ -157,6 +157,13 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
             .catch(this.handleError);
     }
 
+    completeSubEnv(query : string) : Observable<SubEnvironment[]> {
+        let body = JSON.stringify({'query': query, 'maxResults': 10});
+        return this.http.post(this.settings.createBackendURLFor('api/subEnvironments/complete'), body, this.options)
+            .map(response => <SubEnvironment[]> response.json())
+            .catch(this.handleError);
+    }
+
     /**
      * Delete an Environment by id.
      */

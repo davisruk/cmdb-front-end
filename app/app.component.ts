@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
             { label: 'Entities', icon: 'fa-search', items: [
                 {label: 'ComponentConfig List', routerLink: ['/componentConfig-list']},
                 {label: 'Environment List', routerLink: ['/environment-list']},
-                {label: 'EnvironmentConfig List', routerLink: ['/environmentConfig-list']},
+                {label: 'SubEnvironmentConfig List', routerLink: ['/subEnvironmentConfig-list']},
                 {label: 'Globalconfig List', routerLink: ['/globalconfig-list']},
                 {label: 'PackageInfo List', routerLink: ['/packageInfo-list']},
                 {label: 'PackageType List', routerLink: ['/packageType-list']},

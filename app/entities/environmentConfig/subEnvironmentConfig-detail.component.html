@@ -1,22 +1,22 @@
 <div class="ContentSideSections Implementation">
-    <p-panel header="EnvironmentConfig Details">
-        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="environmentConfig" ngForm #environmentConfigForm="ngForm">
+    <p-panel header="SubEnvironmentConfig Details">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="subEnvironmentConfig" ngForm #subEnvironmentConfigForm="ngForm">
             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="environment">Environment</label></div>
+                <div class="ui-grid-col-2"><label for="subEnvironment">{{envName}} Sub Environment</label></div>
                 <div class="ui-grid-col-4">
-                    <environment-auto-complete [(ngModel)]="environmentConfig.environment" id="environment" name="environment" [disabled]="sub"></environment-auto-complete>
+                    <subEnvironment-auto-complete [(ngModel)]="subEnvironmentConfig.subEnvironment" id="subEnvironment" name="subEnvironment" [disabled]="sub"></subEnvironment-auto-complete>
                 </div>
                 <div class="ui-grid-col-1" *ngIf="!sub">
-                    <button pButton id="gotoEnvironment" type="button" (click)="gotoEnvironment()" *ngIf="environmentConfig.environment" icon="fa-pencil" label="Edit"></button>
+                    <button pButton id="gotoSubEnvironment" type="button" (click)="gotoSubEnvironment()" *ngIf="subEnvironmentConfig.subEnvironment" icon="fa-pencil" label="Edit"></button>
                 </div>
                 <div class="ui-grid-col-1" *ngIf="!sub">
-                    <button pButton id="clearEnvironment" type="button" (click)="clearEnvironment()" *ngIf="environmentConfig.environment" icon="fa-chain-broken" label="Clear"></button>
+                    <button pButton id="clearSubEnvironment" type="button" (click)="clearSubEnvironment()" *ngIf="subEnvironmentConfig.subEnvironment" icon="fa-chain-broken" label="Clear"></button>
                 </div>
             </div>
               <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="parameter">Parameter </label></div>
                 <div class="ui-grid-col-6">
-                    <input pInputText id="parameter" [(ngModel)]="environmentConfig.parameter"   name="parameter" #parameter="ngModel"/>
+                    <input pInputText id="parameter" [(ngModel)]="subEnvironmentConfig.parameter"   name="parameter" #parameter="ngModel"/>
                 </div>
                 <div class="ui-grid-col-4">
                 </div>
@@ -24,7 +24,7 @@
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="value">Value </label></div>
                 <div class="ui-grid-col-6">
-                    <input pInputText id="value" [(ngModel)]="environmentConfig.value"   name="value" #value="ngModel"/>
+                    <input pInputText id="value" [(ngModel)]="subEnvironmentConfig.value"   name="value" #value="ngModel"/>
                 </div>
                 <div class="ui-grid-col-4">
                 </div>
@@ -32,7 +32,7 @@
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="hieraAddress">Hiera Address </label></div>
                 <div class="ui-grid-col-6">
-                    <input pInputText id="hieraAddress" [(ngModel)]="environmentConfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
+                    <input pInputText id="hieraAddress" [(ngModel)]="subEnvironmentConfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
                 </div>
                 <div class="ui-grid-col-4">
                 </div>
@@ -42,7 +42,7 @@
                     <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
                 </div>
                 <div class="ui-g-2">
-                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!environmentConfigForm.form.valid"></button>
+                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!subEnvironmentConfigForm.form.valid"></button>
                 </div>
             </div>
         </div>

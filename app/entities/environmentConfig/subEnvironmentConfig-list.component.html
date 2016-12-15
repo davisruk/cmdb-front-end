@@ -8,7 +8,7 @@
                  (onLazyLoad)="loadPage($event)"
                  selectionMode="single"
                  (onRowSelect)="onRowSelect($event)"
-                 [(selection)]="selectedEnvironmentConfig"
+                 [(selection)]="selectedSubEnvironmentConfig"
                  [rowsPerPageOptions]="[5,10,20,50,100]"
                  [responsive]="true">
         <header>{{header}} (count: {{currentPage.totalElements}})</header>
@@ -17,7 +17,7 @@
         <p-column field="hieraAddress" header="Hiera Address" sortable="true"></p-column>
         <p-column styleClass="col-icon">
             <template let-environmentConfig="rowData" pTemplate type="body">
-                <button type="button" pButton icon="fa-trash" (click)="showDeleteDialog(environmentConfig)" style="float:left"></button>
+                <button type="button" pButton icon="fa-trash" (click)="showDeleteDialog(subEnvironmentConfig)" style="float:left"></button>
             </template>
         </p-column>
         <footer>
@@ -27,19 +27,19 @@
         </footer>
     </p-dataTable>
 
-    <p-dialog header="Delete EnvironmentConfig ?" [(visible)]="displayDeleteDialog" [responsive]="true" showEffect="fade" [modal]="true" closeOnEscape="true" (onAfterHide)="environmentConfigToDelete = null">
-        <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="environmentConfigToDelete">
-            <div class="ui-grid-row" *ngIf="environmentConfigToDelete.parameter">
+    <p-dialog header="Delete SubEnvironmentConfig ?" [(visible)]="displayDeleteDialog" [responsive]="true" showEffect="fade" [modal]="true" closeOnEscape="true" (onAfterHide)="subEnvironmentConfigToDelete = null">
+        <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="subEnvironmentConfigToDelete">
+            <div class="ui-grid-row" *ngIf="subEnvironmentConfigToDelete.parameter">
                 <div class="ui-grid-col-4">Parameter:</div>
-                <div class="ui-grid-col-8">{{ environmentConfigToDelete.parameter }}</div>
+                <div class="ui-grid-col-8">{{ subEnvironmentConfigToDelete.parameter }}</div>
             </div>
-            <div class="ui-grid-row" *ngIf="environmentConfigToDelete.value">
+            <div class="ui-grid-row" *ngIf="subEnvironmentConfigToDelete.value">
                 <div class="ui-grid-col-4">Value:</div>
-                <div class="ui-grid-col-8">{{ environmentConfigToDelete.value }}</div>
+                <div class="ui-grid-col-8">{{ subEnvironmentConfigToDelete.value }}</div>
             </div>
-            <div class="ui-grid-row" *ngIf="environmentConfigToDelete.hieraAddress">
+            <div class="ui-grid-row" *ngIf="subEnvironmentConfigToDelete.hieraAddress">
                 <div class="ui-grid-col-4">Hiera Address:</div>
-                <div class="ui-grid-col-8">{{ environmentConfigToDelete.hieraAddress }}</div>
+                <div class="ui-grid-col-8">{{ subEnvironmentConfigToDelete.hieraAddress }}</div>
             </div>
         </div>
         <footer>

@@ -9,43 +9,43 @@ import {Component, Input, Output, EventEmitter, forwardRef} from '@angular/core'
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {AutoCompleteModule} from 'primeng/primeng';
 import {MessageService} from '../../service/message.service';
-import {EnvironmentConfig} from './environmentConfig';
-import {EnvironmentConfigService} from './environmentConfig.service';
+import {SubEnvironment} from './subEnvironment';
+import {EnvironmentService} from './environment.service';
 
 // Resource: http://almerosteyn.com/2016/04/linkup-custom-control-to-ngcontrol-ngmodel
 
-export const ENVIRONMENTCONFIG_AUTO_COMPLETE_CONTROL_VALUE_ACCESSOR: any = {
+export const SUBENVIRONMENT_AUTO_COMPLETE_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => EnvironmentConfigCompleteComponent),
+    useExisting: forwardRef(() => SubEnvironmentCompleteComponent),
     multi: true
 };
 
 @Component({
 	template: `
-        <p-autoComplete [(ngModel)]="value" [minLength]="1" [disabled]="disabled" placeholder="Hint: type to search..." field="parameter" [suggestions]="suggestions" (completeMethod)="complete($event)" (onSelect)="select($event)">
-            <template let-environmentConfig>
-                <environmentConfig-line [environmentConfig]="environmentConfig"></environmentConfig-line>
+        <p-autoComplete [(ngModel)]="value" [minLength]="1" [disabled]="disabled" placeholder="Hint: type to search..." field="subEnvironmentType.name" [suggestions]="suggestions" (completeMethod)="complete($event)" (onSelect)="select($event)">
+            <template let-subEnvironment>
+                <subEnvironment-line [subEnvironment]="subEnvironment"></subEnvironment-line>
             </template>
         </p-autoComplete>
 	`,
-	selector: 'environmentConfig-auto-complete',
-    providers: [ENVIRONMENTCONFIG_AUTO_COMPLETE_CONTROL_VALUE_ACCESSOR]
+	selector: 'subEnvironment-auto-complete',
+    providers: [SUBENVIRONMENT_AUTO_COMPLETE_CONTROL_VALUE_ACCESSOR]
 })
-export class EnvironmentConfigCompleteComponent implements ControlValueAccessor {
+export class SubEnvironmentCompleteComponent implements ControlValueAccessor {
     @Input() disabled : boolean = false;
     @Input() id : string;
     @Input() name : string;
 
     //The internal data model
-    private _value: EnvironmentConfig = null;
+    private _value: SubEnvironment = null;
 
-    private suggestions : EnvironmentConfig[] = [];
+    private suggestions : SubEnvironment[] = [];
 
     //Placeholders for the callbacks
     private _onTouchedCallback: () => void = () => {};
     private _onChangeCallback: (_:any) => void = () => {};
 
-    constructor(private environmentConfigService : EnvironmentConfigService, private messageService : MessageService) {
+    constructor(private environmentService : EnvironmentService, private messageService : MessageService) {
     }
 
     @Input()
@@ -66,7 +66,7 @@ export class EnvironmentConfigCompleteComponent implements ControlValueAccessor 
 
     //From ControlValueAccessor interface
     writeValue(value: any) {
-        this._value = <EnvironmentConfig> value;
+        this._value = <SubEnvironment> value;
     }
 
     //From ControlValueAccessor interface
@@ -84,7 +84,7 @@ export class EnvironmentConfigCompleteComponent implements ControlValueAccessor 
     }
 
     complete(event:any) {
-        this.environmentConfigService.complete(event.query).
+        this.environmentService.completeSubEnv(event.query).
             subscribe(
                 results => this.suggestions = results,
                 error => this.messageService.error(error, 'Error during auto-complete')

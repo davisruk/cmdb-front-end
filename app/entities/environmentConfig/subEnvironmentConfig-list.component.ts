@@ -10,19 +10,19 @@ import { Router } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { PageResponse } from "../../support/paging";
 import { MessageService } from '../../service/message.service';
-import { EnvironmentConfig } from './environmentConfig';
-import { EnvironmentConfigDetailComponent } from './environmentConfig-detail.component';
-import { EnvironmentConfigService } from './environmentConfig.service';
+import { SubEnvironmentConfig } from './subEnvironmentConfig';
+import { SubEnvironmentConfigDetailComponent } from './subEnvironmentConfig-detail.component';
+import { SubEnvironmentConfigService } from './subEnvironmentConfig.service';
 
-import { Environment } from '../environment/environment';
+import { SubEnvironment } from '../environment/subEnvironment';
 import { EnvironmentLineComponent } from '../environment/environment-line.component';
 
 @Component({
     moduleId: module.id,
-	templateUrl: 'environmentConfig-list.component.html',
-	selector: 'environmentConfig-list',
+	templateUrl: 'subEnvironmentConfig-list.component.html',
+	selector: 'subEnvironmentConfig-list',
 })
-export class EnvironmentConfigListComponent {
+export class SubEnvironmentConfigListComponent {
 
     @Input() header = "All EnvironmentConfigs...";
 
@@ -33,22 +33,22 @@ export class EnvironmentConfigListComponent {
     @Input() sub : boolean;
     @Output() onAddNewClicked = new EventEmitter();
 
-    environmentConfigToDelete : EnvironmentConfig;
+    subEnvironmentConfigToDelete : SubEnvironmentConfig;
     displayDeleteDialog : boolean;
 
-    private example : EnvironmentConfig = null; // used to query by example...
+    private example : SubEnvironmentConfig = null; // used to query by example...
 
     // list is paginated
-    currentPage : PageResponse<EnvironmentConfig> = new PageResponse<EnvironmentConfig>(0,0,[]);
+    currentPage : PageResponse<SubEnvironmentConfig> = new PageResponse<SubEnvironmentConfig>(0,0,[]);
 
     // Many to one: input param is used to filter the list when displayed
     // as a one-to-many list by the other side.
-    private _environment : Environment;
+    private _subEnvironment : SubEnvironment;
 
-    constructor(private router:Router, private environmentConfigService : EnvironmentConfigService, private messageService : MessageService) { }
+    constructor(private router:Router, private subEnvironmentConfigService : SubEnvironmentConfigService, private messageService : MessageService) { }
 
     loadPage(event : LazyLoadEvent) {
-        this.environmentConfigService.getPage(this.example, event).
+        this.subEnvironmentConfigService.getPage(this.example, event).
             subscribe(
                 pageResponse => this.currentPage = pageResponse,
                 error => this.messageService.error('Could not get the results', error)
@@ -58,43 +58,43 @@ export class EnvironmentConfigListComponent {
     // Many to one: input param is used to filter the list when displayed
     // as a one-to-many list by the other side.
     @Input()
-    set environment(environment : Environment) {
-        if (environment == null) {
+    set subEnvironment(subEnvironment : SubEnvironment) {
+        if (subEnvironment == null) {
             return;
         }
-        this._environment = environment;
+        this._subEnvironment = subEnvironment;
 
-        this.example = new EnvironmentConfig();
-        this.example.environment = new Environment();
-        this.example.environment.id = this._environment.id;
+        this.example = new SubEnvironmentConfig();
+        this.example.subEnvironment = new SubEnvironment();
+        this.example.subEnvironment.id = this._subEnvironment.id;
     }
 
 
     onRowSelect(event : any) {
-        this.router.navigate(['/environmentConfig', event.data.id]);
+        this.router.navigate(['/subEnvironmentConfig', event.data.id]);
     }
 
     addNew() {
         if (this.sub) {
             this.onAddNewClicked.emit("addNew");
         } else {
-            this.router.navigate(['/environmentConfig', 'new']);
+            this.router.navigate(['/subEnvironmentConfig', 'new']);
         }
     }
 
     showDeleteDialog(rowData : any) {
-        this.environmentConfigToDelete = <EnvironmentConfig> rowData;
+        this.subEnvironmentConfigToDelete = <SubEnvironmentConfig> rowData;
         this.displayDeleteDialog = true;
     }
 
     // delete + remove from current page
     delete() {
-        this.environmentConfigService.delete(this.environmentConfigToDelete.id).
+        this.subEnvironmentConfigService.delete(this.subEnvironmentConfigToDelete.id).
             subscribe(
                 response => {
-                    this.currentPage.remove(this.environmentConfigToDelete);
+                    this.currentPage.remove(this.subEnvironmentConfigToDelete);
                     this.displayDeleteDialog = false;
-                    this.environmentConfigToDelete = null;
+                    this.subEnvironmentConfigToDelete = null;
                     this.messageService.info('Deleted OK', 'PrimeNG Rocks ;-)');
                 },
                 error => this.messageService.error('Could not delete!', error)

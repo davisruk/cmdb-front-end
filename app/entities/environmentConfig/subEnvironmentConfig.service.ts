@@ -11,10 +11,10 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
-import { EnvironmentConfig } from './environmentConfig';
+import { SubEnvironmentConfig } from './subEnvironmentConfig';
 import { Configuration } from '../../support/configuration'
 @Injectable()
-export class EnvironmentConfigService {
+export class SubEnvironmentConfigService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
@@ -23,20 +23,20 @@ export class EnvironmentConfigService {
     /**
      * Get a EnvironmentConfig by id.
      */
-    getEnvironmentConfig(id : any) : Observable<EnvironmentConfig> {
-        return this.http.get(this.settings.createBackendURLFor('api/environmentConfigs/' + id), this.options)
-            .map(response => <EnvironmentConfig> response.json())
+    getSubEnvironmentConfig(id : any) : Observable<SubEnvironmentConfig> {
+        return this.http.get(this.settings.createBackendURLFor('api/subEnvironmentConfigs/' + id), this.options)
+            .map(response => <SubEnvironmentConfig> response.json())
             .catch(this.handleError);
     }
 
     /**
      * Update the passed environmentConfig.
      */
-    update(environmentConfig : EnvironmentConfig) : Observable<EnvironmentConfig> {
+    update(environmentConfig : SubEnvironmentConfig) : Observable<SubEnvironmentConfig> {
         let body = JSON.stringify(environmentConfig);
 
-        return this.http.put(this.settings.createBackendURLFor('api/environmentConfigs/'), body, this.options)
-            .map(response => <EnvironmentConfig> response.json())
+        return this.http.put(this.settings.createBackendURLFor('api/subEnvironmentConfigs/'), body, this.options)
+            .map(response => <SubEnvironmentConfig> response.json())
             .catch(this.handleError);
     }
 
@@ -44,14 +44,14 @@ export class EnvironmentConfigService {
      * Load a page (for paginated datatable) of EnvironmentConfig using the passed
      * environmentConfig as an example for the search by example facility.
      */
-    getPage(environmentConfig : EnvironmentConfig, event : LazyLoadEvent) : Observable<PageResponse<EnvironmentConfig>> {
+    getPage(environmentConfig : SubEnvironmentConfig, event : LazyLoadEvent) : Observable<PageResponse<SubEnvironmentConfig>> {
         let req = new PageRequestByExample(environmentConfig, event);
         let body = JSON.stringify(req);
 
-        return this.http.post(this.settings.createBackendURLFor('api/environmentConfigs/page'), body, this.options)
+        return this.http.post(this.settings.createBackendURLFor('api/subEnvironmentConfigs/page'), body, this.options)
             .map(response => {
-                let pr = <PageResponse<EnvironmentConfig>> response.json();
-                return new PageResponse<EnvironmentConfig>(pr.totalPages, pr.totalElements, pr.content);
+                let pr = <PageResponse<SubEnvironmentConfig>> response.json();
+                return new PageResponse<SubEnvironmentConfig>(pr.totalPages, pr.totalElements, pr.content);
             })
             .catch(this.handleError);
     }
@@ -60,10 +60,10 @@ export class EnvironmentConfigService {
      * Performs a search by example on 1 attribute (defined on server side) and returns at most 10 results.
      * Used by EnvironmentConfigCompleteComponent.
      */
-    complete(query : string) : Observable<EnvironmentConfig[]> {
+    complete(query : string) : Observable<SubEnvironmentConfig[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
-        return this.http.post(this.settings.createBackendURLFor('api/environmentConfigs/complete'), body, this.options)
-            .map(response => <EnvironmentConfig[]> response.json())
+        return this.http.post(this.settings.createBackendURLFor('api/subEnvironmentConfigs/complete'), body, this.options)
+            .map(response => <SubEnvironmentConfig[]> response.json())
             .catch(this.handleError);
     }
 
@@ -71,7 +71,7 @@ export class EnvironmentConfigService {
      * Delete an EnvironmentConfig by id.
      */
     delete(id : any) {
-        return this.http.delete(this.settings.createBackendURLFor('api/environmentConfigs/' + id), this.options).catch(this.handleError);
+        return this.http.delete(this.settings.createBackendURLFor('api/subEnvironmentConfigs/' + id), this.options).catch(this.handleError);
     }
 
     // sample method from angular doc
