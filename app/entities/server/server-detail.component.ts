@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {ViewEncapsulation, Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
@@ -9,11 +9,13 @@ import {SubEnvironment, SubEnvironmentType} from '../environment/subEnvironment'
 import {Environment, EnvironmentType} from '../environment/environment';
 import {EnvironmentService} from '../environment/environment.service';
 import {HieraValues} from '../hiera/hieraValues';
+import {FlatSubEnv} from './flatSubEnv';
 
 @Component({
     moduleId: module.id,
 	templateUrl: 'server-detail.component.html',
 	selector: 'server-detail',
+    styleUrls: ['datatable-overrides.css'],
 })
 
 export class ServerDetailComponent implements OnInit, OnDestroy {
@@ -23,6 +25,9 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
     private subEnvironments: SubEnvironment[];
     private environment: Environment;
     private selectedSubEnvs: SubEnvironment[];
+    private flatSubEnvs: FlatSubEnv[];
+    private selectedFlatSubEnvs: FlatSubEnv[];
+
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Server
     set serverType(serverType : ServerType) {
@@ -51,7 +56,8 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
         if (this.sub) {
             return;
         }
-        
+        this.flatSubEnvs = new Array<FlatSubEnv>();
+        this.selectedFlatSubEnvs = new Array<FlatSubEnv>();
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
             console.log('ngOnInit for server-detail ' + id);
@@ -59,6 +65,7 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
                 this.server = new Server();
                 this.server.subEnvironments = new Array<SubEnvironment>();
                 this.selectedSubEnvs = new Array<SubEnvironment>();
+                this.selectedFlatSubEnvs = new Array<FlatSubEnv>();
                 this.environmentService.getAllSubEnvs().subscribe(p => this.subEnvironments = p);                
             } else {
                 this.serverService.getServer(id)
@@ -66,11 +73,19 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
                         server => {this.server = server;
                             this.environmentService.getSubEnvsWithServer(this.server).subscribe(p => {
                                 this.selectedSubEnvs = p;
+                                 this.selectedSubEnvs.forEach(element => {
+                                            this.selectedFlatSubEnvs.push(new FlatSubEnv(element.environment.name, element.subEnvironmentType.name))    
+                                         });
+
                                 this.subEnvironments = new Array<SubEnvironment>();
                                 if (this.selectedSubEnvs != undefined)
                                     this.subEnvironments.push.apply(this.subEnvironments, this.selectedSubEnvs);
+                                    //this.flatSubEnvs.push.apply(this.flatSubEnvs, this.selectedFlatSubEnvs);                                  
                                     this.environmentService.getSubEnvsWithoutServer(this.server).subscribe(p => {
                                         this.subEnvironments.push.apply(this.subEnvironments, p);
+                                        this.subEnvironments.forEach(element => {
+                                            this.flatSubEnvs.push(new FlatSubEnv(element.environment.name, element.subEnvironmentType.name))    
+                                         });
                                 })
                             });
                         }, 

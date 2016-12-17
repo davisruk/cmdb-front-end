@@ -31,7 +31,16 @@
                     <p-column field="subEnvironmentType.name" sortable="true" header="Type" [filter]="true" filterMatchMode="contains"></p-column>
                     <p-column selectionMode="multiple"></p-column>
                 </p-dataTable>
-             </div>     
+             </div>
+            
+<p-dataTable [value]="flatSubEnvs" sortField="envName" rowGroupMode="rowspan" [rows]="10" [paginator]="true" [style]="{'margin-top':'50px'}" [selection]="selectedFlatSubEnvs">
+    <header>RowSpan</header>
+<!--    <template pTemplate="rowgroupheader" let-rowData>{{rowData['envName']}}</template> -->
+    <p-column field="envName" header="Environment" [filter]="true" sortable="true"></p-column>
+    <p-column field="subEnvType" header="Type" [filter]="true" sortable="true"></p-column>
+    <p-column selectionMode="multiple"></p-column>
+</p-dataTable>            
+
              <div class="ui-g">
                 <div class="ui-g-2" *ngIf="sub">
                     <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
