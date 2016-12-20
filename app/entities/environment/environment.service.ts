@@ -6,7 +6,7 @@
 // Template pack-angular:src/main/webapp/app/entities/entity.service.ts.e.vm
 //
 import { Injectable } from '@angular/core';
-import { HttpModule, Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpModule, Http, Response, Headers, RequestOptions, ResponseContentType } from '@angular/http';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
@@ -16,12 +16,13 @@ import { SubEnvironment, SubEnvironmentType } from './subEnvironment';
 import { Server } from '../server/server';
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration';
+import { FileDownloader } from '../../support/filedownloader';
 
 @Injectable()
 export class EnvironmentService {
 
-private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
-
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
+    
     constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
     /**
@@ -178,5 +179,15 @@ private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'a
         error.status ? `Status: ${error.status} - Text: ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
+    }
+
+    downloadAllHieraData(filename:string){
+        let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
+        fileDownloader.downloadData(filename, 'api/environments/configdownloadall');
+    }
+
+    downloadEnvHieraData(filename:string, envId:number){
+        let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
+        fileDownloader.downloadData(filename, 'api/environments/configdownloadall/' + envId);
     }
 }

@@ -66,26 +66,23 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
                 this.server.subEnvironments = new Array<SubEnvironment>();
                 this.selectedSubEnvs = new Array<SubEnvironment>();
                 this.selectedFlatSubEnvs = new Array<FlatSubEnv>();
-                this.environmentService.getAllSubEnvs().subscribe(p => this.subEnvironments = p);                
+                this.environmentService.getAllSubEnvs().subscribe(p => {
+                        this.subEnvironments = p;
+                        this.buildFlatSubEnvArray(this.subEnvironments, this.flatSubEnvs);
+                });                
             } else {
                 this.serverService.getServer(id)
                     .subscribe(
                         server => {this.server = server;
                             this.environmentService.getSubEnvsWithServer(this.server).subscribe(p => {
                                 this.selectedSubEnvs = p;
-                                 this.selectedSubEnvs.forEach(element => {
-                                            this.selectedFlatSubEnvs.push(new FlatSubEnv(element.environment.name, element.subEnvironmentType.name))    
-                                         });
-
+                                this.buildFlatSubEnvArray( this.selectedSubEnvs, this.selectedFlatSubEnvs);
                                 this.subEnvironments = new Array<SubEnvironment>();
                                 if (this.selectedSubEnvs != undefined)
                                     this.subEnvironments.push.apply(this.subEnvironments, this.selectedSubEnvs);
-                                    //this.flatSubEnvs.push.apply(this.flatSubEnvs, this.selectedFlatSubEnvs);                                  
                                     this.environmentService.getSubEnvsWithoutServer(this.server).subscribe(p => {
                                         this.subEnvironments.push.apply(this.subEnvironments, p);
-                                        this.subEnvironments.forEach(element => {
-                                            this.flatSubEnvs.push(new FlatSubEnv(element.environment.name, element.subEnvironmentType.name))    
-                                         });
+                                        this.buildFlatSubEnvArray(this.subEnvironments, this.flatSubEnvs);
                                 })
                             });
                         }, 
@@ -95,6 +92,14 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
         });
     }
 
+    buildFlatSubEnvArray(subEnvs:SubEnvironment[], flatSubEnvs:FlatSubEnv[]):FlatSubEnv[]{
+        subEnvs.forEach(element => {
+            flatSubEnvs.push(new FlatSubEnv(element.environment.name,
+                                    element.subEnvironmentType.name,
+                                    element.id));
+        });    
+        return flatSubEnvs;
+    }
     serverAssigned(se:SubEnvironment):boolean{
         let i:number=this.server.subEnvironments.findIndex(x=>x.id==se.id);
         if (i == undefined)
@@ -102,20 +107,21 @@ export class ServerDetailComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    rowSelected(event:any){
+    subEnvSelected(event:any){
         if (event.type == "checkbox"){
-            let selectedSubEnv:SubEnvironment = event.data;
+            let selectedFlatSubEnv:FlatSubEnv = event.data;
+            let selectedSubEnv:SubEnvironment = this.subEnvironments[this.subEnvironments.findIndex(x=>x.id==selectedFlatSubEnv.id)];
             this.server.subEnvironments.push(selectedSubEnv);
         }
     }
 
-    rowUnselected(event:any){
+    subEnvUnselected(event:any){
         if (event.type == "checkbox"){
-            let unselectedSubEnv:SubEnvironment = event.data;
+            let unselectedSubEnv:FlatSubEnv = event.data;
             this.server.subEnvironments.splice(this.server.subEnvironments.findIndex(x=>x.id==unselectedSubEnv.id),1);
         }
     }
-    
+
     ngOnDestroy() {
         if (!this.sub) {
             this.params_subscription.unsubscribe();

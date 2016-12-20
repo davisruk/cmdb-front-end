@@ -57,10 +57,6 @@ export class EnvironmentListComponent{
             );
     }
 
-    downloadAllHieraByEnv(environment:Environment){
-        window.location.href=this.settings.createBackendURLFor('api/environments/configdownloadall/' + environment.id);
-    }
-
     onRowSelect(event : any) {
         this.router.navigate(['/environment', event.data.id]);
     }
@@ -93,7 +89,10 @@ export class EnvironmentListComponent{
     }
 
     downloadAllHieraData(){
-        window.location.href=this.settings.createBackendURLFor('api/environments/configdownloadall/');
+        this.environmentService.downloadAllHieraData("complete_hiera.csv");
     }
-    
+
+    downloadAllHieraByEnv(environment:Environment){
+        this.environmentService.downloadEnvHieraData(environment.name + "_hiera.csv", environment.id);
+    }
 }

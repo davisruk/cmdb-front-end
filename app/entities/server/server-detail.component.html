@@ -25,21 +25,15 @@
                     <button pButton id="clearServerType" type="button" (click)="clearServerType()" *ngIf="server.serverType" icon="fa-chain-broken" label="Clear"></button>
                 </div>
             </div>
-             <div class="ui-grid-row">
-                <p-dataTable [value]="subEnvironments" [selection]="selectedSubEnvs" [rows]="10" [paginator]="true" (onRowSelect)="rowSelected($event)" (onRowUnselect)="rowUnselected($event)">
-                    <p-column field="environment.name" sortable="true" header="Environment" [filter]="true" filterMatchMode="contains"></p-column>
-                    <p-column field="subEnvironmentType.name" sortable="true" header="Type" [filter]="true" filterMatchMode="contains"></p-column>
-                    <p-column selectionMode="multiple"></p-column>
-                </p-dataTable>
-             </div>
             
-<p-dataTable [value]="flatSubEnvs" sortField="envName" rowGroupMode="rowspan" [rows]="10" [paginator]="true" [style]="{'margin-top':'50px'}" [selection]="selectedFlatSubEnvs">
-    <header>RowSpan</header>
-<!--    <template pTemplate="rowgroupheader" let-rowData>{{rowData['envName']}}</template> -->
-    <p-column field="envName" header="Environment" [filter]="true" sortable="true"></p-column>
-    <p-column field="subEnvType" header="Type" [filter]="true" sortable="true"></p-column>
-    <p-column selectionMode="multiple"></p-column>
-</p-dataTable>            
+            <p-dataTable [value]="flatSubEnvs" sortField="envName" rowGroupMode="rowspan" [rows]="10" 
+                    [paginator]="true" [style]="{'margin-top':'50px'}" [selection]="selectedFlatSubEnvs"
+                    (onRowSelect)="subEnvSelected($event)" (onRowUnselect)="subEnvUnselected($event)">
+                <header>Environments and Sub Environments</header>
+                <p-column field="envName" value="id" header="Environment" [filter]="true" sortable="true"></p-column>
+                <p-column field="subEnvType" value="id" header="Type" [filter]="true" sortable="true"></p-column>
+                <p-column selectionMode="multiple"></p-column>
+            </p-dataTable>            
 
              <div class="ui-g">
                 <div class="ui-g-2" *ngIf="sub">
