@@ -29,6 +29,52 @@
                 <div class="ui-grid-col-4">
                 </div>
             </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="recursiveByEnv">Repeats for Environments </label></div>
+                <div class="ui-grid-col-1">
+                    <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveByEnv" [(ngModel)]="globalconfig.recursiveByEnv"
+                      name="recursiveByEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="recursiveBySubEnv">Repeats for SubEnvironments </label></div>
+                <div class="ui-grid-col-1">
+                    <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveBySubEnv" [(ngModel)]="globalconfig.recursiveBySubEnv"
+                       name="recursiveBySubEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="recursiveByRel">Repeats for Releases </label></div>
+                <div class="ui-grid-col-1">
+                    <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveByRel" [(ngModel)]="globalconfig.recursiveByRel"
+                        name="recursiveByRel" #recursiveByRel="ngModel"></p-inputSwitch>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="notes">Notes </label></div>
+                <div class="ui-grid-col-4">
+                    <textarea pInputTextarea id="notes" [(ngModel)]="globalconfig.notes"
+                        name="notes" #notes="ngModel"></textarea>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="sensitive">Contains Sensitive Info</label></div>
+                <div class="ui-grid-col-1">
+                    <p-inputSwitch onLabel="Yes" offLabel="No" id="sensitive" [(ngModel)]="globalconfig.sensitive"
+                        name="sensitive" #sensitive="ngModel"></p-inputSwitch>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+            
              <div class="ui-g">
                 <div class="ui-g-2" *ngIf="sub">
                     <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>

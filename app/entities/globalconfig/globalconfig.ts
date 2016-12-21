@@ -12,4 +12,10 @@ export class Globalconfig {
     parameter : string;
     value : string;
     hieraAddress : string;
+    recursiveByEnv : boolean;
+    recursiveByRel : boolean;
+    recursiveBySubEnv : boolean;
+    notes: string;
+    sensitive : boolean;
+
 }
