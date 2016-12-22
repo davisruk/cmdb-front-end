@@ -12,7 +12,7 @@ import { MessageService} from '../../service/message.service';
 import {ServerConfig} from './serverConfig';
 import {ServerConfigService} from './serverConfig.service';
 import {Server} from '../server/server';
-
+import { SecurityHelper } from '../../support/security-helper';
 @Component({
     moduleId: module.id,
 	templateUrl: 'serverConfig-detail.component.html',
@@ -22,7 +22,7 @@ export class ServerConfigDetailComponent implements OnInit, OnDestroy {
     serverConfig : ServerConfig;
 
     private params_subscription: any;
-
+    private allowWriteSensitive: boolean;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new ServerConfig
@@ -56,6 +56,8 @@ export class ServerConfigDetailComponent implements OnInit, OnDestroy {
                     );
             }
         });
+        
+        this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();         
     }
 
     ngOnDestroy() {

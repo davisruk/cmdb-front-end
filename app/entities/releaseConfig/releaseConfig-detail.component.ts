@@ -12,6 +12,7 @@ import { MessageService} from '../../service/message.service';
 import {ReleaseConfig} from './releaseConfig';
 import {ReleaseConfigService} from './releaseConfig.service';
 import {Release} from '../release/release';
+import { SecurityHelper } from '../../support/security-helper';
 
 @Component({
     moduleId: module.id,
@@ -22,7 +23,7 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
     releaseConfig : ReleaseConfig;
 
     private params_subscription: any;
-
+    private allowWriteSensitive: boolean;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new ReleaseConfig
@@ -56,6 +57,8 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
                     );
             }
         });
+
+        this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();        
     }
 
     ngOnDestroy() {

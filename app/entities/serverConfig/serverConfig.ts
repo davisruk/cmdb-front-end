@@ -13,6 +13,9 @@ export class ServerConfig {
     parameter : string;
     value : string;
     hieraAddress : string;
+    notes: string;
+    sensitive : boolean;
+    
     // x-to-one
     server : Server;
 }

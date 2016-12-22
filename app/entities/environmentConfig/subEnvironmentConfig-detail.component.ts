@@ -5,7 +5,7 @@ import { MessageService} from '../../service/message.service';
 import {SubEnvironmentConfig} from './subEnvironmentConfig';
 import {SubEnvironmentConfigService} from './subEnvironmentConfig.service';
 import {SubEnvironment} from '../environment/subEnvironment';
-
+import { SecurityHelper } from '../../support/security-helper';
 @Component({
     moduleId: module.id,
 	templateUrl: 'subEnvironmentConfig-detail.component.html',
@@ -16,7 +16,8 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
 
     private params_subscription: any;
     private envName: string;
-
+    private allowWriteSensitive: boolean;
+    
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new SubEnvironmentConfig
     set subEnvironment(subEnvironment : SubEnvironment) {
@@ -53,6 +54,8 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
                     );
             }
         });
+        
+        this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();
     }
 
     ngOnDestroy() {

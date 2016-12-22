@@ -11,7 +11,7 @@ import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {Globalconfig} from './globalconfig';
 import {GlobalconfigService} from './globalconfig.service';
-import { JwtHelper } from 'angular2-jwt';
+import { SecurityHelper } from '../../support/security-helper';
 
 @Component({
     moduleId: module.id,
@@ -52,15 +52,7 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
             }
         });
 
-        var token = localStorage.getItem('JWTToken');
-        let jwtHelper: JwtHelper = new JwtHelper();
-        var decodedToken = jwtHelper.decodeToken(token);
-        this.allowWriteSensitive = false;
-        decodedToken.userdeets.authorities.forEach((element:any) => {
-            let authority:String = element.authority;
-            if (authority == 'WRITE_SENSITIVE')
-                this.allowWriteSensitive = true;
-        });
+        this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();
     }
 
     ngOnDestroy() {

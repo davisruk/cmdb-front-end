@@ -24,7 +24,7 @@
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="value">Value </label></div>
                 <div class="ui-grid-col-6">
-                    <input pInputText id="value" [(ngModel)]="serverConfig.value"   name="value" #value="ngModel"/>
+                    <input pInputText id="value" [disabled]="!allowWriteSensitive && serverConfig.sensitive" [(ngModel)]="serverConfig.value"   name="value" #value="ngModel"/>
                 </div>
                 <div class="ui-grid-col-4">
                 </div>
@@ -37,6 +37,25 @@
                 <div class="ui-grid-col-4">
                 </div>
             </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="notes">Notes </label></div>
+                <div class="ui-grid-col-4">
+                    <textarea pInputTextarea id="notes" [(ngModel)]="serverConfig.notes"
+                        name="notes" #notes="ngModel"></textarea>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="sensitive">Contains Sensitive Info</label></div>
+                <div class="ui-grid-col-1">
+                    <p-inputSwitch [disabled]="!allowWriteSensitive" onLabel="Yes" offLabel="No" id="sensitive" [(ngModel)]="serverConfig.sensitive"
+                        name="sensitive" #sensitive="ngModel"></p-inputSwitch>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+            
              <div class="ui-g">
                 <div class="ui-g-2" *ngIf="sub">
                     <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>

@@ -13,6 +13,9 @@ export class SubEnvironmentConfig {
     parameter : string;
     value : string;
     hieraAddress : string;
+    notes: string;
+    sensitive : boolean;
+    
     // x-to-one
     subEnvironment : SubEnvironment;
 }
