@@ -120,6 +120,7 @@ import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/release
 
 import { Configuration } from './support/configuration';
 import { LogoutComponent } from './logout/logout-component';
+import { AUTH_PROVIDERS } from 'angular2-jwt';
 
 @NgModule({
     imports: [
@@ -261,6 +262,7 @@ import { LogoutComponent } from './logout/logout-component';
         ,SolutionComponentService
         ,ReleaseConfigService
         ,Configuration
+        ,AUTH_PROVIDERS
     ],
     bootstrap: [ AppComponent ]
 })

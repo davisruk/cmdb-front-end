@@ -16,7 +16,7 @@
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="value">Value </label></div>
                 <div class="ui-grid-col-6">
-                    <input pInputText id="value" [(ngModel)]="globalconfig.value"   name="value" #value="ngModel"/>
+                    <input [disabled]="!allowWriteSensitive && globalconfig.sensitive" pInputText id="value" [(ngModel)]="globalconfig.value"   name="value" #value="ngModel"/>
                 </div>
                 <div class="ui-grid-col-4">
                 </div>
@@ -68,7 +68,7 @@
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="sensitive">Contains Sensitive Info</label></div>
                 <div class="ui-grid-col-1">
-                    <p-inputSwitch onLabel="Yes" offLabel="No" id="sensitive" [(ngModel)]="globalconfig.sensitive"
+                    <p-inputSwitch [disabled]="!allowWriteSensitive" onLabel="Yes" offLabel="No" id="sensitive" [(ngModel)]="globalconfig.sensitive"
                         name="sensitive" #sensitive="ngModel"></p-inputSwitch>
                 </div>
                 <div class="ui-grid-col-4">

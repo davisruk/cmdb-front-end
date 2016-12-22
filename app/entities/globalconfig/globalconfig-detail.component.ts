@@ -11,6 +11,7 @@ import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {Globalconfig} from './globalconfig';
 import {GlobalconfigService} from './globalconfig.service';
+import { JwtHelper } from 'angular2-jwt';
 
 @Component({
     moduleId: module.id,
@@ -21,7 +22,7 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
     globalconfig : Globalconfig;
 
     private params_subscription: any;
-
+    private allowWriteSensitive: boolean;
 
     @Input() sub : boolean = false;
     @Output() onSaveClicked = new EventEmitter<Globalconfig>();
@@ -41,6 +42,7 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
 
             if (id === 'new') {
                 this.globalconfig = new Globalconfig();
+                this.globalconfig.sensitive = false;
             } else {
                 this.globalconfigService.getGlobalconfig(id)
                     .subscribe(
@@ -48,6 +50,16 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
+        });
+
+        var token = localStorage.getItem('JWTToken');
+        let jwtHelper: JwtHelper = new JwtHelper();
+        var decodedToken = jwtHelper.decodeToken(token);
+        this.allowWriteSensitive = false;
+        decodedToken.userdeets.authorities.forEach((element:any) => {
+            let authority:String = element.authority;
+            if (authority == 'WRITE_SENSITIVE')
+                this.allowWriteSensitive = true;
         });
     }
 

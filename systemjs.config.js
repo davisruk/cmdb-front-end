@@ -37,7 +37,8 @@
       // other libraries
       'rxjs': 'npm:rxjs',
       'angular2-in-memory-web-api': 'npm:angular2-in-memory-web-api',
-      'primeng': 'npm:primeng'
+      'primeng': 'npm:primeng',
+      'angular2-jwt': 'node_modules/angular2-jwt/angular2-jwt.js'
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
