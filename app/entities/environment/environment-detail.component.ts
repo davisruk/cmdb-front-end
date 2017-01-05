@@ -153,7 +153,10 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     }
 
     downLoadHiera(subEnvironment:SubEnvironment){
-        window.location.href=this.settings.createBackendURLFor('api/environments/subconfigdownload/' + subEnvironment.id);
+        subEnvironment.environment = this.environment;
+        this.environmentService.downloadSubEnvHieraData(subEnvironment.environment.name +
+                                                         "_" + subEnvironment.subEnvironmentType.name +
+                                                         "_hiera.csv", subEnvironment.id);
     }    
 
 }

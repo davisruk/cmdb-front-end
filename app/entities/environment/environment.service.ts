@@ -183,4 +183,9 @@ export class EnvironmentService {
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
         fileDownloader.downloadData(filename, 'api/environments/configdownloadall/' + envId);
     }
+
+    downloadSubEnvHieraData(filename:string, subEnvId:number){
+        let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
+        fileDownloader.downloadData(filename, 'api/environments/subconfigdownload/' + subEnvId);
+    }    
 }
