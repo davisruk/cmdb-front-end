@@ -16,11 +16,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     user : User;
 
     private params_subscription: any;
-
+    uploadedFiles: any[] = [];
     assignedRoles: Role[];
     
     availableRoles: Role[];
-    
+    serverPath:string = 'http://localhost:8080/api/users/photoUpload';
     @Input() sub : boolean = false;
     @Output() onSaveClicked = new EventEmitter<User>();
     @Output() onCancelClicked = new EventEmitter();
@@ -79,4 +79,15 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             this.messageService.info('Cancel clicked and msg emitted', 'Something wrong with that one bud?')
         }
     }
+
+    onBeforeUpload(event:any){
+        let xhr:XMLHttpRequest = event.xhr;
+        xhr.setRequestHeader('Authorization', localStorage.getItem('JWTToken'));
+    }
+
+    onUpload(event:any) {
+        for(let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+    }    
 }

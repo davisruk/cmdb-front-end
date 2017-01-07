@@ -6,6 +6,7 @@ import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { User } from './user';
 import { Configuration } from '../../support/configuration';
+import {FileUploadModule} from 'primeng/primeng';
 
 @Injectable()
 export class UserService {
