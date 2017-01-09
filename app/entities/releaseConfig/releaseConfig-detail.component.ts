@@ -81,8 +81,8 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
                         this.messageService.info('Saved OK and msg emitted', 'PrimeNG Rocks ;-)')
                     } else {
                         this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)');
-                        this.enableCreateFrom = true;
                     }
+                    this.enableCreateFrom = true;
                 },
                 error =>  this.messageService.error('Could not save', error)
             );

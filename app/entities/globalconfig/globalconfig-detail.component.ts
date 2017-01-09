@@ -23,6 +23,7 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
 
     private params_subscription: any;
     private allowWriteSensitive: boolean;
+    private enableCreateFrom: boolean;
 
     @Input() sub : boolean = false;
     @Output() onSaveClicked = new EventEmitter<Globalconfig>();
@@ -43,7 +44,9 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
             if (id === 'new') {
                 this.globalconfig = new Globalconfig();
                 this.globalconfig.sensitive = false;
+                this.enableCreateFrom = false;
             } else {
+                this.enableCreateFrom = true;
                 this.globalconfigService.getGlobalconfig(id)
                     .subscribe(
                         globalconfig => this.globalconfig = globalconfig,
@@ -72,6 +75,7 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
                     } else {
                         this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')
                     }
+                    this.enableCreateFrom = true;                    
                 },
                 error =>  this.messageService.error('Could not save', error)
             );
@@ -83,4 +87,10 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
             this.messageService.info('Cancel clicked and msg emitted', 'PrimeNG Rocks ;-)')
         }
     }
+
+    onCreateFrom(){
+        this.globalconfig.id = undefined;
+        this.enableCreateFrom = false;
+    }
+
  }

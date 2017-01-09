@@ -17,7 +17,7 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
     private params_subscription: any;
     private envName: string;
     private allowWriteSensitive: boolean;
-    
+    private enableCreateFrom: boolean;
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new SubEnvironmentConfig
     set subEnvironment(subEnvironment : SubEnvironment) {
@@ -43,7 +43,9 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
             if (id === 'new') {
                 this.subEnvironmentConfig = new SubEnvironmentConfig();
                 this.envName = '';
+                this.enableCreateFrom = false;
             } else {
+                this.enableCreateFrom = true;
                 this.subEnvironmentConfigService.getSubEnvironmentConfig(id)
                     .subscribe(
                         subEnvironmentConfig => {
@@ -83,6 +85,7 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
                     } else {
                         this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')
                     }
+                    this.enableCreateFrom = true;
                 },
                 error =>  this.messageService.error('Could not save', error)
             );
@@ -93,6 +96,11 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
             this.onCancelClicked.emit("cancel");
             this.messageService.info('Cancel clicked and msg emitted', 'PrimeNG Rocks ;-)')
         }
+    }
+
+    onCreateFrom(){
+        this.subEnvironmentConfig.id = undefined;
+        this.enableCreateFrom = false;
     }
 
 }

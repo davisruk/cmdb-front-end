@@ -17,6 +17,7 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy {
 
     private params_subscription: any;
     private allowWriteSensitive: boolean;
+    private enableCreateFrom: boolean;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new ComponentConfig
@@ -42,7 +43,9 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy {
 
             if (id === 'new') {
                 this.componentConfig = new ComponentConfig();
+                this.enableCreateFrom = false;
             } else {
+                this.enableCreateFrom = true;
                 this.componentConfigService.getComponentConfig(id)
                     .subscribe(
                         componentConfig => this.componentConfig = componentConfig,
@@ -78,6 +81,7 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy {
                     } else {
                         this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')
                     }
+                    this.enableCreateFrom = true;
                 },
                 error =>  this.messageService.error('Could not save', error)
             );
@@ -90,4 +94,8 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy {
         }
     }
 
+    onCreateFrom(){
+        this.componentConfig.id = undefined;
+        this.enableCreateFrom = false;
+    }
 }

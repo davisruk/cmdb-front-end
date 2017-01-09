@@ -63,6 +63,9 @@
                 <div class="ui-g-2">
                     <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!componentConfigForm.form.valid"></button>
                 </div>
+                <div class="ui-g-2">
+                    <button pButton type="button" (click)="onCreateFrom()" label="Create From" [disabled]="!enableCreateFrom"></button>
+                </div>
             </div>
         </div>
     </p-panel>
