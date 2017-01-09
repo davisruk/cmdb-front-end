@@ -18,4 +18,13 @@ export class ComponentConfig {
     
     // x-to-one
     my_component : SolutionComponent;
+    
+    constructor(){
+        this.parameter = "";
+        this.value = "";
+        this.hieraAddress = "";
+        this.notes = "";
+        this.sensitive = false;
+    }
+
 }

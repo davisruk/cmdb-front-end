@@ -18,4 +18,13 @@ export class SubEnvironmentConfig {
     
     // x-to-one
     subEnvironment : SubEnvironment;
+
+        constructor(){
+        this.parameter = "";
+        this.value = "";
+        this.hieraAddress = "";
+        this.notes = "";
+        this.sensitive = false;
+    }
+
 }

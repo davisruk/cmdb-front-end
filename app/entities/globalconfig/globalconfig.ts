@@ -18,4 +18,15 @@ export class Globalconfig {
     notes: string;
     sensitive : boolean;
 
+    constructor(){
+        this.parameter = "";
+        this.value = "";
+        this.hieraAddress = "";
+        this.recursiveByEnv = false;
+        this.recursiveBySubEnv = false;
+        this.recursiveByRel = false;
+        this.notes = "";
+        this.sensitive = false;
+    }
+
 }

@@ -18,4 +18,13 @@ export class ServerConfig {
     
     // x-to-one
     server : Server;
+
+    constructor(){
+        this.parameter = "";
+        this.value = "";
+        this.hieraAddress = "";
+        this.notes = "";
+        this.sensitive = false;
+    }
+    
 }

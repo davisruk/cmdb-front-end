@@ -20,4 +20,14 @@ export class ReleaseConfig {
     
     // x-to-one
     release : Release;
+
+    constructor(){
+        this.parameter = "";
+        this.value = "";
+        this.hieraAddress = "";
+        this.recursiveByEnv = false;
+        this.recursiveBySubEnv = false;
+        this.notes = "";
+        this.sensitive = false;
+    }
 }
