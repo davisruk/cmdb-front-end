@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { SolutionComponent } from './solutionComponent';
-import { HieraValues } from '../hiera/hieravalues';
+import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration';
 
 @Injectable()

@@ -15,7 +15,7 @@ import { PageResponse } from "../../support/paging";
 
 @Component({
     moduleId: module.id,
-	templateUrl: 'subenvironment-detail.component.html',
+	templateUrl: 'subEnvironment-detail.component.html',
 	selector: 'subenvironment-detail',
 })
 export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
@@ -48,9 +48,6 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        if (this.sub) {
-            return;
-        }
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
             console.log('ngOnInit for subenvironment-detail ' + id);
