@@ -12,7 +12,7 @@
                  [rowsPerPageOptions]="[5,10,20,50,100]"
                  [responsive]="true">
         <header>{{header}} (count: {{currentPage.totalElements}})</header>
-        <p-column field="userName" header="User Name" sortable="true"></p-column>
+        <p-column field="username" header="User Name" sortable="true"></p-column>
         <p-column styleClass="col-icon">
             <template let-role="rowData" pTemplate type="body">
                 <button type="button" pButton icon="fa-trash" (click)="showDeleteDialog(role)" style="float:left"></button>
@@ -27,9 +27,9 @@
 
     <p-dialog header="Delete User ?" [(visible)]="displayDeleteDialog" [responsive]="true" showEffect="fade" [modal]="true" closeOnEscape="true" (onAfterHide)="userToDelete = null">
         <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="roleToDelete">
-            <div class="ui-grid-row" *ngIf="usreToDelete.userName">
+            <div class="ui-grid-row" *ngIf="userToDelete.username">
                 <div class="ui-grid-col-4">Name:</div>
-                <div class="ui-grid-col-8">{{ userToDelete.userName }}</div>
+                <div class="ui-grid-col-8">{{ userToDelete.username }}</div>
             </div>
         </div>
         <footer>

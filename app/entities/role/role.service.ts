@@ -32,6 +32,12 @@ export class RoleService {
             .catch(this.handleError);
     }    
 
+    getAllRoles() : Observable<Role[]>{
+        return this.http.get(this.settings.createBackendURLFor('api/roles/all'), this.options)
+            .map(response => response.json())
+            .catch(this.handleError);
+    }    
+
     getUnassignedRolesForUser(user : User) : Observable<Role[]>{
         return this.http.get(this.settings.createBackendURLFor('api/unassignedrolesforuser/' + user.id), this.options)
             .map(response => <Role[]> response.json())
@@ -67,7 +73,6 @@ export class RoleService {
 
     /**
      * Performs a search by example on 1 attribute (defined on server side) and returns at most 10 results.
-     * Used by ServerTypeCompleteComponent.
      */
     complete(query : string) : Observable<Role[]> {
         let body = JSON.stringify({'query': query, 'maxResults': 10});
