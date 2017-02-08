@@ -4,23 +4,23 @@ import { Configuration } from './configuration';
 
 export class FileDownloader{
     constructor(private http: Http, private settings : Configuration) {}
-    private downloadFile(downloadURL:string): Observable<Blob> {
-        let txtCsvOptions = new RequestOptions({ headers: new Headers({
+    private downloadFile(downloadURL:string, mimeType:String): Observable<Blob> {
+        let txtFileOptions = new RequestOptions({ headers: new Headers({
                                                                         'Content-Type': 'application/json',
-                                                                        'Accept': 'text/csv',
+                                                                        'Accept': mimeType,
                                                                         'Authorization': localStorage.getItem('JWTToken')
                                                                     }),
                                                                         responseType: ResponseContentType.Blob
                                                                 });
-    return this.http.post(this.settings.createBackendURLFor(downloadURL), '', txtCsvOptions)
+    return this.http.post(this.settings.createBackendURLFor(downloadURL), '', txtFileOptions)
         .map(response=><Blob>response.blob())
         .catch(this.handleError);
     }
 
-    public downloadData(exportFilename:string, url:string){
+    public downloadData(exportFilename:string, url:string, mimeType:string){
         if (exportFilename == undefined)
             exportFilename = "nofilename.tmp";
-        this.downloadFile(url)
+        this.downloadFile(url, mimeType)
             .subscribe(data => {
                 if (navigator.msSaveBlob) {
                     // IE11 - actually better than Chrome & FF!!

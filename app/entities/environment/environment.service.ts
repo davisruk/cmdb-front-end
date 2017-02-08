@@ -176,16 +176,21 @@ export class EnvironmentService {
 
     downloadAllHieraData(filename:string){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/configdownloadall');
+        fileDownloader.downloadData(filename, 'api/environments/configdownloadall', 'text/csv');
+    }
+
+    downloadAllHieraDataAsYAML(filename:string){
+        let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
+        fileDownloader.downloadData(filename, 'api/environments/configdownloadyaml', 'text/plain');
     }
 
     downloadEnvHieraData(filename:string, envId:number){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/configdownloadall/' + envId);
+        fileDownloader.downloadData(filename, 'api/environments/configdownloadall/' + envId, 'text/csv');
     }
 
     downloadSubEnvHieraData(filename:string, subEnvId:number){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/subconfigdownload/' + subEnvId);
+        fileDownloader.downloadData(filename, 'api/environments/subconfigdownload/' + subEnvId, 'text/csv');
     }    
 }

@@ -92,6 +92,11 @@ export class EnvironmentListComponent{
         this.environmentService.downloadAllHieraData("complete_hiera.csv");
     }
 
+    downloadAllHieraDataAsYAML(){
+        this.environmentService.downloadAllHieraDataAsYAML("config.yml");
+    }
+    
+
     downloadAllHieraByEnv(environment:Environment){
         this.environmentService.downloadEnvHieraData(environment.name + "_hiera.csv", environment.id);
     }
