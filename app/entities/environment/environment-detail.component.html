@@ -24,7 +24,7 @@
                 <div class="ui-grid-col-3">
                     <p-dataList [value]="environment.subEnvironments">
                         <header>SubEnvironments</header>
-                         <template let-subEnvironment>
+                         <template let-subEnvironment pTemplate="item">
                             <div class="ui-grid ui-grid-responsive ui-fluid">
                                 <div class="ui-grid-row">
                                     <div style="text-align:center;margin-top:12px" class="ui-grid-col-4">{{subEnvironment.subEnvironmentType.name}}</div>
