@@ -16,6 +16,7 @@ import {FlatSubEnv} from './flatSubEnv';
 	templateUrl: 'server-detail.component.html',
 	selector: 'server-detail',
     styleUrls: ['datatable-overrides.css'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class ServerDetailComponent implements OnInit, OnDestroy {

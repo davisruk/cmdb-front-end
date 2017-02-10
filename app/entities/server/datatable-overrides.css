@@ -1,4 +1,4 @@
-:host >>> .ui-state-highlight{
-    background: #ffffff;
+.ui-datatable tbody > tr.ui-widget-content.ui-state-highlight {
+    background-color: #ffffff;
     color: #000000
 }
