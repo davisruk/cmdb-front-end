@@ -189,6 +189,11 @@ export class EnvironmentService {
         fileDownloader.downloadData(filename, 'api/environments/configdownloadall/' + envId, 'text/csv');
     }
 
+    downloadEnvHieraYAMLData(filename:string, envName:string){
+        let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
+        fileDownloader.downloadData(filename, 'api/environments/yaml/' + envName, 'text/plain');
+    }
+
     downloadSubEnvHieraData(filename:string, subEnvId:number){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
         fileDownloader.downloadData(filename, 'api/environments/subconfigdownload/' + subEnvId, 'text/csv');

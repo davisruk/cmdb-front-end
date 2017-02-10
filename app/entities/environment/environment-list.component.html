@@ -16,6 +16,7 @@
         <p-column styleClass="col-icon">
             <template let-environment="rowData" pTemplate ="body">
                 <button type="button" pButton icon="fa-floppy-o" label="Hiera" (click)="downloadAllHieraByEnv(environment)" style="float:left"></button>
+                <button type="button" pButton icon="fa-floppy-o" label="YAML" (click)="downloadEnvHieraDataAsYAML(environment)" style="float:left"></button>
             </template>
         </p-column>
         <p-column styleClass="col-icon">
