@@ -11,18 +11,18 @@
                  [(selection)]="selectedUser"
                  [rowsPerPageOptions]="[5,10,20,50,100]"
                  [responsive]="true">
-        <header>{{header}} (count: {{currentPage.totalElements}})</header>
+        <p-header>{{header}} (count: {{currentPage.totalElements}})</p-header>
         <p-column field="username" header="User Name" sortable="true"></p-column>
         <p-column styleClass="col-icon">
-            <template let-role="rowData" pTemplate type="body">
+            <template let-role="rowData" pTemplate = "body">
                 <button type="button" pButton icon="fa-trash" (click)="showDeleteDialog(role)" style="float:left"></button>
             </template>
         </p-column>
-        <footer>
+        <p-footer>
             <div class="ui-helper-clearfix" style="width:100%">
                 <button type="button" pButton icon="fa-plus" style="float:left" (click)="addNew()" label="Add"></button>
             </div>
-        </footer>
+        </p-footer>
     </p-dataTable>
 
     <p-dialog header="Delete User ?" [(visible)]="displayDeleteDialog" [responsive]="true" showEffect="fade" [modal]="true" closeOnEscape="true" (onAfterHide)="userToDelete = null">
@@ -32,10 +32,10 @@
                 <div class="ui-grid-col-8">{{ userToDelete.username }}</div>
             </div>
         </div>
-        <footer>
+        <p-footer>
             <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
                 <button type="button" pButton icon="fa-trash" (click)="delete()" label="Delete"></button>
             </div>
-        </footer>
+        </p-footer>
     </p-dialog>
 </div>

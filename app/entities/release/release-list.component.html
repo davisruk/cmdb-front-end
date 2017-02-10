@@ -11,24 +11,24 @@
                  [(selection)]="selectedRelease"
                  [rowsPerPageOptions]="[5,10,20,50,100]"
                  [responsive]="true">
-        <header>{{header}} (count: {{currentPage.totalElements}})</header>
+        <p-header>{{header}} (count: {{currentPage.totalElements}})</p-header>
         <p-column field="name" header="Name" sortable="true"></p-column>
         <p-column styleClass="col-icon">
-            <template let-release="rowData" pTemplate type="body">
+            <template let-release="rowData" pTemplate ="body">
                 <button type="button" pButton icon="fa-trash" (click)="showDeleteDialog(release)" style="float:left"></button>
             </template>
         </p-column>
         <p-column styleClass="col-icon">
-            <template let-release="rowData" pTemplate type="body">
+            <template let-release="rowData" pTemplate ="body">
 
             </template>
         </p-column>
-        <footer>
+        <p-footer>
             <div class="ui-helper-clearfix" style="width:100%">
                 <button type="button" pButton icon="fa-plus" style="float:left" (click)="addNew()" label="Add"></button>
                 <button type="button" pButton icon="fa-floppy-o" label="All Hiera" (click)="downloadAllHiera()" style="float:left"></button>
             </div>
-        </footer>
+        </p-footer>
     </p-dataTable>
 
     <p-dialog header="Delete Release ?" [(visible)]="displayDeleteDialog" [responsive]="true" showEffect="fade" [modal]="true" closeOnEscape="true" (onAfterHide)="releaseToDelete = null">
@@ -38,10 +38,10 @@
                 <div class="ui-grid-col-8">{{ releaseToDelete.name }}</div>
             </div>
         </div>
-        <footer>
+        <p-footer>
             <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
                 <button type="button" pButton icon="fa-trash" (click)="delete()" label="Delete"></button>
             </div>
-        </footer>
+        </p-footer>
     </p-dialog>
 </div>

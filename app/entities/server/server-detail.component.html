@@ -29,7 +29,7 @@
             <p-dataTable [value]="flatSubEnvs" sortField="envName" rowGroupMode="rowspan" [rows]="10" 
                     [paginator]="true" [style]="{'margin-top':'50px'}" [selection]="selectedFlatSubEnvs"
                     (onRowSelect)="subEnvSelected($event)" (onRowUnselect)="subEnvUnselected($event)">
-                <header>Environments and Sub Environments</header>
+                <p-header>Environments and Sub Environments</p-header>
                 <p-column field="envName" value="id" header="Environment" [filter]="true" sortable="true"></p-column>
                 <p-column field="subEnvType" value="id" header="Type" [filter]="true" sortable="true"></p-column>
                 <p-column selectionMode="multiple"></p-column>

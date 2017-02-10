@@ -30,7 +30,7 @@
             <div class="ui-grid-row">
                 <div class="ui-grid-col-5">
                     <p-dataTable [value]="subEnvironment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb" selectionMode="multiple" [(selection)]="serversToRemove">
-                        <header>List of Servers</header>
+                        <p-header>List of Servers</p-header>
                         <p-column field="name" header="Server Name (startsWith)" [filter]="true" sortable="true"></p-column>
                         <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains"sortable="true"></p-column>
                     </p-dataTable>
@@ -47,7 +47,7 @@
                                     [(selection)]="serversToAdd"
                                     [rowsPerPageOptions]="[5,10,20,50,100]"
                                     [responsive]="true">
-                            <header>Available Servers</header>
+                            <p-header>Available Servers</p-header>
                             <p-column field="name" header="Server Name" sortable="true" [filter]="true" filterDelay="400" filterMatchMode="contains"></p-column>
                             <p-column field="serverType.name" header="Server Type" sortable="true" filterDelay="400" [filter]="true" filterMatchMode="contains"></p-column>
                     </p-dataTable>

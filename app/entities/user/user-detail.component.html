@@ -41,7 +41,7 @@
                 <div class="ui-grid-col-2"><label for="enabled">Roles </label></div>
                 <div class="ui-grid-col-6">
                     <p-pickList [source]="user.roles" [target]="availableRoles" sourceHeader="Assigned" targetHeader="Available" [responsive]="true">
-                        <template let-role pTemplate type="item">
+                        <template let-role pTemplate ="item">
                             <div class="ui-helper-clearfix">
                                 <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{role.name}}</div>
                             </div>
@@ -54,7 +54,7 @@
             <div>
                 <p-fileUpload name="photo[]" [url]="serverPath" (onUpload)="onUpload($event)" 
                         (onBeforeSend)="onBeforeUpload($event)" accept="image/*" maxFileSize="1000000">
-                    <template pTemplate type="content">
+                    <template pTemplate ="item">
                         <ul *ngIf="uploadedFiles.length">
                             <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
                         </ul>
