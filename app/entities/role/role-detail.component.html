@@ -13,7 +13,21 @@
                     </div>
                 </div>
             </div>
-             <div class="ui-g">
+             <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="enabled">Privileges </label></div>
+                <div class="ui-grid-col-6">
+                    <p-pickList [source]="role.privileges" [target]="availablePrivileges" sourceHeader="Assigned" targetHeader="Available" [responsive]="true">
+                        <template let-privilege pTemplate ="body">
+                            <div class="ui-helper-clearfix">
+                                <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{privilege.name}}</div>
+                            </div>
+                        </template>
+                    </p-pickList>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+            <div class="ui-g">
                 <div class="ui-g-2" *ngIf="sub">
                     <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
                 </div>

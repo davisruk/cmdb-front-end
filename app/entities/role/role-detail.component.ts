@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {Role} from './role';
+import {Privilege} from './privilege';
 import {RoleService} from './role.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
     role : Role;
 
     private params_subscription: any;
-
+    private availablePrivileges: Privilege[];
 
     @Input() sub : boolean = false;
     @Output() onSaveClicked = new EventEmitter<Role>();
@@ -34,10 +35,15 @@ export class RoleDetailComponent implements OnInit, OnDestroy {
 
             if (id === 'new') {
                 this.role = new Role();
+                this.roleService.getAllPrivileges().subscribe(p=>this.availablePrivileges = p);
+                this.role.privileges = new Array<Privilege>();                
             } else {
                 this.roleService.getRole(id)
                     .subscribe(
-                        role => this.role = role,
+                        role => {
+                            this.role = role,
+                            this.roleService.getUnassignedPrivilegesForRole(this.role).subscribe(p => this.availablePrivileges = p)
+                        },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }

@@ -4,6 +4,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
 import { Observable } from 'rxjs/Observable';
 import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
+import { Privilege } from './privilege';
 import { Role } from './role';
 import { User } from '../user/user';
 import { Configuration } from '../../support/configuration';
@@ -40,6 +41,18 @@ export class RoleService {
 
     getUnassignedRolesForUser(user : User) : Observable<Role[]>{
         return this.http.get(this.settings.createBackendURLFor('api/unassignedrolesforuser/' + user.id), this.options)
+            .map(response => <Role[]> response.json())
+            .catch(this.handleError);
+    }    
+
+    getAllPrivileges() : Observable<Privilege[]>{
+        return this.http.get(this.settings.createBackendURLFor('api/roles/privileges/all'), this.options)
+            .map(response => response.json())
+            .catch(this.handleError);
+    }    
+
+    getUnassignedPrivilegesForRole(role : Role) : Observable<Privilege[]>{
+        return this.http.get(this.settings.createBackendURLFor('api/roles/unassignedprivileges/' + role.id), this.options)
             .map(response => <Role[]> response.json())
             .catch(this.handleError);
     }    
