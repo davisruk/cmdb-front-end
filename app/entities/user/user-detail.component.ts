@@ -39,6 +39,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
             if (id === 'new') {
                 this.user = new User();
+                this.user.enabled = false;
                 this.roleService.getAllRoles().subscribe(p=>this.availableRoles = p);
                 this.user.roles = new Array<Role>();
             } else {
