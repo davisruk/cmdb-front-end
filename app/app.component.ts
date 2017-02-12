@@ -193,6 +193,6 @@ export class AppComponent implements OnInit {
     }
 
     openSwagger(){
-        window.open(this.settings.createBackendURLFor('swagger-ui/index.html'));
+        window.open(this.settings.createBackendURLFor('swagger-ui.html'));
     }
 }
