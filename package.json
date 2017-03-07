@@ -1,5 +1,5 @@
 {
-  "name": "Columbus-CMDB",
+  "name": "Columbus_CMDB",
   "version": "v1.0.0-SNAPSHOT",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
@@ -27,7 +27,7 @@
     "zone.js": "^0.6.21",
     "systemjs": "0.19.41",
 
-    "primeng": "2.0.0",
+    "primeng": "2.0.2",
 
     "primeui": "^4.1.15"
   },

@@ -85,9 +85,13 @@ export class SolutionComponentService {
     // sample method from angular doc
     private handleError (error: any) {
         // TODO: seems we cannot use messageService from here...
+/*
         let errMsg = (error.message) ? error.message :
         error.status ? `Status: ${error.status} - Text: ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
+  
         return Observable.throw(errMsg);
-    }
+*/
+      return Observable.throw(error.json().message);  
+  }
 }

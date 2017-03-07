@@ -98,4 +98,12 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy {
         this.componentConfig.id = undefined;
         this.enableCreateFrom = false;
     }
+
+    onRefresh(){
+        this.componentConfigService.getComponentConfig(this.componentConfig.id)
+        .subscribe(
+            componentConfig => this.componentConfig = componentConfig,
+            error =>  this.messageService.error('ngOnInit error', error)
+        );
+    }
 }
