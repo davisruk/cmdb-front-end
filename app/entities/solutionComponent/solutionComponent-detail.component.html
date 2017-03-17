@@ -36,7 +36,11 @@
                     <button pButton type="button" (click)="onDownload()" icon="fa-floppy-o" label="Download HieraValues"></button>
                 </div>
                 <div class="ui-g-2">
-                    <button pButton type="button" (click)="onRefresh()" icon="fa-refresh" label="Refresh"> </button>
+                    <refresh-component [dataService]="solutionComponentService"
+                                        [dataId]="solutionComponent.id"
+                                        (dataRefresh)="onRefresh($event)"
+                                        [messageService]="messageService">
+                    </refresh-component>
                 </div>                
             </div>
         </div>

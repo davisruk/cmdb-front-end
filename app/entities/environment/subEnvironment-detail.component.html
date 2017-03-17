@@ -52,12 +52,19 @@
             </div>
             <div class="ui-grid-row">
                 <div class="ui-g">
-                    <div class="ui-g-2">
+                    <div class="ui-grid-row-2">
                         <button *ngIf="sub" pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
                     </div>
-                    <div class="ui-grid-row-12">
+                    <div class="ui-grid-row-2">
                         <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!subEnvironmentForm.form.valid"></button>
                     </div>
+                    <div class="ui-grid-row-2">
+                        <refresh-component [dataService]="subEnvironmentService"
+                            [dataId]="subEnvironment.id"
+                            (dataRefresh)="onRefresh($event)"
+                            [messageService]="messageService">
+                        </refresh-component>
+                    </div>                    
                 </div>
             </div>
 <!--

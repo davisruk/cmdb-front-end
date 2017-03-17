@@ -33,7 +33,7 @@
                                     </div>
                                     <div class="ui-g-8">
                                             <button pButton id="downloadHiera"
-                                                type="button" icon="fa-floppy-o" label="Hiera Data" (click)="downLoadHiera(subEnvironment)"></button>
+                                                type="button" icon="fa-floppy-o" label="YAML" (click)="downLoadHiera(subEnvironment)"></button>
                                     </div>
                                 </div>
                             </div>
@@ -48,8 +48,15 @@
                 <div class="ui-g-2">
                     <button *ngIf="sub" pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
                 </div>
-                <div class="ui-g-2">
+                <div class="ui-g-1">
                     <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!environmentForm.form.valid"></button>
+                </div>
+                <div class="ui-g-2">
+                    <refresh-component [dataService]="environmentService"
+                        [dataId]="environment.id"
+                        (dataRefresh)="onRefresh($event)"
+                        [messageService]="messageService">
+                    </refresh-component>
                 </div>
             </div>
         </div>

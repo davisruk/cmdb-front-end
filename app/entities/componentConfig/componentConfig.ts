@@ -1,26 +1,23 @@
-
 import {SolutionComponent} from '../solutionComponent/solutionComponent';
+import {BaseEntity} from '../../support/base-entity';
 
-export class ComponentConfig {
-    // Raw attributes
-    id : number;
+export class ComponentConfig extends BaseEntity{
     parameter : string;
     value : string;
     hieraAddress : string;
     notes: string;
     sensitive : boolean;
-    version : number;
 
     // x-to-one
     my_component : SolutionComponent;
     
-    constructor(){
+    constructor() {
+        super();
         this.parameter = "";
         this.value = "";
         this.hieraAddress = "";
         this.notes = "";
         this.sensitive = false;
-        this.version = 0;
     }
 
 }

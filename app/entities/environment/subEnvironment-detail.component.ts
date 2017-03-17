@@ -5,6 +5,7 @@ import { MessageService} from '../../service/message.service';
 import {Environment, EnvironmentType} from './environment';
 import {SubEnvironment, SubEnvironmentType} from './subEnvironment';
 import {EnvironmentService} from './environment.service';
+import {SubEnvironmentService} from './subEnvironment.service';
 import {Release} from '../release/release';
 import {HieraValues} from '../hiera/hieraValues';
 import {Configuration} from '../../support/configuration';
@@ -12,6 +13,7 @@ import {Server} from '../server/server';
 import {ServerType} from '../serverType/serverType';
 import {ServerService} from '../server/server.service';
 import { PageResponse } from "../../support/paging";
+import { RefreshComponent } from '../../support/refresh.component';
 
 @Component({
     moduleId: module.id,
@@ -44,7 +46,7 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
 
     constructor(private route: ActivatedRoute, private router: Router, 
                 private messageService: MessageService, private environmentService: EnvironmentService,
-                private sService: ServerService, private settings : Configuration) {
+                private subEnvironmentService: SubEnvironmentService, private sService: ServerService, private settings : Configuration) {
     }
 
     ngOnInit() {
@@ -61,7 +63,7 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
                     this.getSubEnvTypes(this.subEnvironment);
                 });
             } else {
-                this.environmentService.getSubEnvironment(id)
+                this.subEnvironmentService.getSubEnvironment(id)
                     .subscribe(
                         subEnvironment => {
                             this.subEnvironment = subEnvironment;
@@ -209,4 +211,9 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     clearRelease() {
         this.subEnvironment.release = null;
     }
+
+    onRefresh(newData: SubEnvironment){
+        this.subEnvironment = newData;
+        this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
+    }    
 }

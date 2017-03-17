@@ -29,7 +29,7 @@ import { EnvironmentCompleteComponent } from './entities/environment/environment
 import { SubEnvironmentDetailComponent } from './entities/environment/subEnvironment-detail.component';
 import { SubEnvironmentLineComponent } from './entities/environment/subEnvironment-line.component';
 import { SubEnvironmentCompleteComponent } from './entities/environment/subEnvironment-auto-complete.component';
-
+import { SubEnvironmentService } from './entities/environment/subEnvironment.service';
 
 import {SubEnvironmentConfigService} from './entities/environmentConfig/subEnvironmentConfig.service'
 import {SubEnvironmentConfigListComponent} from './entities/environmentConfig/subEnvironmentConfig-list.component'
@@ -110,7 +110,7 @@ import { ReleaseConfigListComponent } from './entities/releaseConfig/releaseConf
 import { ReleaseConfigDetailComponent } from './entities/releaseConfig/releaseConfig-detail.component';
 import { ReleaseConfigLineComponent } from './entities/releaseConfig/releaseConfig-line.component';
 import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/releaseConfig-auto-complete.component';
-
+import { RefreshComponent } from './support/refresh.component';
 import { Configuration } from './support/configuration';
 import { LogoutComponent } from './logout/logout-component';
 import { AUTH_PROVIDERS } from 'angular2-jwt';
@@ -153,6 +153,8 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
         AppComponent,
         HomeComponent,
         EmailValidator
+        ,
+        RefreshComponent
         ,
         ComponentConfigListComponent,
         ComponentConfigDetailComponent,
@@ -240,6 +242,7 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
         MessageService
         ,ComponentConfigService
         ,EnvironmentService
+        ,SubEnvironmentService
         ,SubEnvironmentConfigService
         ,GlobalconfigService
         ,PackageInfoService

@@ -6,9 +6,9 @@ import { MessageService } from '../../service/message.service';
 import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { ComponentConfig } from './componentConfig';
 import { Configuration } from '../../support/configuration';
-
+import { RefreshService } from '../../support/refresh.service';
 @Injectable()
-export class ComponentConfigService {
+export class ComponentConfigService implements RefreshService{
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
 
@@ -17,6 +17,11 @@ export class ComponentConfigService {
     /**
      * Get a ComponentConfig by id.
      */
+
+    refreshData(id : any) : Observable<any> {
+        return this.getComponentConfig(id);
+    }
+
     getComponentConfig(id : any) : Observable<ComponentConfig> {
         return this.http.get(this.settings.createBackendURLFor('api/componentConfigs/' + id), this.options)
             .map(response => <ComponentConfig> response.json())

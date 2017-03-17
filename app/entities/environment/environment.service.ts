@@ -10,26 +10,24 @@ import { Server } from '../server/server';
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration';
 import { FileDownloader } from '../../support/filedownloader';
+import { RefreshService } from '../../support/refresh.service';
 
 @Injectable()
-export class EnvironmentService {
+export class EnvironmentService implements RefreshService {
 
     private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
     
     constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 
+    refreshData(id : any) : Observable<any> {
+        return this.getEnvironment(id);
+    }    
     /**
      * Get a Environment by id.
      */
     getEnvironment(id : any) : Observable<Environment> {
         return this.http.get(this.settings.createBackendURLFor('api/environments/' + id), this.options)
             .map(response => <Environment> response.json())
-            .catch(this.handleError);
-    }
-
-    getSubEnvironment(id : any) : Observable<SubEnvironment> {
-        return this.http.get(this.settings.createBackendURLFor('api/subenvironments/' + id), this.options)
-            .map(response => <SubEnvironment> response.json())
             .catch(this.handleError);
     }
 
@@ -167,11 +165,14 @@ export class EnvironmentService {
 
     // sample method from angular doc
     private handleError (error: any) {
+/*
         // TODO: seems we cannot use messageService from here...
         let errMsg = (error.message) ? error.message :
         error.status ? `Status: ${error.status} - Text: ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
         return Observable.throw(errMsg);
+*/
+        return Observable.throw(error.json().message);
     }
 
     downloadAllHieraData(filename:string){

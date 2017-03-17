@@ -6,6 +6,7 @@ import {ComponentConfig} from './componentConfig';
 import {ComponentConfigService} from './componentConfig.service';
 import {SolutionComponent} from '../solutionComponent/solutionComponent';
 import { SecurityHelper } from '../../support/security-helper';
+import { RefreshComponent } from '../../support/refresh.component';
 
 @Component({
     moduleId: module.id,
@@ -99,11 +100,8 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy {
         this.enableCreateFrom = false;
     }
 
-    onRefresh(){
-        this.componentConfigService.getComponentConfig(this.componentConfig.id)
-        .subscribe(
-            componentConfig => this.componentConfig = componentConfig,
-            error =>  this.messageService.error('ngOnInit error', error)
-        );
+    onRefresh(newData: ComponentConfig){
+        this.componentConfig = newData;
     }
+    
 }

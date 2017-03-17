@@ -1,6 +1,7 @@
 import {PackageInfo} from '../packageInfo/packageInfo';
+import {BaseEntity} from '../../support/base-entity';
 
-export class SolutionComponent {
+export class SolutionComponent extends BaseEntity{
     // Raw attributes
     id : number;
     name : string;
@@ -9,7 +10,7 @@ export class SolutionComponent {
     version: number;
 
     constructor(){
-        this.version = 0;
+        super();
         this.name = "";
         this.packageInfo = null;
     }

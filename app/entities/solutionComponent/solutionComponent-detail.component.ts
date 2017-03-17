@@ -96,12 +96,9 @@ export class SolutionComponentDetailComponent implements OnInit, OnDestroy {
         window.location.href=this.settings.createBackendURLFor('api/solutionComponents/configdownload/' + this.solutionComponent.id);
     }
 
-    onRefresh(){
-        this.solutionComponentService.getSolutionComponent(this.solutionComponent.id)
-        .subscribe(
-            solutionComponent => this.solutionComponent = solutionComponent,
-            error =>  this.messageService.error('ngOnInit error', error)
-        );
-    }
+    onRefresh(newData: SolutionComponent){
+	this.solutionComponent = newData;
+}
+
     
 }

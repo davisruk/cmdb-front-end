@@ -11,6 +11,7 @@ import {Configuration} from '../../support/configuration';
 import {Server} from '../server/server';
 import {ServerService} from '../server/server.service';
 import { PageResponse } from "../../support/paging";
+import { RefreshComponent } from '../../support/refresh.component';
 
 @Component({
     moduleId: module.id,
@@ -159,5 +160,9 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                                                          "_hiera.csv", subEnvironment.id);
     }    
 
+    onRefresh(newData: Environment){
+	    this.environment = newData;
+        this.selectedEnvType = "" + this.environment.type.name;
+    }
 }
 
