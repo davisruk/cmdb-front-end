@@ -215,5 +215,6 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     onRefresh(newData: SubEnvironment){
         this.subEnvironment = newData;
         this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
+        this.getAvailableServers(this.subEnvironment, this.lastLazyLoadEvent);
     }    
 }
