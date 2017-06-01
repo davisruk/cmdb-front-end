@@ -12,9 +12,10 @@
                  [rowsPerPageOptions]="[5,10,20,50,100]"
                  [responsive]="true">
         <p-header>{{header}} (count: {{currentPage.totalElements}})</p-header>
-        <p-column field="parameter" header="Parameter" sortable="true"></p-column>
+        <p-column field="parameter" header="Parameter" sortable="true" [filter]="true"></p-column>
         <p-column field="value" header="Value" sortable="true"></p-column>
         <p-column field="hieraAddress" header="Hiera Address" sortable="true"></p-column>
+        <p-column field="release.name" header="Release" sortable="true" [filter]="true"></p-column>
         <p-column styleClass="col-icon">
             <template let-releaseConfig="rowData" pTemplate = "body">
                 <button type="button" pButton icon="fa-trash" (click)="showDeleteDialog(releaseConfig)" style="float:left"></button>

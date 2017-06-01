@@ -42,8 +42,8 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy {
             console.log('ngOnInit for globalconfig-detail ' + id);
 
             if (id === 'new') {
-                this.globalconfig = new Globalconfig();
-                this.globalconfig.sensitive = false;
+                this.globalconfig = new Globalconfig().emptyFactory();
+                //this.globalconfig.sensitive = false;
                 this.enableCreateFrom = false;
             } else {
                 this.enableCreateFrom = true;

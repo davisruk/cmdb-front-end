@@ -44,6 +44,31 @@ export class GlobalconfigListComponent {
                 private messageService : MessageService, private settings : Configuration) { }
 
     loadPage(event : LazyLoadEvent) {
+        this.example = null;
+        if (event.filters != undefined){
+            if (event.filters["parameter"] != undefined) {
+                this.example = new Globalconfig(event.filters["parameter"].value);
+                event.filters["parameter"].matchMode="contains";
+            }
+
+            if (event.filters["value"] != undefined) {
+                if (this.example == undefined)
+                    this.example = new Globalconfig().searchByExampleWithValueFactory(event.filters["value"].value);
+                else
+                    this.example.parameter = event.filters["value"].value;
+                event.filters["value"].matchMode="contains";
+            }
+
+            if (event.filters["hieraAddress"] != undefined) {            
+                if (this.example == undefined)
+                    this.example = new Globalconfig().searchByExampleWithAddressFactory(event.filters["hieraAddress"].value);
+                else
+                    this.example.hieraAddress = event.filters["hieraAddress"].value;
+                event.filters["hieraAddress"].matchMode="contains";
+                
+            }
+        }
+        
         this.globalconfigService.getPage(this.example, event).
             subscribe(
                 pageResponse => this.currentPage = pageResponse,

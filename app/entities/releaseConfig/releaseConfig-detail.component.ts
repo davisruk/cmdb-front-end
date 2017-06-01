@@ -22,7 +22,7 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new ReleaseConfig
     set release(release : Release) {
-        this.releaseConfig = new ReleaseConfig();
+        this.releaseConfig = new ReleaseConfig().emptyFactory();
         this.releaseConfig.release = release;
     }
 
@@ -42,7 +42,7 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
             console.log('ngOnInit for releaseConfig-detail ' + id);
 
             if (id === 'new') {
-                this.releaseConfig = new ReleaseConfig();
+                this.releaseConfig = new ReleaseConfig().emptyFactory();
                 this.enableCreateFrom = false;
             } else {
                 this.enableCreateFrom = true;                
