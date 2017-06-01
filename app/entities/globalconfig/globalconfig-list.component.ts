@@ -55,7 +55,7 @@ export class GlobalconfigListComponent {
                 if (this.example == undefined)
                     this.example = new Globalconfig().searchByExampleWithValueFactory(event.filters["value"].value);
                 else
-                    this.example.parameter = event.filters["value"].value;
+                    this.example.value = event.filters["value"].value;
                 event.filters["value"].matchMode="contains";
             }
 
