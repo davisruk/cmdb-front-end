@@ -3,7 +3,7 @@ import {SubEnvironment} from './subEnvironment';
 
 @Component({
 	template: `
-        {{ subEnvironment.name }} 	`,
+        {{ subEnvironment.subEnvironmentType.name }} 	`,
 	selector: 'subEnvironment-line',
 })
 export class SubEnvironmentLineComponent {

@@ -103,4 +103,7 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
         this.enableCreateFrom = false;
     }
 
+    onRefresh(newData: SubEnvironmentConfig){
+        this.subEnvironmentConfig = newData;
+    }    
 }

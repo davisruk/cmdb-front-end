@@ -4,6 +4,9 @@
             <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="subEnvironment">{{envName}} Sub Environment</label></div>
                 <div class="ui-grid-col-4">
+                    <environment-auto-complete [(ngModel)]="subEnvironmentConfig.subEnvironment.environment" id="environment" name="environment" [disabled]="sub"></environment-auto-complete>
+                </div>
+                <div class="ui-grid-col-4">
                     <subEnvironment-auto-complete [(ngModel)]="subEnvironmentConfig.subEnvironment" id="subEnvironment" name="subEnvironment" [disabled]="sub"></subEnvironment-auto-complete>
                 </div>
                 <div class="ui-grid-col-1" *ngIf="!sub">
@@ -63,6 +66,13 @@
                 <div class="ui-g-2">
                     <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!subEnvironmentConfigForm.form.valid"></button>
                 </div>
+                <div class="ui-grid-row-2">
+                    <refresh-component [dataService]="subEnvironmentConfigService"
+                        [dataId]="subEnvironmentConfig.id"
+                        (dataRefresh)="onRefresh($event)"
+                        [messageService]="messageService">
+                    </refresh-component>
+                </div>                    
                 <div class="ui-g-2">
                     <button pButton type="button" (click)="onCreateFrom()" label="Create From" [disabled]="!enableCreateFrom"></button>
                 </div>
