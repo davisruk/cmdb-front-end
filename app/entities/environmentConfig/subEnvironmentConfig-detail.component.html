@@ -2,12 +2,9 @@
     <p-panel header="SubEnvironmentConfig Details">
         <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="subEnvironmentConfig" ngForm #subEnvironmentConfigForm="ngForm">
             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="subEnvironment">{{envName}} Sub Environment</label></div>
+                <div class="ui-grid-col-2"><label for="subEnvironment">Environment</label></div>
                 <div class="ui-grid-col-4">
-                    <environment-auto-complete [(ngModel)]="subEnvironmentConfig.subEnvironment.environment" id="environment" name="environment" [disabled]="sub"></environment-auto-complete>
-                </div>
-                <div class="ui-grid-col-4">
-                    <subEnvironment-auto-complete [(ngModel)]="subEnvironmentConfig.subEnvironment" id="subEnvironment" name="subEnvironment" [disabled]="sub"></subEnvironment-auto-complete>
+                    <environment-auto-complete [(ngModel)]="env" id="environment" name="environment" (ngModelChange)="onEnvChange($event)" [disabled]="sub"></environment-auto-complete>
                 </div>
                 <div class="ui-grid-col-1" *ngIf="!sub">
                     <button pButton id="gotoSubEnvironment" type="button" (click)="gotoSubEnvironment()" *ngIf="subEnvironmentConfig.subEnvironment" icon="fa-pencil" label="Edit"></button>
@@ -16,6 +13,15 @@
                     <button pButton id="clearSubEnvironment" type="button" (click)="clearSubEnvironment()" *ngIf="subEnvironmentConfig.subEnvironment" icon="fa-chain-broken" label="Clear"></button>
                 </div>
             </div>
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="name">Type  *</label></div>
+                <div class="ui-grid-col-2">
+                    <p-dropdown [style]="{'width': 'invalidate' }" scrollHeight="300"
+                                name="envType" [options]="listSubEnvTypes" [disabled]="sub"
+                                [(ngModel)]="selectedSubEnvType"></p-dropdown>
+                </div>
+            </div>
+
               <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="parameter">Parameter </label></div>
                 <div class="ui-grid-col-6">
@@ -66,7 +72,7 @@
                 <div class="ui-g-2">
                     <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!subEnvironmentConfigForm.form.valid"></button>
                 </div>
-                <div class="ui-grid-row-2">
+                <div class="ui-g-2">
                     <refresh-component [dataService]="subEnvironmentConfigService"
                         [dataId]="subEnvironmentConfig.id"
                         (dataRefresh)="onRefresh($event)"

@@ -4,20 +4,27 @@ import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {SubEnvironmentConfig} from './subEnvironmentConfig';
 import {SubEnvironmentConfigService} from './subEnvironmentConfig.service';
-import {SubEnvironment} from '../environment/subEnvironment';
+import {SubEnvironment, SubEnvironmentType} from '../environment/subEnvironment';
+import {EnvironmentService} from '../environment/environment.service';
+import {Environment} from '../environment/environment';
 import { SecurityHelper } from '../../support/security-helper';
 @Component({
     moduleId: module.id,
 	templateUrl: 'subEnvironmentConfig-detail.component.html',
 	selector: 'subEnvironmentConfig-detail',
 })
-export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
+export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy{
     subEnvironmentConfig : SubEnvironmentConfig;
 
     private params_subscription: any;
     private envName: string;
     private allowWriteSensitive: boolean;
     private enableCreateFrom: boolean;
+    private subEnvTypes : SubEnvironmentType[]; // model array to use with subenv list
+    private selectedSubEnvType : string;
+    private listSubEnvTypes : SelectItem[]; // list array for subenv items
+    private env: Environment;
+    
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new SubEnvironmentConfig
     set subEnvironment(subEnvironment : SubEnvironment) {
@@ -28,7 +35,17 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
     @Output() onSaveClicked = new EventEmitter<SubEnvironmentConfig>();
     @Output() onCancelClicked = new EventEmitter();
 
-    constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private subEnvironmentConfigService: SubEnvironmentConfigService) {
+    constructor(private route: ActivatedRoute,
+                private router: Router,
+                private messageService: MessageService,
+                private subEnvironmentConfigService: SubEnvironmentConfigService,
+                private environmentService: EnvironmentService) {
+    }
+
+    onEnvChange(newEnv:Environment) {
+        // callback that notifies a model change on the <environment-auto-complete> component
+        this.getSubEnvTypes(this.env);            
+        this.selectedSubEnvType = this.subEnvTypes[0].name;
     }
 
     ngOnInit() {
@@ -38,8 +55,8 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
 
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
+            this.listSubEnvTypes = new Array();
             console.log('ngOnInit for subEnvironmentConfig-detail ' + id);
-
             if (id === 'new') {
                 this.subEnvironmentConfig = new SubEnvironmentConfig();
                 this.envName = '';
@@ -51,6 +68,11 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
                         subEnvironmentConfig => {
                             this.subEnvironmentConfig = subEnvironmentConfig;
                             this.envName = this.subEnvironmentConfig.subEnvironment.environment.name;
+                            this.environmentService.getEnvironment(this.subEnvironmentConfig.subEnvironment.environment.id)
+                                .subscribe(environment => {
+                                    this.env = environment;
+                                    this.getSubEnvTypes(this.env);
+                                });
                         },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
@@ -59,6 +81,19 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
         
         this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();
     }
+
+    getSubEnvTypes(env:Environment){
+        this.subEnvTypes = new Array();
+        this.listSubEnvTypes = new Array();
+        env.subEnvironments.forEach(element => {
+            this.listSubEnvTypes.push(({label: element.subEnvironmentType.name, value:element.subEnvironmentType.name}));
+            this.subEnvTypes.push(element.subEnvironmentType);
+        });
+        if (this.subEnvironmentConfig.subEnvironment == undefined){
+            this.subEnvironmentConfig.subEnvironment = env.subEnvironments[0];
+        }
+        this.selectedSubEnvType = "" + this.subEnvironmentConfig.subEnvironment.subEnvironmentType.name;
+    }    
 
     ngOnDestroy() {
         if (!this.sub) {
@@ -75,6 +110,7 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
+        this.subEnvironmentConfig.subEnvironment = this.env.subEnvironments.find(this.checkSubEnvType, this);
         this.subEnvironmentConfigService.update(this.subEnvironmentConfig).
             subscribe(
                 subEnvironmentConfig => {
@@ -91,6 +127,10 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
             );
     }
 
+    checkSubEnvType(currentValue:SubEnvironment, ):boolean{
+        return currentValue.subEnvironmentType.name == this.selectedSubEnvType;
+    }
+
     onCancel() {
         if (this.sub) {
             this.onCancelClicked.emit("cancel");
@@ -105,5 +145,5 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy {
 
     onRefresh(newData: SubEnvironmentConfig){
         this.subEnvironmentConfig = newData;
-    }    
+    }
 }
