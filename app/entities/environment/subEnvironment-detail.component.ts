@@ -32,6 +32,10 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     private listSubEnvTypes : SelectItem[];
     private lastLazyLoadEvent : LazyLoadEvent;
     private header : string;
+    private serversToAddCount : number;
+    private serversToRemoveCount : number;
+    private enableAddServers : boolean;
+    private enableRemoveServers : boolean;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new SubEnvironment as a sub
@@ -51,6 +55,10 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.params_subscription = this.route.params.subscribe(params => {
+            this.enableAddServers = false;
+            this.enableRemoveServers = false;
+            this.serversToAddCount = 0;
+            this.serversToRemoveCount = 0;
             let id = params['id'];
             console.log('ngOnInit for subenvironment-detail ' + id);
             if (id === 'new') {
@@ -185,6 +193,8 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
             this.lastLazyLoadEvent.first = 0;
         }    
         this.getAvailableServers(this.subEnvironment, this.lastLazyLoadEvent);
+        this.enableAddServers = false;
+        this.serversToAddCount = 0;
     }
 
     onDropChange(event:any){
@@ -202,6 +212,8 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
             // need to get data from the db because we've gone over our page size
             this.getAvailableServers(this.subEnvironment, this.lastLazyLoadEvent);
         }
+        this.enableRemoveServers = false;
+        this.serversToRemoveCount = 0;
     }
 
    gotoRelease() {
@@ -217,4 +229,32 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
         this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
         this.getAvailableServers(this.subEnvironment, this.lastLazyLoadEvent);
     }    
+
+    onSelectAvailableServers (evt:any){
+        console.log("Available Selected");
+        this.enableAddServers = true;
+        this.serversToAddCount ++;
+    }
+
+    onSelectSubEnvServers (evt:any){
+        console.log("SubEnv Selected");
+        this.enableRemoveServers = true;
+        this.serversToRemoveCount ++;
+    }
+
+    onUnselectAvailableServers (evt:any){
+        console.log("Available Unselected");
+        this.serversToAddCount --;
+        if (this.serversToAddCount <= 0)
+            this.enableAddServers = false;
+    }
+
+    onUnselectSubEnvServers (evt:any){
+        console.log("SubEnv Unselected");
+        this.serversToRemoveCount --;
+        if (this.serversToRemoveCount <= 0)
+            this.enableRemoveServers = false;
+        
+    }
+    
 }

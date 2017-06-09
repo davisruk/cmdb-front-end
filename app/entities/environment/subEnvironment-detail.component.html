@@ -24,12 +24,20 @@
             <div class="ui-grid-row">
                 <div class="ui-grid-col-5">
                     <!-- All servers assigned to the environment are returned - we don't lazy load this table -->
-                    <p-dataTable [value]="subEnvironment.servers" [rows]="10" [paginator]="true" [globalFilter]="gb" selectionMode="multiple" [(selection)]="serversToRemove">
+                    <p-dataTable [value]="subEnvironment.servers"
+                                    [rows]="10"
+                                    [paginator]="true"
+                                    [globalFilter]="gb"
+                                    selectionMode="multiple"
+                                    [(selection)]="serversToRemove"
+                                    [metaKeySelection]="false"
+                                    (onRowSelect)="onSelectSubEnvServers($event)"
+                                    (onRowUnselect)="onUnselectSubEnvServers($event)">>
                         <p-header>List of Servers</p-header>
                         <p-column field="name" header="Server Name (contains)" [filter]="true" filterMatchMode="contains" sortable="true"></p-column>
                         <p-column field="serverType.name" header="Server Type (contains)" [filter]="true" filterMatchMode="contains" sortable="true"></p-column>
                     </p-dataTable>
-                    <button pButton type="button" (click)="onRemoveServers()" label="Remove Server(s)"></button>
+                    <button pButton type="button" (click)="onRemoveServers()" label="Remove Server(s)" [disabled]="!enableRemoveServers"></button>
                 </div>
                 <!-- There are far more available servers so this table is lazily loaded -->
                 <div class="ui-grid-col-5">
@@ -42,12 +50,15 @@
                                     selectionMode="multiple"
                                     [(selection)]="serversToAdd"
                                     [rowsPerPageOptions]="[5,10,20,50,100]"
-                                    [responsive]="true">
+                                    [responsive]="true"
+                                    [metaKeySelection]="false"
+                                    (onRowSelect)="onSelectAvailableServers($event)"
+                                    (onRowUnselect)="onUnselectAvailableServers($event)">
                             <p-header>Available Servers</p-header>
                             <p-column field="name" header="Server Name (contains)" sortable="true" [filter]="true" filterDelay="400" filterMatchMode="contains"></p-column>
                             <p-column field="serverType.name" header="Server Type (contains)" sortable="true" filterDelay="400" [filter]="true" filterMatchMode="contains"></p-column>
                     </p-dataTable>
-                    <button pButton type="button" (click)="onAddServers()" label="Add Server(s)"></button>
+                    <button pButton type="button" (click)="onAddServers()" label="Add Server(s)" [disabled]="!enableAddServers"></button>
                 </div>
             </div>
             <div class="ui-grid-row">
