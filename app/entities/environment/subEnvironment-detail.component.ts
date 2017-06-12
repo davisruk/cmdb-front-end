@@ -32,6 +32,12 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     private listSubEnvTypes : SelectItem[];
     private lastLazyLoadEvent : LazyLoadEvent;
     private header : string;
+    // vars to keep track of server list button states
+    // need to use a count of selections as the lists
+    // are pageable. Can't use the model arrays as they
+    // will usually have content. There's also a bug
+    // in PrimeNG where the unSelected event is never
+    // fired for selections with the Meta-key.
     private serversToAddCount : number;
     private serversToRemoveCount : number;
     private enableAddServers : boolean;

@@ -31,6 +31,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     private listEnvTypes : SelectItem[];
     private showAddSubEnv: boolean;
     private availableSubEnvTypes: SubEnvironmentType[];
+    private showRefresh : boolean;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new Environment
@@ -55,9 +56,9 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
             console.log('ngOnInit for environment-detail ' + id);
+            this.showRefresh = false;
             if (id === 'new') {
                 this.environment = new Environment();
-                //this.environment.servers = new Array<Server>();
                 this.environmentService.getAllEnvTypes().subscribe(p => {
                         this.envTypes = p
                         // build envType SelectItem Array
@@ -70,11 +71,11 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                         this.environmentService.getAvailableSubEnvTypesForEnv(this.environment).subscribe(
                             p=>{
                                 this.availableSubEnvTypes = p;
+                                this.setAddSubEnvButtonStatus();
                             }
                         );
                     }
                 );
-                this.showAddSubEnv = true;
             } else {
                 this.environmentService.getEnvironment(id)
                     .subscribe(
@@ -92,10 +93,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                                     this.environmentService.getAvailableSubEnvTypesForEnv(this.environment).subscribe(
                                         p=>{
                                             this.availableSubEnvTypes = p;
-                                            if (this.availableSubEnvTypes == undefined || this.availableSubEnvTypes.length == 0)
-                                                this.showAddSubEnv = false;
-                                            else
-                                                this.showAddSubEnv = true;
+                                            this.setAddSubEnvButtonStatus();
                                         }
                                     );
                                 }
@@ -125,6 +123,23 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
         }
     }
        
+    onSelectEnvType(evt:any){
+        this.setAddSubEnvButtonStatus();
+    }
+
+    setAddSubEnvButtonStatus(){
+        if (this.availableSubEnvTypes == undefined ||
+            this.availableSubEnvTypes.length == 0 ||
+            this.environment == undefined ||
+            this.environment.id == undefined ||
+            this.environment.name == undefined || this.environment.name.length == 0 ||
+            this.selectedEnvType == undefined ||
+            this.selectedEnvType == this.listEnvTypes[0].label)
+            this.showAddSubEnv = false;
+        else
+            this.showAddSubEnv = true;
+    }
+
     onSave() {
         this.environment.type = this.envTypes.find(this.checkEnvType, this); 
         this.environmentService.update(this.environment).
@@ -138,8 +153,13 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                     } else {
                         this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')
                     }
+                    this.showRefresh = false;
+                    this.setAddSubEnvButtonStatus();
                 },
-                error =>  this.messageService.error('Could not save', error)
+                error =>  {
+                    this.messageService.error('Could not save', error);
+                    this.showRefresh = true;
+                }
             );
     }
 
@@ -163,6 +183,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
     onRefresh(newData: Environment){
 	    this.environment = newData;
         this.selectedEnvType = "" + this.environment.type.name;
+        this.showRefresh = false;
     }
 }
 
