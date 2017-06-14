@@ -42,6 +42,7 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     private serversToRemoveCount : number;
     private enableAddServers : boolean;
     private enableRemoveServers : boolean;
+    private showRefresh : boolean;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new SubEnvironment as a sub
@@ -65,6 +66,7 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
             this.enableRemoveServers = false;
             this.serversToAddCount = 0;
             this.serversToRemoveCount = 0;
+            this.showRefresh = false;
             let id = params['id'];
             console.log('ngOnInit for subenvironment-detail ' + id);
             if (id === 'new') {
@@ -96,14 +98,14 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
                     this.subEnvTypes = p
                     // build envType SelectItem Array
                     this.listSubEnvTypes = [];
-                    this.listSubEnvTypes.push({label:'Select Env Type', value:null});
+                    //this.listSubEnvTypes.push({label:'Select Env Type', value:null});
                     this.subEnvTypes.forEach(element => {
                         this.listSubEnvTypes.push(({label: element.name, value:element.name}));
                     });
                     if (this.subEnvironment.subEnvironmentType != undefined)
                         this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
-                    else
-                        this.selectedSubEnvType = this.listSubEnvTypes[0].label;
+                    //else
+                        //this.selectedSubEnvType = this.listSubEnvTypes[0].label;
                 }
             );
     }
@@ -132,8 +134,12 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
                     } else {
                         this.messageService.info('Saved OK', 'PrimeNG Rocks ;-)')
                     }
+                    this.showRefresh = false;
                 },
-                error =>  this.messageService.error('Could not save', error)
+                error =>  {
+                    this.messageService.error('Could not save', error);
+                    this.showRefresh = true;
+                }
             );
     }
 
@@ -200,6 +206,7 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
         }    
         this.getAvailableServers(this.subEnvironment, this.lastLazyLoadEvent);
         this.enableAddServers = false;
+        this.serversToAdd = new Array();
         this.serversToAddCount = 0;
     }
 
@@ -220,6 +227,7 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
         }
         this.enableRemoveServers = false;
         this.serversToRemoveCount = 0;
+        this.serversToRemove = new Array();
     }
 
    gotoRelease() {
@@ -234,7 +242,8 @@ export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
         this.subEnvironment = newData;
         this.selectedSubEnvType = "" + this.subEnvironment.subEnvironmentType.name;
         this.getAvailableServers(this.subEnvironment, this.lastLazyLoadEvent);
-    }    
+        this.showRefresh = false;
+    }
 
     onSelectAvailableServers (evt:any){
         console.log("Available Selected");

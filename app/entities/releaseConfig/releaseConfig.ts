@@ -10,6 +10,7 @@ export class ReleaseConfig {
     recursiveBySubEnv? : boolean;
     notes?: string;
     sensitive? : boolean;
+    arrayItem?: boolean;
     
     // x-to-one
     release? : Release;
@@ -25,13 +26,14 @@ export class ReleaseConfig {
         let retVal:ReleaseConfig = new ReleaseConfig();
         retVal.hieraAddress = "";
         retVal.parameter = "";
-        this.value = "";
-        this.hieraAddress = "";
-        this.recursiveByEnv = false;
-        this.recursiveBySubEnv = false;
-        this.notes = "";
-        this.sensitive = false;
-        this.release = null;
+        retVal.value = "";
+        retVal.hieraAddress = "";
+        retVal.recursiveByEnv = false;
+        retVal.recursiveBySubEnv = false;
+        retVal.notes = "";
+        retVal.sensitive = false;
+        retVal.release = null;
+        retVal.arrayItem = false;
         return retVal;
     }
 

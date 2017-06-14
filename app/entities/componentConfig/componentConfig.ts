@@ -7,6 +7,7 @@ export class ComponentConfig extends BaseEntity{
     hieraAddress : string;
     notes: string;
     sensitive : boolean;
+    arrayItem?: boolean;
 
     // x-to-one
     my_component : SolutionComponent;
@@ -18,6 +19,7 @@ export class ComponentConfig extends BaseEntity{
         this.hieraAddress = "";
         this.notes = "";
         this.sensitive = false;
+        this.arrayItem = false;
     }
 
 }

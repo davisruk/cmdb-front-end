@@ -9,7 +9,8 @@ export class SubEnvironmentConfig extends BaseEntity {
     hieraAddress : string;
     notes: string;
     sensitive : boolean;
-    
+    arrayItem?: boolean;
+
     // x-to-one
     subEnvironment : SubEnvironment;
 
@@ -20,6 +21,7 @@ export class SubEnvironmentConfig extends BaseEntity {
         this.hieraAddress = "";
         this.notes = "";
         this.sensitive = false;
+        this.arrayItem = false;
     }
 
 }

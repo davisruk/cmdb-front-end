@@ -16,9 +16,13 @@
             <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="name">Type  *</label></div>
                 <div class="ui-grid-col-2">
-                    <p-dropdown [style]="{'width': 'invalidate' }" scrollHeight="300"
+                    <p-dropdown [style]="{'width': 'invalidate' }"
+                                scrollHeight="300"
                                 name="envType" [options]="listSubEnvTypes" 
-                                [(ngModel)]="selectedSubEnvType"  (onChange)="onDropChange($event)"></p-dropdown>
+                                [(ngModel)]="selectedSubEnvType" 
+                                (onChange)="onDropChange($event)"
+                                required placeholder="Required">
+                    </p-dropdown>
                 </div>
             </div>
             <div class="ui-grid-row">
@@ -70,7 +74,8 @@
                         <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!subEnvironmentForm.form.valid"></button>
                     </div>
                     <div class="ui-grid-row-2">
-                        <refresh-component [dataService]="subEnvironmentService"
+                        <refresh-component  *ngIf="showRefresh"
+                            [dataService]="subEnvironmentService"
                             [dataId]="subEnvironment.id"
                             (dataRefresh)="onRefresh($event)"
                             [messageService]="messageService">

@@ -57,6 +57,16 @@
                 </div>
             </div>
              <div class="ui-grid-row">
+                <div class="ui-grid-col-2"><label for="isArray">Part of Array </label></div>
+                <div class="ui-grid-col-1">
+                    <p-inputSwitch onLabel="Yes" offLabel="No" id="arrayItem" [(ngModel)]="globalconfig.arrayItem"
+                        name="arrayItem" #arrayItem="ngModel"></p-inputSwitch>
+                </div>
+                <div class="ui-grid-col-4">
+                </div>
+            </div>
+            
+             <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="notes">Notes </label></div>
                 <div class="ui-grid-col-4">
                     <textarea pInputTextarea id="notes" [(ngModel)]="globalconfig.notes"

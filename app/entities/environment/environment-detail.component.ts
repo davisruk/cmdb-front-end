@@ -63,11 +63,11 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                         this.envTypes = p
                         // build envType SelectItem Array
                         this.listEnvTypes = [];
-                        this.listEnvTypes.push({label:'Select Env Type', value:null});
+                        //this.listEnvTypes.push({label:'Select Env Type', value:null});
                         this.envTypes.forEach(element => {
                             this.listEnvTypes.push(({label: element.name, value:element.name}));
                         });
-                        this.selectedEnvType = this.listEnvTypes[0].label;
+                        //this.selectedEnvType = this.listEnvTypes[0].label;
                         this.environmentService.getAvailableSubEnvTypesForEnv(this.environment).subscribe(
                             p=>{
                                 this.availableSubEnvTypes = p;
@@ -85,7 +85,7 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
                                     this.envTypes = p
                                     // build envType SelectItem Array
                                     this.listEnvTypes = [];
-                                    this.listEnvTypes.push({label:'Select Env Type', value:null});
+                                    //this.listEnvTypes.push({label:'Select Env Type', value:null});
                                     this.envTypes.forEach(element => {
                                         this.listEnvTypes.push(({label: element.name, value:element.name}));
                                     });
@@ -133,8 +133,8 @@ export class EnvironmentDetailComponent implements OnInit, OnDestroy {
             this.environment == undefined ||
             this.environment.id == undefined ||
             this.environment.name == undefined || this.environment.name.length == 0 ||
-            this.selectedEnvType == undefined ||
-            this.selectedEnvType == this.listEnvTypes[0].label)
+            this.selectedEnvType == undefined)// ||
+            //this.selectedEnvType == this.listEnvTypes[0].label)
             this.showAddSubEnv = false;
         else
             this.showAddSubEnv = true;

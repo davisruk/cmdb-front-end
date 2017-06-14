@@ -15,6 +15,7 @@ export class ServerConfig {
     hieraAddress : string;
     notes: string;
     sensitive : boolean;
+    arrayItem?: boolean;
     
     // x-to-one
     server : Server;
@@ -25,6 +26,7 @@ export class ServerConfig {
         this.hieraAddress = "";
         this.notes = "";
         this.sensitive = false;
+        this.arrayItem = false;
     }
     
 }

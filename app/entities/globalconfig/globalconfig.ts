@@ -9,6 +9,7 @@ export class Globalconfig {
     recursiveBySubEnv? : boolean;
     notes?: string;
     sensitive? : boolean;
+    arrayItem?: boolean;
 
     constructor()
     constructor(parameter:string)
@@ -18,14 +19,15 @@ export class Globalconfig {
 
     emptyFactory():Globalconfig{
         let retVal:Globalconfig = new Globalconfig();
-        this.parameter = "";
-        this.value = "";
-        this.hieraAddress = "";
-        this.recursiveByEnv = false;
-        this.recursiveBySubEnv = false;
-        this.recursiveByRel = false;
-        this.notes = "";
-        this.sensitive = false;
+        retVal.parameter = "";
+        retVal.value = "";
+        retVal.hieraAddress = "";
+        retVal.recursiveByEnv = false;
+        retVal.recursiveBySubEnv = false;
+        retVal.recursiveByRel = false;
+        retVal.notes = "";
+        retVal.sensitive = false;
+        retVal.arrayItem = false;
         return retVal;
     }
 
