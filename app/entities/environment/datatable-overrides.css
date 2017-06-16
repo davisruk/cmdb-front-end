@@ -1,0 +1,4 @@
+.ui-datatable tbody > tr.ui-widget-content.ui-state-highlight {
+    background-color: #186ba0;
+    color: #ffffff 
+}

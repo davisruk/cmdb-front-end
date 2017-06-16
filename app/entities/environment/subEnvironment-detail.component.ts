@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {ViewEncapsulation, Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem, LazyLoadEvent, FilterMetadata } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
@@ -19,6 +19,8 @@ import { RefreshComponent } from '../../support/refresh.component';
     moduleId: module.id,
 	templateUrl: 'subEnvironment-detail.component.html',
 	selector: 'subenvironment-detail',
+    styleUrls: ['datatable-overrides.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class SubEnvironmentDetailComponent implements OnInit, OnDestroy {
     subEnvironment : SubEnvironment;
