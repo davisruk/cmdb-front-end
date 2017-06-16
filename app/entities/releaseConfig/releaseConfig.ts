@@ -42,10 +42,11 @@ export class ReleaseConfig {
         return retVal;
     }
 
-    searchByExampleWithParameterFactory(parameter:string):ReleaseConfig {
-        let retVal:ReleaseConfig = new ReleaseConfig(null);
-        retVal.parameter = parameter;
-        return retVal;
+    searchByExampleFactory(parameter:string, value:string):ReleaseConfig {
+    let retVal:ReleaseConfig = new ReleaseConfig(null);
+    retVal[parameter] = value;
+    return retVal;
     }
+
     
 }

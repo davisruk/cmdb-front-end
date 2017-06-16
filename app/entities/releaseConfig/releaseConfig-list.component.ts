@@ -51,11 +51,28 @@ export class ReleaseConfigListComponent {
 
             if (event.filters["parameter"] != undefined) {
                 if (this.example == undefined)
-                    this.example = new ReleaseConfig().searchByExampleWithParameterFactory(event.filters["parameter"].value);
+                    this.example = new ReleaseConfig().searchByExampleFactory("parameter", event.filters["parameter"].value);
                 else
                     this.example.parameter = event.filters["parameter"].value;
                 event.filters["parameter"].matchMode="contains";
             }
+
+            if (event.filters["value"] != undefined) {
+                if (this.example == undefined)
+                    this.example = new ReleaseConfig().searchByExampleFactory("value", event.filters["value"].value);
+                else
+                    this.example.value = event.filters["value"].value;
+                event.filters["value"].matchMode="contains";
+            }
+            if (event.filters["hieraAddress"] != undefined) {
+                if (this.example == undefined)
+                    this.example = new ReleaseConfig().searchByExampleFactory("hieraAddress", event.filters["hieraAddress"].value);
+                else
+                    this.example.hieraAddress = event.filters["hieraAddress"].value;
+                event.filters["hieraAddress"].matchMode="contains";
+            }
+            
+            
         }
         this.releaseConfigService.getPage(this.example, event).
             subscribe(
