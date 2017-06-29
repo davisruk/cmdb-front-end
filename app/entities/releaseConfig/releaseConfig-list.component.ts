@@ -6,7 +6,7 @@ import { MessageService } from '../../service/message.service';
 import { ReleaseConfig } from './releaseConfig';
 import { ReleaseConfigDetailComponent } from './releaseConfig-detail.component';
 import { ReleaseConfigService } from './releaseConfig.service';
-
+import { CopyContainer } from '../../support/copy-container';
 import { Release } from '../release/release';
 import { ReleaseLineComponent } from '../release/release-line.component';
 
@@ -28,7 +28,9 @@ export class ReleaseConfigListComponent {
 
     releaseConfigToDelete : ReleaseConfig;
     displayDeleteDialog : boolean;
-
+    fromRelease : ReleaseConfig;
+    toRelease : ReleaseConfig;
+    private lastLazyLoadEvent : LazyLoadEvent;
     private example : ReleaseConfig = null; // used to query by example...
 
     // list is paginated
@@ -43,6 +45,7 @@ export class ReleaseConfigListComponent {
     loadPage(event : LazyLoadEvent) {
         // if the filter is defined then build the example
         this.example = null;
+        this.lastLazyLoadEvent = event;
         if (event.filters != undefined){
             if (event.filters["release.name"] != undefined) {
                 this.example = new ReleaseConfig().searchByExampleWithNameFactory(event.filters["release.name"].value);
@@ -125,5 +128,21 @@ export class ReleaseConfigListComponent {
                 },
                 error => this.messageService.error('Could not delete!', error)
             );
+    }
+
+    copyReleaseConfig(){
+        let cc = new CopyContainer();
+        cc.fromId = this.fromRelease.id;
+        cc.toId = this.toRelease.id;
+        this.releaseConfigService.copyConfigForRelease(cc).subscribe(
+                response => {
+                    this.messageService.info('Copied OK', 'PrimeNG Rocks ;-)');
+                    this.fromRelease = null;
+                    this.toRelease = null;
+                    this.loadPage(this.lastLazyLoadEvent);
+                },
+                error => this.messageService.error('Could not copy!', error)
+            );
+
     }
 }

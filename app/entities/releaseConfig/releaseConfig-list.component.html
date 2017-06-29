@@ -1,5 +1,26 @@
 <p>This list is server-side paginated...</p>
 <div class="ContentSideSections Implementation">
+    <p-panel header="Copy Release Config">
+        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-1"><label for="fromRelease">From Release</label></div>
+                <div class="ui-grid-col-2">
+                    <release-auto-complete [(ngModel)]="fromRelease" id="fromRelease" name="fromRelease"></release-auto-complete>
+                </div>
+                <div class="ui-grid-col-1"><label></label></div>
+                <div class="ui-grid-col-1"><label for="toRelease">To Release</label></div>                
+                <div class="ui-grid-col-2">
+                    <release-auto-complete [(ngModel)]="toRelease" id="toRelease" name="fromRelease"></release-auto-complete>
+                </div>
+                <div class="ui-grid-col-1"><label></label></div>
+                <div class="ui-grid-col-1">
+                    <button pButton id="copyRelease" type="button" (click)="copyReleaseConfig()"
+                            [disabled]="!fromRelease || !toRelease" icon="fa-clone" label="Copy">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </p-panel>
     <p-dataTable [value]="currentPage.content"
                  [lazy]="true"
                  [rows]="10"
