@@ -37,7 +37,7 @@ export class ReleaseDetailComponent implements OnInit, OnDestroy {
             if (id === 'new') {
                 this.release = new Release();
             } else {
-                this.release = this.releaseService.getRelease(id).subscribe(
+                this.releaseService.getRelease(id).subscribe(
                         release => this.release = release,
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
