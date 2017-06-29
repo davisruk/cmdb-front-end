@@ -101,6 +101,6 @@ export class EnvironmentListComponent{
     }
 
     downloadAllHieraByEnv(environment:Environment){
-        this.environmentService.downloadEnvHieraData(environment.name + "_hiera.csv", environment.id);
+        this.environmentService.downloadEnvHieraData(environment.name + "_hiera.csv", environment.name);
     }
 }

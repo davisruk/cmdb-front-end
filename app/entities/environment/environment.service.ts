@@ -177,26 +177,26 @@ export class EnvironmentService implements RefreshService {
 
     downloadAllHieraData(filename:string){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/configdownloadall', 'text/csv');
+        fileDownloader.downloadData(filename, 'api/environments/config/csv/all', 'text/csv');
     }
 
     downloadAllHieraDataAsYAML(filename:string){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/configdownloadyaml', 'text/plain');
+        fileDownloader.downloadData(filename, 'api/environments/config/yaml/all', 'text/plain');
     }
 
-    downloadEnvHieraData(filename:string, envId:number){
+    downloadEnvHieraData(filename:string, envName:string){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/configdownloadall/' + envId, 'text/csv');
+        fileDownloader.downloadData(filename, 'api/environments/config/csv/' + envName, 'text/csv');
     }
 
     downloadEnvHieraYAMLData(filename:string, envName:string){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/yaml/' + envName, 'text/plain');
+        fileDownloader.downloadData(filename, 'api/environments/config/yaml/' + envName, 'text/plain');
     }
 
     downloadSubEnvHieraData(filename:string, subEnvId:number){
         let fileDownloader:FileDownloader = new FileDownloader(this.http, this.settings);
-        fileDownloader.downloadData(filename, 'api/environments/subconfigdownload/' + subEnvId, 'text/csv');
+        fileDownloader.downloadData(filename, 'api/environments/config/subconfig/csv/' + subEnvId, 'text/csv');
     }    
 }

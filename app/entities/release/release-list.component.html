@@ -18,15 +18,9 @@
                 <button type="button" pButton icon="fa-trash" (click)="showDeleteDialog(release)" style="float:left"></button>
             </template>
         </p-column>
-        <p-column styleClass="col-icon">
-            <template let-release="rowData" pTemplate ="body">
-
-            </template>
-        </p-column>
         <p-footer>
             <div class="ui-helper-clearfix" style="width:100%">
                 <button type="button" pButton icon="fa-plus" style="float:left" (click)="addNew()" label="Add"></button>
-                <button type="button" pButton icon="fa-floppy-o" label="All Hiera" (click)="downloadAllHiera()" style="float:left"></button>
             </div>
         </p-footer>
     </p-dataTable>
