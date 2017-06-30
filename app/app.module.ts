@@ -3,10 +3,10 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { FormsModule }    from '@angular/forms';
 import { HttpModule  }    from '@angular/http';
 import { RouterModule  }  from '@angular/router';
-import { FileUploadModule, PanelModule, GrowlModule, MenubarModule,
-        DialogModule, ButtonModule, AutoCompleteModule, DataTableModule,
+import { FileUploadModule, PanelModule, GrowlModule, MenubarModule, DialogModule,
+        ButtonModule, AutoCompleteModule, DataTableModule, DragDropModule,
         DataListModule, SharedModule, DropdownModule,PickListModule,CheckboxModule,
-        TriStateCheckboxModule, InputTextModule,InputTextareaModule,
+        TriStateCheckboxModule, InputTextModule,InputTextareaModule,RadioButtonModule,
         CalendarModule,PasswordModule,TabViewModule, InputSwitchModule,
         FieldsetModule, InplaceModule, OverlayPanelModule } from 'primeng/primeng';
 import { AppComponent }   from './app.component';
@@ -126,6 +126,7 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
         FileUploadModule,
         PanelModule,
         OverlayPanelModule,
+        DragDropModule,
         GrowlModule,
         MenubarModule,
         DialogModule,
@@ -146,6 +147,7 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
         InputSwitchModule,
         InplaceModule,
         FieldsetModule,
+        RadioButtonModule,
 // our app
         routing
     ],

@@ -6,6 +6,7 @@ import {ReleaseConfig} from './releaseConfig';
 import {ReleaseConfigService} from './releaseConfig.service';
 import {Release} from '../release/release';
 import { SecurityHelper } from '../../support/security-helper';
+import { HieraTag } from '../../support/hiera-tag-support';
 
 @Component({
     moduleId: module.id,
@@ -18,6 +19,8 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
     private params_subscription: any;
     private allowWriteSensitive: boolean;
     private enableCreateFrom: boolean;
+    private tagType:string;
+    private tagString:string;
 
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new ReleaseConfig
@@ -37,6 +40,7 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.tagType = "asIs";
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
             console.log('ngOnInit for releaseConfig-detail ' + id);
@@ -100,4 +104,36 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
         this.enableCreateFrom = false;
     }
 
+    dragStart(event:any,tag: string) {
+        this.tagString = tag;
+    }
+    
+    dropOnAddress(event:any) {
+        if(this.tagString) {
+            let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
+            this.releaseConfig.hieraAddress = tag.appendTag(this.releaseConfig.hieraAddress);
+        }
+    }
+    
+    dropOnValue(event:any) {
+        if(this.tagString) {
+            let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
+            this.releaseConfig.value = tag.appendTag(this.releaseConfig.value);
+        }
+    }
+
+    dropOnParameter(event:any) {
+        if(this.tagString) {
+            if (this.tagString == 'ParamName'){
+                this.messageService.error("Incompatible Tag", 'ParamName invalid for this field');
+            }else {
+                let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
+                this.releaseConfig.parameter = tag.appendTag(this.releaseConfig.parameter);
+            }
+        }
+    }
+
+    dragEnd(event:any) {
+        this.tagString = null;
+    }
 }
