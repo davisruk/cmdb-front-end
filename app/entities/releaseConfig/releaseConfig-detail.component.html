@@ -2,7 +2,7 @@
     <p-panel header="ReleaseConfig Details">
         <div class="ui-g ui-g-nopad ui-fluid" *ngIf="releaseConfig" ngForm #releaseConfigForm="ngForm">
             <div class="ui-g-12 ui-g-nopad">
-                <div class="ui-g-1"><label for="release">Release</label></div>
+                <div class="ui-g-1"style="float: left; min-width:220px"><label for="release">Release</label></div>
                 <div class="ui-g-3">
                     <release-auto-complete [(ngModel)]="releaseConfig.release" id="release" name="release" [disabled]="sub"></release-auto-complete>
                 </div>
@@ -13,69 +13,76 @@
                     <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="releaseConfig.release" icon="fa-chain-broken" label="Clear"></button>
                 </div>
             </div>
-            <div class="ui-g-12 ui-g-nopad">
-                <div class="ui-g-8 ui-g-nopad">
+            <div class="ui-g ui-g-nopad">
+                <div class="ui-g-6 ui-g-nopad" style="min-width: 300px">
                         <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g-1"><label for="parameter">Parameter </label></div>
-                            <div class="ui-g-6">
+                            <div class="ui-g-1" style="float: left; min-width:220px"><label for="parameter">Parameter </label></div>
+                            <div class="ui-g-8" style="float: left">
                                 <input pDroppable="tags" (onDrop)="dropOnParameter($event)" pInputText id="parameter" [(ngModel)]="releaseConfig.parameter"   name="parameter" #parameter="ngModel"/>
                             </div>
                         </div>
                         <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g-1"><label for="value">Value </label></div>
-                            <div class="ui-g-6">
+                            <div class="ui-g-1" style="float: left; min-width:220px"><label for="value">Value </label></div>
+                            <div class="ui-g-8" style="float: left">
                                 <input pDroppable="tags" (onDrop)="dropOnValue($event)" [disabled]="!allowWriteSensitive && releaseConfig.sensitive" pInputText id="value" [(ngModel)]="releaseConfig.value"   name="value" #value="ngModel"/>
                             </div>
                         </div>
                         <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g-1"><label for="hieraAddress">Hiera Address </label></div>
-                            <div class="ui-g-6">
+                            <div class="ui-g-1" style="float: left; min-width:220px"><label for="hieraAddress">Hiera Address </label></div>
+                            <div class="ui-g-8" style="float: left">
                                 <input pDroppable="tags" (onDrop)="dropOnAddress($event)" pInputText id="hieraAddress" [(ngModel)]="releaseConfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
                             </div>
                         </div>
                 </div>
-                <div class="ui-g-4 ui-g-nopad">
-                    <div class="ui-g-4 ui-g-nopad"><p-radioButton name="tagGroup" value="asIs" label="As Stored" [(ngModel)]="tagType"></p-radioButton></div>
-                    <div class="ui-g-4 ui-g-nopad"><p-radioButton name="tagGroup" value="upper" label="Upper Case" [(ngModel)]="tagType"></p-radioButton></div>
-                    <div class="ui-g-4 ui-g-nopad"><p-radioButton name="tagGroup" value="lower" label="Lower Case" [(ngModel)]="tagType"></p-radioButton></div>
-                    <div class="ui-g-3 ui-g-nopad"><label pDraggable="tags" (onDragStart)="dragStart($event,'ParamName')" (onDragEnd)="dragEnd($event)">Parameter</label></div>
-                    <div class="ui-g-3 ui-g-nopad"><label pDraggable="tags" (onDragStart)="dragStart($event,'ENVID')" (onDragEnd)="dragEnd($event)">Environment</label></div>
-                    <div class="ui-g-3 ui-g-nopad"><label pDraggable="tags" (onDragStart)="dragStart($event,'SubEnvType')" (onDragEnd)="dragEnd($event)">Sub Environment</label></div>
-                    <div class="ui-g-3 ui-g-nopad"><label pDraggable="tags" (onDragStart)="dragStart($event,'Release')" (onDragEnd)="dragEnd($event)">Release</label></div>
-                    
+                <div class="ui-g-3 ui-g-nopad">
+                    <p-panel header="Hiera Tags">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <div class="ui-g-12"><p-radioButton name="tagGroup" value="asIs" label="As Stored" [(ngModel)]="tagType"></p-radioButton></div>
+                                <div class="ui-g-12"><p-radioButton name="tagGroup" value="upper" label="Upper Case" [(ngModel)]="tagType"></p-radioButton></div>
+                                <div class="ui-g-12"><p-radioButton name="tagGroup" value="lower" label="Lower Case" [(ngModel)]="tagType"></p-radioButton></div>
+                            </div>
+                            <div class="ui-g-6">
+                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ParamName')" (onDragEnd)="dragEnd($event)">Parameter</label></div>
+                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ENVID')" (onDragEnd)="dragEnd($event)">Environment</label></div>
+                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'SubEnvType')" (onDragEnd)="dragEnd($event)">Sub Environment</label></div>
+                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'Release')" (onDragEnd)="dragEnd($event)">Release</label></div>
+                            </div>
+                        </div>
+                    </p-panel>           
                 </div>
             </div>
              <div class="ui-g-12 ui-g-nopad">
-                <div class="ui-g-2"><label for="recursiveByEnv">Repeats for Environments </label></div>
-                <div class="ui-g-2">
+                <div class="ui-g-2" style="float: left; min-width:220px" ><label for="recursiveByEnv">Repeats for Environments </label></div>
+                <div class="ui-g-2" style="float: left">
                     <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveByEnv" [(ngModel)]="releaseConfig.recursiveByEnv"
                       name="recursiveByEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
                 </div>
             </div>
              <div class="ui-g-12 ui-g-nopad">
-                <div class="ui-g-2"><label for="recursiveBySubEnv">Repeats for SubEnvironments </label></div>
-                <div class="ui-g-2">
+                <div class="ui-g-2" style="float: left; min-width:220px"><label for="recursiveBySubEnv">Repeats for SubEnvironments </label></div>
+                <div class="ui-g-2" style="float: left">
                     <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveBySubEnv" [(ngModel)]="releaseConfig.recursiveBySubEnv"
                        name="recursiveBySubEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
                 </div>
             </div>
              <div class="ui-g-12 ui-g-nopad">
-                <div class="ui-g-2"><label for="isArray">Part of Array </label></div>
-                <div class="ui-g-2">
+                <div class="ui-g-2" style="float: left; min-width:220px"><label for="isArray">Part of Array </label></div>
+                <div class="ui-g-2" style="float: left">
                     <p-inputSwitch onLabel="Yes" offLabel="No" id="arrayItem" [(ngModel)]="releaseConfig.arrayItem"
                         name="arrayItem" #arrayItem="ngModel"></p-inputSwitch>
                 </div>
             </div>
             <div class="ui-g-12 ui-g-nopad">
-                <div class="ui-g-2"><label for="notes">Notes </label></div>
-                <div class="ui-g-6">
+                <div class="ui-g-2" style="float: left; min-width:220px"><label for="notes">Notes </label></div>
+                <div class="ui-g-6" style="float: left">
                     <textarea pInputTextarea id="notes" [(ngModel)]="releaseConfig.notes"
                         name="notes" #notes="ngModel"></textarea>
                 </div>
             </div>
              <div class="ui-g-12 ui-g-nopad">
-                <div class="ui-g-2"><label for="sensitive">Contains Sensitive Info</label></div>
-                <div class="ui-g-2">
+                <div class="ui-g-2" style="float: left; min-width:220px"><label for="sensitive">Contains Sensitive Info</label></div>
+                <div class="ui-g-2" style="float: left">
                     <p-inputSwitch [disabled]="!allowWriteSensitive" onLabel="Yes" offLabel="No" id="sensitive" [(ngModel)]="releaseConfig.sensitive"
                         name="sensitive" #sensitive="ngModel"></p-inputSwitch>
                 </div>
@@ -92,119 +99,7 @@
                 <div class="ui-g-2">
                     <button pButton type="button" (click)="onCreateFrom()" label="Create From" [disabled]="!enableCreateFrom"></button>
                 </div>
-                
             </div>
-
-<!--
-        <div class="ui-grid ui-grid-responsive ui-fluid ui-grid-pad" *ngIf="releaseConfig" ngForm #releaseConfigForm="ngForm">
-            <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="release">Release</label></div>
-                <div class="ui-grid-col-4">
-                    <release-auto-complete [(ngModel)]="releaseConfig.release" id="release" name="release" [disabled]="sub"></release-auto-complete>
-                </div>
-                <div class="ui-grid-col-1" *ngIf="!sub">
-                    <button pButton id="gotoRelease" type="button" (click)="gotoRelease()" *ngIf="releaseConfig.release" icon="fa-pencil" label="Edit"></button>
-                </div>
-                <div class="ui-grid-col-1" *ngIf="!sub">
-                    <button pButton id="clearRelease" type="button" (click)="clearRelease()" *ngIf="releaseConfig.release" icon="fa-chain-broken" label="Clear"></button>
-                </div>
-            </div>
-              <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="parameter">Parameter </label></div>
-                <div class="ui-grid-col-6">
-                    <input pDroppable="tags" (onDrop)="dropOnParameter($event)" pInputText id="parameter" [(ngModel)]="releaseConfig.parameter"   name="parameter" #parameter="ngModel"/>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="value">Value </label></div>
-                <div class="ui-grid-col-6">
-                    <input pDroppable="tags" (onDrop)="dropOnValue($event)" [disabled]="!allowWriteSensitive && releaseConfig.sensitive" pInputText id="value" [(ngModel)]="releaseConfig.value"   name="value" #value="ngModel"/>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="hieraAddress">Hiera Address </label></div>
-                <div class="ui-grid-col-6">
-                    <input pDroppable="tags" (onDrop)="dropOnAddress($event)" pInputText id="hieraAddress" [(ngModel)]="releaseConfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="grid-col-1"><p-radioButton name="tagGroup" value="asIs" label="As Stored" [(ngModel)]="tagType"></p-radioButton></div>
-                <div class="grid-col-1"><p-radioButton name="tagGroup" value="upper" label="Upper Case" [(ngModel)]="tagType"></p-radioButton></div>
-                <div class="grid-col-1"><p-radioButton name="tagGroup" value="lower" label="Lower Case" [(ngModel)]="tagType"></p-radioButton></div>
-                <div class="grid-col-1"><label pDraggable="tags" (onDragStart)="dragStart($event,'ParamName')" (onDragEnd)="dragEnd($event)">Parameter</label></div>
-                <div class="grid-col-1"><label pDraggable="tags" (onDragStart)="dragStart($event,'ENVID')" (onDragEnd)="dragEnd($event)">Environment</label></div>
-                <div class="grid-col-1"><label pDraggable="tags" (onDragStart)="dragStart($event,'SubEnvType')" (onDragEnd)="dragEnd($event)">Sub Environment</label></div>
-                <div class="grid-col-1"><label pDraggable="tags" (onDragStart)="dragStart($event,'Release')" (onDragEnd)="dragEnd($event)">Release</label></div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="recursiveByEnv">Repeats for Environments </label></div>
-                <div class="ui-grid-col-1">
-                    <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveByEnv" [(ngModel)]="releaseConfig.recursiveByEnv"
-                      name="recursiveByEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="recursiveBySubEnv">Repeats for SubEnvironments </label></div>
-                <div class="ui-grid-col-1">
-                    <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveBySubEnv" [(ngModel)]="releaseConfig.recursiveBySubEnv"
-                       name="recursiveBySubEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="isArray">Part of Array </label></div>
-                <div class="ui-grid-col-1">
-                    <p-inputSwitch onLabel="Yes" offLabel="No" id="arrayItem" [(ngModel)]="releaseConfig.arrayItem"
-                        name="arrayItem" #arrayItem="ngModel"></p-inputSwitch>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-            <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="notes">Notes </label></div>
-                <div class="ui-grid-col-4">
-                    <textarea pInputTextarea id="notes" [(ngModel)]="releaseConfig.notes"
-                        name="notes" #notes="ngModel"></textarea>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="sensitive">Contains Sensitive Info</label></div>
-                <div class="ui-grid-col-1">
-                    <p-inputSwitch [disabled]="!allowWriteSensitive" onLabel="Yes" offLabel="No" id="sensitive" [(ngModel)]="releaseConfig.sensitive"
-                        name="sensitive" #sensitive="ngModel"></p-inputSwitch>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-            
-            
-             <div class="ui-g">
-                <div class="ui-g-2" *ngIf="sub">
-                    <button pButton type="button" (click)="onCancel()" icon="fa-ban" label="Cancel"></button>
-                </div>
-                <div class="ui-g-2">
-                    <button pButton type="button" (click)="onSave()" icon="fa-floppy-o" label="Save" [disabled]="!releaseConfigForm.form.valid"></button>
-                </div>
-
-                <div class="ui-g-2">
-                    <button pButton type="button" (click)="onCreateFrom()" label="Create From" [disabled]="!enableCreateFrom"></button>
-                </div>
-                
-            </div>
--->
         </div>
-
     </p-panel>
-
 </div>
