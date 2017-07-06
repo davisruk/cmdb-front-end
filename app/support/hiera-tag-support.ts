@@ -86,3 +86,22 @@ export class HieraDelimiter{
     delimeter:string;
     isStart:boolean;
 }
+
+export class HieraTagUIConfig{
+    includeReleaseTag:boolean;
+    includeParamTag:boolean;
+    includeEnvTag:boolean;
+    includeSubEnvTag:boolean;
+    includeServerTag:boolean;
+    includeServerTypeTag:boolean;
+
+    constructor (hasReleaseTag:boolean, hasParamTag:boolean, hasEnvTag:boolean,
+                hasSubEnvTag:boolean, hasServerTag:boolean, hasServerTypeTag:boolean){
+        this.includeEnvTag = hasEnvTag;
+        this.includeParamTag = hasParamTag;
+        this.includeReleaseTag = hasReleaseTag;
+        this.includeServerTag = hasServerTag;
+        this.includeServerTypeTag = hasServerTypeTag;
+        this.includeSubEnvTag = hasSubEnvTag;
+    }
+}
