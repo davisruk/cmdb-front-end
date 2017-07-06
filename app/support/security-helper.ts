@@ -8,8 +8,11 @@ export class SecurityHelper{
         return this.userHasRoleOrPrivelege('ROLE_ADMIN');
     }
 
+    public getAuthToken():String{
+        return localStorage.getItem('JWTToken_' + localStorage.getItem('userName'));
+    }
     private userHasRoleOrPrivelege(checkItem:string):boolean{
-        var token = localStorage.getItem('JWTToken');
+        var token = localStorage.getItem('JWTToken_' + localStorage.getItem('userName'));
         let jwtHelper: JwtHelper = new JwtHelper();
         let retVal:boolean = false;
         var decodedToken = jwtHelper.decodeToken(token);
@@ -20,5 +23,6 @@ export class SecurityHelper{
         });
         return retVal;
     }
+
     
 }

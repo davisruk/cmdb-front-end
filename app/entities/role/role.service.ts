@@ -8,11 +8,12 @@ import { Privilege } from './privilege';
 import { Role } from './role';
 import { User } from '../user/user';
 import { Configuration } from '../../support/configuration';
+import { SecurityHelper } from '../../support/security-helper';
 
 @Injectable()
 export class RoleService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': new SecurityHelper().getAuthToken()}) });
 
     constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 

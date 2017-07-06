@@ -14,6 +14,17 @@
                 </div>
             </div>
             <div class="ui-g ui-g-nopad">
+                        <hiera-config
+                            [disallowedTags]="invalidHieraTags"
+                            [paramName]="releaseConfig.parameter"
+                            [address]="releaseConfig.hieraAddress"
+                            [value]="releaseConfig.value"
+                            [valueDisabled]="allowWriteSensitive == false && releaseConfig.sensitive == true"
+                            (dataRefresh)="onRefreshHieraField($event)"
+                            [messageService]="messageService">
+                        </hiera-config>
+
+<!--                
                 <div class="ui-g-6 ui-g-nopad" style="min-width: 300px">
                         <div class="ui-g-12 ui-g-nopad">
                             <div class="ui-g-1" style="float: left; min-width:220px"><label for="parameter">Parameter </label></div>
@@ -35,6 +46,7 @@
                         </div>
                 </div>
                 <div class="ui-g-3 ui-g-nopad">
+
                     <p-panel header="Hiera Tags">
                         <div class="ui-g">
                             <div class="ui-g-6">
@@ -51,6 +63,7 @@
                         </div>
                     </p-panel>           
                 </div>
+        -->
             </div>
              <div class="ui-g-12 ui-g-nopad">
                 <div class="ui-g-2" style="float: left; min-width:220px" ><label for="recursiveByEnv">Repeats for Environments </label></div>

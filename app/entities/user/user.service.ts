@@ -7,11 +7,12 @@ import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { User } from './user';
 import { Configuration } from '../../support/configuration';
 import {FileUploadModule} from 'primeng/primeng';
+import { SecurityHelper } from '../../support/security-helper';
 
 @Injectable()
 export class UserService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization':  new SecurityHelper().getAuthToken()}) });
 
     constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 

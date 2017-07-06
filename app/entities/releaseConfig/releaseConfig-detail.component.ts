@@ -6,7 +6,8 @@ import {ReleaseConfig} from './releaseConfig';
 import {ReleaseConfigService} from './releaseConfig.service';
 import {Release} from '../release/release';
 import { SecurityHelper } from '../../support/security-helper';
-import { HieraTag } from '../../support/hiera-tag-support';
+import { FieldValidationTags, HieraTag, HieraRefresh } from '../../support/hiera-tag-support';
+
 
 @Component({
     moduleId: module.id,
@@ -32,6 +33,8 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
     @Output() onSaveClicked = new EventEmitter<ReleaseConfig>();
     @Output() onCancelClicked = new EventEmitter();
 
+    invalidHieraTags:FieldValidationTags;
+
     constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private releaseConfigService: ReleaseConfigService) {
     }
 
@@ -40,6 +43,14 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
             return;
         }
 
+        /*
+        Hiera Component Experiment
+        */
+        this.invalidHieraTags = new FieldValidationTags();
+        this.invalidHieraTags.paramTags.push(new HieraTag("ParamName", false, false));
+        /*
+        End of Experiment
+        */
         this.tagType = "asIs";
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
@@ -136,4 +147,14 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
     dragEnd(event:any) {
         this.tagString = null;
     }
+
+    onRefreshHieraField(newData: HieraRefresh){
+        if (newData.fieldRefreshed == "parameter")
+            this.releaseConfig.parameter = newData.fieldValue;
+        if (newData.fieldRefreshed == "value")
+            this.releaseConfig.value = newData.fieldValue;
+        if (newData.fieldRefreshed == "address")
+            this.releaseConfig.hieraAddress = newData.fieldValue;
+            
+    }    
 }

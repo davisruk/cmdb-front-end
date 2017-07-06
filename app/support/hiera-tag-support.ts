@@ -87,21 +87,23 @@ export class HieraDelimiter{
     isStart:boolean;
 }
 
-export class HieraTagUIConfig{
-    includeReleaseTag:boolean;
-    includeParamTag:boolean;
-    includeEnvTag:boolean;
-    includeSubEnvTag:boolean;
-    includeServerTag:boolean;
-    includeServerTypeTag:boolean;
-
-    constructor (hasReleaseTag:boolean, hasParamTag:boolean, hasEnvTag:boolean,
-                hasSubEnvTag:boolean, hasServerTag:boolean, hasServerTypeTag:boolean){
-        this.includeEnvTag = hasEnvTag;
-        this.includeParamTag = hasParamTag;
-        this.includeReleaseTag = hasReleaseTag;
-        this.includeServerTag = hasServerTag;
-        this.includeServerTypeTag = hasServerTypeTag;
-        this.includeSubEnvTag = hasSubEnvTag;
+export class FieldValidationTags{
+    constructor(){
+        this.paramTags = new Array();
+        this.addressTags = new Array();
+        this.valueTags= new Array();
     }
+    
+    paramTags: HieraTag[];
+    addressTags: HieraTag[];
+    valueTags:HieraTag[];
+}
+
+export class HieraRefresh {
+    constructor (field:string, value:string){
+        this.fieldRefreshed = field;
+        this.fieldValue = value;
+    }
+    fieldRefreshed:string;
+    fieldValue:string;
 }

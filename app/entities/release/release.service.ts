@@ -7,11 +7,12 @@ import { PageResponse, PageRequestByExample } from '../../support/paging';
 import { Release } from './release';
 import { HieraValues } from '../hiera/hieraValues';
 import { Configuration } from '../../support/configuration';
+import { SecurityHelper } from '../../support/security-helper';
 
 @Injectable()
 export class ReleaseService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': new SecurityHelper().getAuthToken()}) });
 
     constructor(private http: Http, private messageService : MessageService, private settings: Configuration) {}
 

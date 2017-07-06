@@ -5,11 +5,12 @@ import { MessageService } from '../../service/message.service';
 import { SubEnvironment, SubEnvironmentType } from './subEnvironment';
 import { RefreshService } from '../../support/refresh.service';
 import { Configuration } from '../../support/configuration';
+import { SecurityHelper } from '../../support/security-helper';
 
 @Injectable()
 export class SubEnvironmentService implements RefreshService {
 
-    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': localStorage.getItem('JWTToken')}) });
+    private options = new RequestOptions({ headers: new Headers({ 'Content-Type': 'application/json', 'Authorization': new SecurityHelper().getAuthToken()}) });
     
     constructor(private http: Http, private messageService : MessageService, private settings : Configuration) {}
 

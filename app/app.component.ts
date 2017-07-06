@@ -145,7 +145,8 @@ export class AppComponent implements OnInit {
                             this.items.push({label: 'Sign out', command: (logout)=>this.logout(), icon: 'fa-sign-out' });
                             this.loginFailed = false;
                             this.messageService.info('You are now logged in.', '');
-                            localStorage.setItem('JWTToken', tokenRes.token);
+                            localStorage.setItem('userName', this.j_username);
+                            localStorage.setItem('JWTToken_' + this.j_username, tokenRes.token);
                             this.processUserRights();
                         } else {
                             this.loginFailed = true;

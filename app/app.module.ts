@@ -111,6 +111,8 @@ import { ReleaseConfigDetailComponent } from './entities/releaseConfig/releaseCo
 import { ReleaseConfigLineComponent } from './entities/releaseConfig/releaseConfig-line.component';
 import { ReleaseConfigCompleteComponent } from './entities/releaseConfig/releaseConfig-auto-complete.component';
 import { RefreshComponent } from './support/refresh.component';
+import { HieraConfigComponent } from './support/hiera-config.component';
+
 import { Configuration } from './support/configuration';
 import { LogoutComponent } from './logout/logout-component';
 import { AUTH_PROVIDERS } from 'angular2-jwt';
@@ -157,6 +159,8 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
         EmailValidator
         ,
         RefreshComponent
+        ,
+        HieraConfigComponent
         ,
         ComponentConfigListComponent,
         ComponentConfigDetailComponent,
