@@ -51,6 +51,8 @@ export class HieraConfigComponent{
     }
 
     dropOnValue(event:any) {
+        if (this.valueDisabled)
+            return;
         if(this.tagString) {
             if (!this.validationTags.tagValidForValue(this.tagString)){
                 this.messageService.error("Incompatible Tag", this.tagString + ' is invalid for Value field');

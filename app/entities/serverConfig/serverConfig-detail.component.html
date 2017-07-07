@@ -13,30 +13,16 @@
                     <button pButton id="clearServer" type="button" (click)="clearServer()" *ngIf="serverConfig.server" icon="fa-chain-broken" label="Clear"></button>
                 </div>
             </div>
-              <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="parameter">Parameter </label></div>
-                <div class="ui-grid-col-6">
-                    <input pInputText id="parameter" [(ngModel)]="serverConfig.parameter"   name="parameter" #parameter="ngModel"/>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
+            <div class="ui-g ui-g-nopad">
+                <hiera-config
+                    [hieraItem]="serverConfig"
+                    [validationTags]="invalidHieraTags"
+                    [valueDisabled]="allowWriteSensitive == false && serverConfig.sensitive == true"
+                    [messageService]="messageService"
+                    [displayTags]="displayHieraTags">
+                </hiera-config>
             </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="value">Value </label></div>
-                <div class="ui-grid-col-6">
-                    <input pInputText id="value" [disabled]="!allowWriteSensitive && serverConfig.sensitive" [(ngModel)]="serverConfig.value"   name="value" #value="ngModel"/>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
-             <div class="ui-grid-row">
-                <div class="ui-grid-col-2"><label for="hieraAddress">Hiera Address </label></div>
-                <div class="ui-grid-col-6">
-                    <input pInputText id="hieraAddress" [(ngModel)]="serverConfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
-                </div>
-                <div class="ui-grid-col-4">
-                </div>
-            </div>
+
              <div class="ui-grid-row">
                 <div class="ui-grid-col-2"><label for="notes">Notes </label></div>
                 <div class="ui-grid-col-4">

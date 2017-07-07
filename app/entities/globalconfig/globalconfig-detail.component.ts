@@ -10,7 +10,7 @@ import { FieldValidationTags, HieraTag, HieraRefresh,HieraTagCollection } from '
 
 // Value accessor that allows sub components to alter 
 // this component's model without using emit
-export const RELEASE_CONFIG_CONTROL_VALUE_ACCESSOR: any = {
+export const GLOBAL_CONFIG_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => GlobalconfigDetailComponent),
     multi: true
