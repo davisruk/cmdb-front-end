@@ -1,4 +1,14 @@
 export class HieraTag {
+    static readonly UPPER = "upper";
+    static readonly LOWER = "lower";
+    static readonly AS_IS = "asIs";
+    static readonly PARAM = "ParamName";
+    static readonly ENVID = "ENVID";
+    static readonly SUBENV = "SubEnvType";
+    static readonly RELEASE = "Release";
+    static readonly SERVER = "ServerName";
+    static readonly SERVER_TYPE = "ServType";
+
     tag:string;
     isUpper:boolean;
     isLower:boolean;
@@ -88,6 +98,7 @@ export class HieraDelimiter{
 }
 
 export class FieldValidationTags{
+    // class that wraps the invalid tags for each hiera config field
     constructor(){
         this.paramTags = new Array();
         this.addressTags = new Array();
@@ -97,7 +108,37 @@ export class FieldValidationTags{
     paramTags: HieraTag[];
     addressTags: HieraTag[];
     valueTags:HieraTag[];
+
+    public tagValidForParams (tag:string):boolean{
+        return !this.containsTag(tag, this.paramTags);
+    }
+
+    public tagValidForAddress (tag:string):boolean{
+        return !this.containsTag(tag, this.addressTags);
+    }
+
+    public tagValidForValue (tag:string):boolean{
+        return !this.containsTag(tag, this.valueTags);
+    }
+
+    private containsTag (tagName : string, tags:HieraTag[]):boolean{
+        return tags.findIndex(x=>x.tag==tagName) >= 0;
+    }
+    
 }
+
+export class HieraTagCollection{
+    constructor(){
+        this.tags = new Array();
+    }
+    
+    tags: HieraTag[];
+
+    public containsTag (tagName : string):boolean{
+        return this.tags.findIndex(x=>x.tag==tagName) >= 0;
+    }
+}
+
 
 export class HieraRefresh {
     constructor (field:string, value:string){

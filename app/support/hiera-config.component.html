@@ -1,20 +1,20 @@
-<div class="ui-g-6 ui-g-nopad" style="min-width: 300px" *ngIf="paramName">
+<div class="ui-g-6 ui-g-nopad" style="min-width: 300px">
         <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-1" style="float: left; min-width:220px"><label for="hieraParameter">Parameter </label></div>
             <div class="ui-g-8" style="float: left">
-                <input pDroppable="tags" (onDrop)="dropOnParameter($event)" pInputText id="hieraParameter" [(ngModel)]="paramName"   name="parameter" #hieraParameter="ngModel"/>
+                <input pDroppable="tags" (onDrop)="dropOnParameter($event)" pInputText id="hieraParameter" [(ngModel)]="hieraItem.parameter"   name="parameter" #hieraParameter="ngModel"/>
             </div>
         </div>
         <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-1" style="float: left; min-width:220px"><label for="hieraValue">Value </label></div>
             <div class="ui-g-8" style="float: left">
-                <input pDroppable="tags" (onDrop)="dropOnValue($event)" [disabled]="valueDisabled" pInputText id="hieraValue" [(ngModel)]="value"   name="value" #hieraValue="ngModel"/>
+                <input pDroppable="tags" (onDrop)="dropOnValue($event)" [disabled]="valueDisabled" pInputText id="hieraValue" [(ngModel)]="hieraItem.value"   name="value" #hieraValue="ngModel"/>
             </div>
         </div>
         <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-1" style="float: left; min-width:220px"><label for="hieraAddress">Hiera Address </label></div>
             <div class="ui-g-8" style="float: left">
-                <input pDroppable="tags" (onDrop)="dropOnAddress($event)" pInputText id="hieraAddress" (ngModelChange)="onChangeAddress($event)" [(ngModel)]="address"   name="hieraAddress" #hieraAddress="ngModel"/>
+                <input pDroppable="tags" (onDrop)="dropOnAddress($event)" pInputText id="hieraAddress" [(ngModel)]="hieraItem.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
             </div>
         </div>
 </div>
@@ -27,10 +27,12 @@
                 <div class="ui-g-12"><p-radioButton name="tagGroup" value="lower" label="Lower Case" [(ngModel)]="tagType"></p-radioButton></div>
             </div>
             <div class="ui-g-6">
-                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ParamName')" (onDragEnd)="dragEnd($event)">Parameter</label></div>
-                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ENVID')" (onDragEnd)="dragEnd($event)">Environment</label></div>
-                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'SubEnvType')" (onDragEnd)="dragEnd($event)">Sub Environment</label></div>
-                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'Release')" (onDragEnd)="dragEnd($event)">Release</label></div>
+                <div *ngIf="showParamTag" class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ParamName')" (onDragEnd)="dragEnd($event)">Parameter</label></div>
+                <div *ngIf="showEnvTag" class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ENVID')" (onDragEnd)="dragEnd($event)">Environment</label></div>
+                <div *ngIf="showSubEnvTag" class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'SubEnvType')" (onDragEnd)="dragEnd($event)">Sub Environment</label></div>
+                <div *ngIf="showReleaseTag" class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'Release')" (onDragEnd)="dragEnd($event)">Release</label></div>
+                <div *ngIf="showServerTag" class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ServerName')" (onDragEnd)="dragEnd($event)">Server</label></div>
+                <div *ngIf="showServerTypeTag" class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ServType')" (onDragEnd)="dragEnd($event)">Server Type</label></div>
             </div>
         </div>
     </p-panel>           

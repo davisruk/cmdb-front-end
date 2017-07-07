@@ -14,56 +14,13 @@
                 </div>
             </div>
             <div class="ui-g ui-g-nopad">
-                        <hiera-config
-                            [disallowedTags]="invalidHieraTags"
-                            [paramName]="releaseConfig.parameter"
-                            [address]="releaseConfig.hieraAddress"
-                            [value]="releaseConfig.value"
-                            [valueDisabled]="allowWriteSensitive == false && releaseConfig.sensitive == true"
-                            (dataRefresh)="onRefreshHieraField($event)"
-                            [messageService]="messageService">
-                        </hiera-config>
-
-<!--                
-                <div class="ui-g-6 ui-g-nopad" style="min-width: 300px">
-                        <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g-1" style="float: left; min-width:220px"><label for="parameter">Parameter </label></div>
-                            <div class="ui-g-8" style="float: left">
-                                <input pDroppable="tags" (onDrop)="dropOnParameter($event)" pInputText id="parameter" [(ngModel)]="releaseConfig.parameter"   name="parameter" #parameter="ngModel"/>
-                            </div>
-                        </div>
-                        <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g-1" style="float: left; min-width:220px"><label for="value">Value </label></div>
-                            <div class="ui-g-8" style="float: left">
-                                <input pDroppable="tags" (onDrop)="dropOnValue($event)" [disabled]="!allowWriteSensitive && releaseConfig.sensitive" pInputText id="value" [(ngModel)]="releaseConfig.value"   name="value" #value="ngModel"/>
-                            </div>
-                        </div>
-                        <div class="ui-g-12 ui-g-nopad">
-                            <div class="ui-g-1" style="float: left; min-width:220px"><label for="hieraAddress">Hiera Address </label></div>
-                            <div class="ui-g-8" style="float: left">
-                                <input pDroppable="tags" (onDrop)="dropOnAddress($event)" pInputText id="hieraAddress" [(ngModel)]="releaseConfig.hieraAddress"   name="hieraAddress" #hieraAddress="ngModel"/>
-                            </div>
-                        </div>
-                </div>
-                <div class="ui-g-3 ui-g-nopad">
-
-                    <p-panel header="Hiera Tags">
-                        <div class="ui-g">
-                            <div class="ui-g-6">
-                                <div class="ui-g-12"><p-radioButton name="tagGroup" value="asIs" label="As Stored" [(ngModel)]="tagType"></p-radioButton></div>
-                                <div class="ui-g-12"><p-radioButton name="tagGroup" value="upper" label="Upper Case" [(ngModel)]="tagType"></p-radioButton></div>
-                                <div class="ui-g-12"><p-radioButton name="tagGroup" value="lower" label="Lower Case" [(ngModel)]="tagType"></p-radioButton></div>
-                            </div>
-                            <div class="ui-g-6">
-                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ParamName')" (onDragEnd)="dragEnd($event)">Parameter</label></div>
-                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'ENVID')" (onDragEnd)="dragEnd($event)">Environment</label></div>
-                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'SubEnvType')" (onDragEnd)="dragEnd($event)">Sub Environment</label></div>
-                                <div class="ui-g-12" style="padding: 0.3em"><label pDraggable="tags" (onDragStart)="dragStart($event,'Release')" (onDragEnd)="dragEnd($event)">Release</label></div>
-                            </div>
-                        </div>
-                    </p-panel>           
-                </div>
-        -->
+                <hiera-config
+                    [hieraItem]="releaseConfig"
+                    [validationTags]="invalidHieraTags"
+                    [valueDisabled]="allowWriteSensitive == false && releaseConfig.sensitive == true"
+                    [messageService]="messageService"
+                    [displayTags]="displayHieraTags">
+                </hiera-config>
             </div>
              <div class="ui-g-12 ui-g-nopad">
                 <div class="ui-g-2" style="float: left; min-width:220px" ><label for="recursiveByEnv">Repeats for Environments </label></div>

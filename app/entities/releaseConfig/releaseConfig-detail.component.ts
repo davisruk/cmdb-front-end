@@ -1,4 +1,5 @@
-import {Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, Output, EventEmitter, forwardRef} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
@@ -6,23 +7,23 @@ import {ReleaseConfig} from './releaseConfig';
 import {ReleaseConfigService} from './releaseConfig.service';
 import {Release} from '../release/release';
 import { SecurityHelper } from '../../support/security-helper';
-import { FieldValidationTags, HieraTag, HieraRefresh } from '../../support/hiera-tag-support';
+import { FieldValidationTags, HieraTag, HieraRefresh,HieraTagCollection } from '../../support/hiera-tag-support';
 
+// Value accessor that allows sub components to alter 
+// this component's model without using emit
+export const RELEASE_CONFIG_CONTROL_VALUE_ACCESSOR: any = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => ReleaseConfigDetailComponent),
+    multi: true
+};
 
 @Component({
     moduleId: module.id,
 	templateUrl: 'releaseConfig-detail.component.html',
 	selector: 'releaseConfig-detail',
 })
-export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
-    releaseConfig : ReleaseConfig;
-
-    private params_subscription: any;
-    private allowWriteSensitive: boolean;
-    private enableCreateFrom: boolean;
-    private tagType:string;
-    private tagString:string;
-
+export class ReleaseConfigDetailComponent implements OnInit, OnDestroy, ControlValueAccessor {
+    
     @Input() sub : boolean = false;
     @Input() // used to pass the parent when creating a new ReleaseConfig
     set release(release : Release) {
@@ -33,25 +34,74 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
     @Output() onSaveClicked = new EventEmitter<ReleaseConfig>();
     @Output() onCancelClicked = new EventEmitter();
 
-    invalidHieraTags:FieldValidationTags;
+    private releaseConfig : ReleaseConfig;
+    private params_subscription: any;
+    private allowWriteSensitive: boolean;
+    private enableCreateFrom: boolean;
+    private invalidHieraTags:FieldValidationTags;
+    private displayHieraTags:HieraTagCollection;
 
     constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private releaseConfigService: ReleaseConfigService) {
     }
+
+    ////////////////////////////////////////////////
+    //
+    //  Value Accessor callbacks for sub components
+    //
+    ////////////////////////////////////////////////
+    
+    //Placeholders for the callbacks
+    private onTouchedCallback: () => void = () => {};
+    private onChangeCallback: (_:any) => void = () => {};
+    
+    // Control Value Accessor implementation
+    get value(): any { return this.releaseConfig };
+    set value(v: any) {
+        this.releaseConfig = <ReleaseConfig> v;
+        this.onChangeCallback(v);
+    }
+
+    //Set touched on blur
+    onTouched(){
+        this.onTouchedCallback();
+    }
+
+    //From ControlValueAccessor interface
+    writeValue(value: any) {
+        this.releaseConfig = <ReleaseConfig> value;
+    }
+
+    //From ControlValueAccessor interface
+    registerOnChange(fn: any) {
+        this.onChangeCallback = fn;
+    }
+
+    //From ControlValueAccessor interface
+    registerOnTouched(fn: any) {
+        this.onTouchedCallback = fn;
+    }
+    
+    ////////////////////////////////////////////////
+    //
+    //  End of Value Accessor callbacks
+    //
+    ////////////////////////////////////////////////
 
     ngOnInit() {
         if (this.sub) {
             return;
         }
 
-        /*
-        Hiera Component Experiment
-        */
+        //Setup invalid tags for fields
         this.invalidHieraTags = new FieldValidationTags();
         this.invalidHieraTags.paramTags.push(new HieraTag("ParamName", false, false));
-        /*
-        End of Experiment
-        */
-        this.tagType = "asIs";
+        // setup hiera component fields to display
+        this.displayHieraTags = new HieraTagCollection();
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.PARAM, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.RELEASE, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.ENVID, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SUBENV, false, false));
+
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
             console.log('ngOnInit for releaseConfig-detail ' + id);
@@ -114,47 +164,4 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy {
         this.releaseConfig.id = undefined;
         this.enableCreateFrom = false;
     }
-
-    dragStart(event:any,tag: string) {
-        this.tagString = tag;
-    }
-    
-    dropOnAddress(event:any) {
-        if(this.tagString) {
-            let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
-            this.releaseConfig.hieraAddress = tag.appendTag(this.releaseConfig.hieraAddress);
-        }
-    }
-    
-    dropOnValue(event:any) {
-        if(this.tagString) {
-            let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
-            this.releaseConfig.value = tag.appendTag(this.releaseConfig.value);
-        }
-    }
-
-    dropOnParameter(event:any) {
-        if(this.tagString) {
-            if (this.tagString == 'ParamName'){
-                this.messageService.error("Incompatible Tag", 'ParamName invalid for this field');
-            }else {
-                let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
-                this.releaseConfig.parameter = tag.appendTag(this.releaseConfig.parameter);
-            }
-        }
-    }
-
-    dragEnd(event:any) {
-        this.tagString = null;
-    }
-
-    onRefreshHieraField(newData: HieraRefresh){
-        if (newData.fieldRefreshed == "parameter")
-            this.releaseConfig.parameter = newData.fieldValue;
-        if (newData.fieldRefreshed == "value")
-            this.releaseConfig.value = newData.fieldValue;
-        if (newData.fieldRefreshed == "address")
-            this.releaseConfig.hieraAddress = newData.fieldValue;
-            
-    }    
 }

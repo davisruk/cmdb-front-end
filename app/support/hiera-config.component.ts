@@ -1,6 +1,6 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import { MessageService } from '../service/message.service';
-import { FieldValidationTags, HieraTag, HieraRefresh } from "./hiera-tag-support";
+import { FieldValidationTags, HieraTag, HieraRefresh, HieraTagCollection } from "./hiera-tag-support";
 
 @Component({
     moduleId: module.id,
@@ -9,20 +9,30 @@ import { FieldValidationTags, HieraTag, HieraRefresh } from "./hiera-tag-support
 })
 
 export class HieraConfigComponent{
-    @Input() disallowedTags: FieldValidationTags;
-    @Input() paramName:string;
-    @Input() address:string;
-    @Input() value:string;
+    @Input() validationTags: FieldValidationTags;
+    @Input() hieraItem:any;
     @Input() valueDisabled:boolean
-    @Output() dataRefresh: EventEmitter<HieraRefresh> = new EventEmitter<HieraRefresh>();
     @Input() messageService: MessageService;
+    @Input() displayTags: HieraTagCollection;
     
     private tagString:string;
     private tagType:string;
+    private showParamTag:boolean;
+    private showReleaseTag:boolean;
+    private showEnvTag:boolean;
+    private showSubEnvTag:boolean;
+    private showServerTag:boolean;
+    private showServerTypeTag:boolean;
 
 
     ngOnInit() {
-        this.tagType = "asIs";
+        this.tagType = HieraTag.AS_IS;
+        this.showParamTag = this.displayTags.containsTag(HieraTag.PARAM);
+        this.showReleaseTag = this.displayTags.containsTag(HieraTag.RELEASE);
+        this.showEnvTag = this.displayTags.containsTag(HieraTag.ENVID);
+        this.showSubEnvTag = this.displayTags.containsTag(HieraTag.SUBENV);
+        this.showServerTag = this.displayTags.containsTag(HieraTag.SERVER);
+        this.showServerTypeTag = this.displayTags.containsTag(HieraTag.SERVER_TYPE);
     }
 
     dragStart(event:any,tag: string) {
@@ -31,32 +41,33 @@ export class HieraConfigComponent{
     
     dropOnAddress(event:any) {
         if(this.tagString) {
-            let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
-            this.address = tag.appendTag(this.address);
-            this.dataRefresh.emit(new HieraRefresh ("address", this.address));
+            if (!this.validationTags.tagValidForValue(this.tagString)){
+                this.messageService.error("Incompatible Tag", this.tagString + ' is invalid for Address field');
+            }else {
+                let tag = new HieraTag(this.tagString, this.tagType == HieraTag.UPPER, this.tagType == HieraTag.LOWER)
+                this.hieraItem.hieraAddress = tag.appendTag(this.hieraItem.hieraAddress);
+            }
         }
     }
 
-    onChangeAddress(event:any) {
-    this.dataRefresh.emit(new HieraRefresh ("address", this.address));
-    }
-    
     dropOnValue(event:any) {
         if(this.tagString) {
-            let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
-            this.value = tag.appendTag(this.value);
-            this.dataRefresh.emit(new HieraRefresh ("value", this.value));            
+            if (!this.validationTags.tagValidForValue(this.tagString)){
+                this.messageService.error("Incompatible Tag", this.tagString + ' is invalid for Value field');
+            }else {
+                let tag = new HieraTag(this.tagString, this.tagType == HieraTag.UPPER, this.tagType == HieraTag.LOWER)
+                this.hieraItem.value = tag.appendTag(this.hieraItem.value);
+            }
         }
     }
 
     dropOnParameter(event:any) {
         if(this.tagString) {
-            if (this.tagString == 'ParamName'){
-                this.messageService.error("Incompatible Tag", 'ParamName invalid for this field');
+            if (!this.validationTags.tagValidForParams(this.tagString)){
+                this.messageService.error("Incompatible Tag", this.tagString + ' is invalid for Parameter field');
             }else {
-                let tag = new HieraTag(this.tagString, this.tagType == 'upper', this.tagType == 'lower')
-                this.paramName = tag.appendTag(this.paramName);
-                this.dataRefresh.emit(new HieraRefresh ("parameter", this.paramName));
+                let tag = new HieraTag(this.tagString, this.tagType == HieraTag.UPPER, this.tagType == HieraTag.LOWER)
+                this.hieraItem.parameter = tag.appendTag(this.hieraItem.parameter);
             }
         }
     }
