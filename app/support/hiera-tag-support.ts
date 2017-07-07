@@ -137,6 +137,17 @@ export class HieraTagCollection{
     public containsTag (tagName : string):boolean{
         return this.tags.findIndex(x=>x.tag==tagName) >= 0;
     }
+
+    public removeTag (tagName : string) {
+        var i = this.tags.findIndex(x=>x.tag==tagName);
+        if (i >= 0)
+            this.tags.splice(i, 1);
+    }
+
+    public addTag(tag:HieraTag){
+        this.tags.push(tag);
+    }
+
 }
 
 

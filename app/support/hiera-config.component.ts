@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import { MessageService } from '../service/message.service';
 import { FieldValidationTags, HieraTag, HieraRefresh, HieraTagCollection } from "./hiera-tag-support";
 
@@ -8,7 +8,7 @@ import { FieldValidationTags, HieraTag, HieraRefresh, HieraTagCollection } from 
     selector: 'hiera-config',
 })
 
-export class HieraConfigComponent{
+export class HieraConfigComponent implements OnChanges{
     @Input() validationTags: FieldValidationTags;
     @Input() hieraItem:any;
     @Input() valueDisabled:boolean
@@ -27,12 +27,21 @@ export class HieraConfigComponent{
 
     ngOnInit() {
         this.tagType = HieraTag.AS_IS;
+        this.processDisplayTags();
+    }
+
+    private processDisplayTags(){
         this.showParamTag = this.displayTags.containsTag(HieraTag.PARAM);
         this.showReleaseTag = this.displayTags.containsTag(HieraTag.RELEASE);
         this.showEnvTag = this.displayTags.containsTag(HieraTag.ENVID);
         this.showSubEnvTag = this.displayTags.containsTag(HieraTag.SUBENV);
         this.showServerTag = this.displayTags.containsTag(HieraTag.SERVER);
         this.showServerTypeTag = this.displayTags.containsTag(HieraTag.SERVER_TYPE);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['displayTags'])
+            this.processDisplayTags();
     }
 
     dragStart(event:any,tag: string) {
