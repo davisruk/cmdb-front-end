@@ -39,6 +39,14 @@ export class HieraConfigComponent implements OnChanges{
         this.showServerTypeTag = this.displayTags.containsTag(HieraTag.SERVER_TYPE);
     }
 
+    // check if the tags to display have changed
+    // the parent component will have to set a new reference
+    // to the @Input displayTags - changing an internal value
+    // is not enough as Angular only checks with === (reference)
+    // we could insted use ngDoCheck but this would be grossly
+    // inefficient as it would be called many many times
+    // it is better to rebuild the small collection in the parent
+    // each time.
     ngOnChanges(changes: SimpleChanges) {
         if (changes['displayTags'])
             this.processDisplayTags();
