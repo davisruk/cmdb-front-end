@@ -112,12 +112,6 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy{
         //Setup invalid tags for fields
         this.invalidHieraTags = new FieldValidationTags();
         this.invalidHieraTags.paramTags.push(new HieraTag("ParamName", false, false));
-        // setup hiera component fields to display
-        this.displayHieraTags = new HieraTagCollection();
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.PARAM, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.RELEASE, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.ENVID, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SUBENV, false, false));
 
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
@@ -127,12 +121,14 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy{
                 this.subEnvironmentConfig = new SubEnvironmentConfig();
                 this.envName = '';
                 this.enableCreateFrom = false;
+                this.buildHieraTags();
             } else {
                 this.enableCreateFrom = true;
                 this.subEnvironmentConfigService.getSubEnvironmentConfig(id)
                     .subscribe(
                         subEnvironmentConfig => {
                             this.subEnvironmentConfig = subEnvironmentConfig;
+                            this.buildHieraTags();
                             this.envName = this.subEnvironmentConfig.subEnvironment.environment.name;
                             this.environmentService.getEnvironment(this.subEnvironmentConfig.subEnvironment.environment.id)
                                 .subscribe(environment => {
@@ -148,6 +144,18 @@ export class SubEnvironmentConfigDetailComponent implements OnInit, OnDestroy{
         this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();
     }
 
+    private buildHieraTags (){
+        // this is actually quicker than using ngDoCheck in hiera-config.component
+        // ngOnChange will detect a reference change but not a change to the
+        // internal array. ngDoCheck is called constantly so it's best to build
+        // the array each time.
+        // setup hiera component fields to display
+        this.displayHieraTags = new HieraTagCollection();
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.PARAM, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.RELEASE, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.ENVID, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SUBENV, false, false));
+    }
     getSubEnvTypes(env:Environment){
         this.subEnvTypes = new Array();
         this.listSubEnvTypes = new Array();

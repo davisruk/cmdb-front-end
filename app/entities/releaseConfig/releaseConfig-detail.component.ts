@@ -96,11 +96,6 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy, ControlV
         this.invalidHieraTags = new FieldValidationTags();
         this.invalidHieraTags.paramTags.push(new HieraTag("ParamName", false, false));
         // setup hiera component fields to display
-        this.displayHieraTags = new HieraTagCollection();
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.PARAM, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.RELEASE, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.ENVID, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SUBENV, false, false));
 
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
@@ -109,17 +104,39 @@ export class ReleaseConfigDetailComponent implements OnInit, OnDestroy, ControlV
             if (id === 'new') {
                 this.releaseConfig = new ReleaseConfig().emptyFactory();
                 this.enableCreateFrom = false;
+                this.buildHieraTags();
             } else {
                 this.enableCreateFrom = true;                
                 this.releaseConfigService.getReleaseConfig(id)
                     .subscribe(
-                        releaseConfig => this.releaseConfig = releaseConfig,
+                        releaseConfig => {
+                            this.releaseConfig = releaseConfig;
+                             this.buildHieraTags();
+                        },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
         });
 
         this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();        
+    }
+
+    private buildHieraTags (){
+        // this is actually quicker than using ngDoCheck in hiera-config.component
+        // ngOnChange will detect a reference change but not a change to the
+        // internal array. ngDoCheck is called constantly so it's best to build
+        // the array each time.
+        this.displayHieraTags = new HieraTagCollection();
+        this.displayHieraTags.addTag(new HieraTag(HieraTag.PARAM, false, false));
+        this.displayHieraTags.addTag(new HieraTag(HieraTag.RELEASE, false, false));
+        if (this.releaseConfig.recursiveByEnv)
+            this.displayHieraTags.addTag(new HieraTag(HieraTag.ENVID, false, false));
+        if (this.releaseConfig.recursiveBySubEnv)
+            this.displayHieraTags.addTag(new HieraTag(HieraTag.SUBENV, false, false));
+    }
+
+    private handleSwitchChange(e:any) {
+        this.buildHieraTags();
     }
 
     ngOnDestroy() {

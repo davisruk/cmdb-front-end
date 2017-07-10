@@ -26,14 +26,14 @@
                 <div class="ui-g-2" style="float: left; min-width:220px" ><label for="recursiveByEnv">Repeats for Environments </label></div>
                 <div class="ui-g-2" style="float: left">
                     <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveByEnv" [(ngModel)]="releaseConfig.recursiveByEnv"
-                      name="recursiveByEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
+                      name="recursiveByEnv" (onChange)="handleSwitchChange($event)" #recursiveByEnv="ngModel"></p-inputSwitch>
                 </div>
             </div>
              <div class="ui-g-12 ui-g-nopad">
                 <div class="ui-g-2" style="float: left; min-width:220px"><label for="recursiveBySubEnv">Repeats for SubEnvironments </label></div>
                 <div class="ui-g-2" style="float: left">
                     <p-inputSwitch onLabel="Yes" offLabel="No" id="recursiveBySubEnv" [(ngModel)]="releaseConfig.recursiveBySubEnv"
-                       name="recursiveBySubEnv" #recursiveByEnv="ngModel"></p-inputSwitch>
+                       name="recursiveBySubEnv" (onChange)="handleSwitchChange($event)" #recursiveByEnv="ngModel"></p-inputSwitch>
                 </div>
             </div>
              <div class="ui-g-12 ui-g-nopad">

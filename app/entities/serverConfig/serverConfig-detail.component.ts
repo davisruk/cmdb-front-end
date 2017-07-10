@@ -110,17 +110,35 @@ export class ServerConfigDetailComponent implements OnInit, OnDestroy, ControlVa
             if (id === 'new') {
                 this.serverConfig = new ServerConfig();
                 this.enableCreateFrom = false;
+                this.buildHieraTags();
             } else {
                 this.enableCreateFrom = true;
                 this.serverConfigService.getServerConfig(id)
                     .subscribe(
-                        serverConfig => this.serverConfig = serverConfig,
+                        serverConfig => {
+                            this.serverConfig = serverConfig;
+                            this.buildHieraTags();
+                        },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
         });
         
         this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();         
+    }
+
+    private buildHieraTags (){
+        // this is actually quicker than using ngDoCheck in hiera-config.component
+        // ngOnChange will detect a reference change but not a change to the
+        // internal array. ngDoCheck is called constantly so it's best to build
+        // the array each time.
+        this.displayHieraTags = new HieraTagCollection();
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.PARAM, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.RELEASE, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.ENVID, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SUBENV, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SERVER, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SERVER_TYPE, false, false));
     }
 
     ngOnDestroy() {

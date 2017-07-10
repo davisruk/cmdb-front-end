@@ -94,12 +94,6 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy, Contro
         //Setup invalid tags for fields
         this.invalidHieraTags = new FieldValidationTags();
         this.invalidHieraTags.paramTags.push(new HieraTag("ParamName", false, false));
-        // setup hiera component fields to display
-        this.displayHieraTags = new HieraTagCollection();
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.PARAM, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.RELEASE, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.ENVID, false, false));
-        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SUBENV, false, false));
 
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
@@ -108,16 +102,34 @@ export class ComponentConfigDetailComponent implements OnInit, OnDestroy, Contro
             if (id === 'new') {
                 this.componentConfig = new ComponentConfig();
                 this.enableCreateFrom = false;
+                // setup hiera component fields to display
+                this.buildHieraTags();
             } else {
                 this.enableCreateFrom = true;
                 this.componentConfigService.getComponentConfig(id)
                     .subscribe(
-                        componentConfig => this.componentConfig = componentConfig,
+                        componentConfig => {
+                            this.componentConfig = componentConfig;
+                            // setup hiera component fields to display
+                            this.buildHieraTags();
+                        },
                         error =>  this.messageService.error('ngOnInit error', error)
                     );
             }
         });
         this.allowWriteSensitive = new SecurityHelper().userHasWriteSensitive();
+    }
+
+    private buildHieraTags (){
+        // this is actually quicker than using ngDoCheck in hiera-config.component
+        // ngOnChange will detect a reference change but not a change to the
+        // internal array. ngDoCheck is called constantly so it's best to build
+        // the array each time.
+        this.displayHieraTags = new HieraTagCollection();
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.PARAM, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.RELEASE, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.ENVID, false, false));
+        this.displayHieraTags.tags.push(new HieraTag(HieraTag.SUBENV, false, false));
     }
 
     ngOnDestroy() {
