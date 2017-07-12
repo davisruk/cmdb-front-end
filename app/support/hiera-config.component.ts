@@ -101,6 +101,14 @@ export class HieraConfigComponent implements OnChanges{
     ngOnChanges(changes: SimpleChanges) {
         if (changes['displayTags'])
             this.processDisplayTags();
+        if (changes['validationTags'])
+            // should really invalidate the form here
+            // currently there is a problem - the forbiddenTags.directive ngOnChanges is fired after this one
+            // meaning that the validation actually gets fired before the validator's modelhas been upated
+            // with the new rules. Effectively it is one step behind. Need to work out how to ensure that
+            // the validator's model is updated first.
+            if (this.currentForm.form.controls['parameter'])
+                this.currentForm.form.controls['parameter'].updateValueAndValidity();
     }
 
     dragStart(event:any,tag: string) {

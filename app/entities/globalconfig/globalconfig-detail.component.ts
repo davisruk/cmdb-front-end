@@ -90,7 +90,7 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy, ControlVa
 
         //Setup invalid tags for fields
         this.invalidHieraTags = new FieldValidationTags();
-        this.invalidHieraTags.paramTags.push(new HieraTag("ParamName", false, false));
+        this.invalidHieraTags.paramTags.push(new HieraTag(HieraTag.PARAM, false, false));
         this.params_subscription = this.route.params.subscribe(params => {
             let id = params['id'];
             console.log('ngOnInit for globalconfig-detail ' + id);
@@ -130,6 +130,26 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy, ControlVa
             this.displayHieraTags.addTag(new HieraTag(HieraTag.ENVID, false, false));
         if (this.globalconfig.recursiveBySubEnv)
             this.displayHieraTags.addTag(new HieraTag(HieraTag.SUBENV, false, false));
+
+        // now build the validationTags
+        //Setup invalid tags for fields
+        this.invalidHieraTags = new FieldValidationTags();
+        this.invalidHieraTags.paramTags.push(new HieraTag(HieraTag.PARAM, false, false));
+        if (!this.globalconfig.recursiveByEnv){
+            this.invalidHieraTags.paramTags.push(new HieraTag(HieraTag.ENVID, false, false));
+            this.invalidHieraTags.valueTags.push(new HieraTag(HieraTag.ENVID, false, false));
+            this.invalidHieraTags.addressTags.push(new HieraTag(HieraTag.ENVID, false, false));
+        }
+        if (!this.globalconfig.recursiveBySubEnv){
+            this.invalidHieraTags.paramTags.push(new HieraTag(HieraTag.SUBENV, false, false));
+            this.invalidHieraTags.valueTags.push(new HieraTag(HieraTag.SUBENV, false, false));
+            this.invalidHieraTags.addressTags.push(new HieraTag(HieraTag.SUBENV, false, false));
+        }
+        if (!this.globalconfig.recursiveByRel){
+            this.invalidHieraTags.paramTags.push(new HieraTag(HieraTag.RELEASE, false, false));
+            this.invalidHieraTags.valueTags.push(new HieraTag(HieraTag.RELEASE, false, false));
+            this.invalidHieraTags.addressTags.push(new HieraTag(HieraTag.RELEASE, false, false));
+        }
     }
 
     private handleSwitchChange(e:any) {
