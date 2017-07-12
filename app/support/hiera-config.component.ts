@@ -1,6 +1,7 @@
-import {Component, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, ViewChild, Input, Output, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
 import { MessageService } from '../service/message.service';
 import { FieldValidationTags, HieraTag, HieraRefresh, HieraTagCollection } from "./hiera-tag-support";
+import {NgForm} from "@angular/forms";
 
 @Component({
     moduleId: module.id,
@@ -15,6 +16,9 @@ export class HieraConfigComponent implements OnChanges{
     @Input() messageService: MessageService;
     @Input() displayTags: HieraTagCollection;
     
+    @ViewChild('hieraForm') currentForm: NgForm;
+    
+    private gcForm: NgForm;    
     private tagString:string;
     private tagType:string;
     private showParamTag:boolean;
@@ -29,7 +33,7 @@ export class HieraConfigComponent implements OnChanges{
         this.tagType = HieraTag.AS_IS;
         this.processDisplayTags();
     }
-
+  
     private processDisplayTags(){
         this.showParamTag = this.displayTags.containsTag(HieraTag.PARAM);
         this.showReleaseTag = this.displayTags.containsTag(HieraTag.RELEASE);
@@ -37,6 +41,53 @@ export class HieraConfigComponent implements OnChanges{
         this.showSubEnvTag = this.displayTags.containsTag(HieraTag.SUBENV);
         this.showServerTag = this.displayTags.containsTag(HieraTag.SERVER);
         this.showServerTypeTag = this.displayTags.containsTag(HieraTag.SERVER_TYPE);
+    }
+
+      ngAfterViewChecked(){
+        this.formChanged();
+    }
+
+    private formChanged(){
+        if (this.currentForm == this.gcForm) {return;}
+        this.gcForm = this.currentForm;
+        if (this.gcForm){
+            this.gcForm.valueChanges.subscribe(data => this.onValueChanged(data));
+        }
+    }
+
+    private onValueChanged(data?:any){
+        if (!this.gcForm) {return;}
+        const form = this.gcForm.form;
+        for (const field in this.formErrors){
+            this.formErrors[field] = '';
+            const control = form.get(field);
+            //if (control && control.dirty && !control.valid){
+            if (control && !control.valid){                
+                const messages = this.validationMessages[field];
+                for (const key in control.errors){
+                    this.formErrors[field] += this.substituteMessageFields(messages[key], field, control.errors[key]) + ' ';
+                }
+            }
+        }
+    }
+
+    private substituteMessageFields(message:string, field:string, tag:string):string{
+        message = message.replace("{field}", field);
+        message = message.replace("{tag}", tag);
+        return message;
+    }
+
+    formErrors = {
+        'parameter': '',
+        'hieraAddress': '',
+        'value':''
+    }
+
+    validationMessages = {
+        'parameter':{'required': 'ParamName is required.',
+                    'forbiddenTags':'{field} cannot contain {tag}'},
+        'hieraAddress':{},
+        'value':{}
     }
 
     // check if the tags to display have changed
@@ -81,14 +132,15 @@ export class HieraConfigComponent implements OnChanges{
     }
 
     dropOnParameter(event:any) {
-        if(this.tagString) {
-            if (!this.validationTags.tagValidForParams(this.tagString)){
-                this.messageService.error("Incompatible Tag", this.tagString + ' is invalid for Parameter field');
-            }else {
+//        if(this.tagString) {
+//            if (!this.validationTags.tagValidForParams(this.tagString)){
+//                this.messageService.error("Incompatible Tag", this.tagString + ' is invalid for Parameter field');
+//            }else {
                 let tag = new HieraTag(this.tagString, this.tagType == HieraTag.UPPER, this.tagType == HieraTag.LOWER)
                 this.hieraItem.parameter = tag.appendTag(this.hieraItem.parameter);
-            }
-        }
+                this.currentForm.controls['parameter'].markAsDirty();
+//           }
+//        }
     }
 
     dragEnd(event:any) {

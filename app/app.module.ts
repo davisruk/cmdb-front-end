@@ -14,7 +14,7 @@ import { HomeComponent }  from './home.component';
 import { MessageService } from './service/message.service';
 import { routing }        from './app.routes';
 import { EmailValidator } from './support/email.validator';
-
+import { ForbiddenTagsDirective } from './support/forbiddenTags.directive';
 import { ComponentConfigService } from './entities/componentConfig/componentConfig.service';
 import { ComponentConfigListComponent } from './entities/componentConfig/componentConfig-list.component';
 import { ComponentConfigDetailComponent } from './entities/componentConfig/componentConfig-detail.component';
@@ -156,7 +156,8 @@ import { AUTH_PROVIDERS } from 'angular2-jwt';
     declarations: [
         AppComponent,
         HomeComponent,
-        EmailValidator
+        EmailValidator,
+        ForbiddenTagsDirective
         ,
         RefreshComponent
         ,

@@ -1,8 +1,14 @@
-<div class="ui-g-6 ui-g-nopad" style="min-width: 300px">
+<div class="ui-g-6 ui-g-nopad" style="min-width: 300px" ngForm #hieraForm="ngForm">
         <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-1" style="float: left; min-width:220px"><label for="hieraParameter">Parameter </label></div>
             <div class="ui-g-8" style="float: left">
-                <input pDroppable="tags" (onDrop)="dropOnParameter($event)" pInputText id="hieraParameter" [(ngModel)]="hieraItem.parameter"   name="parameter" #hieraParameter="ngModel"/>
+                <input required [forbiddenTags]="validationTags.paramTags" pDroppable="tags" (onDrop)="dropOnParameter($event)" pInputText id="hieraParameter" [(ngModel)]="hieraItem.parameter"   name="parameter" #hieraParameter="ngModel"/>
+            </div>
+        </div>
+        <div class="ui-g-6 ui-g-nopad">
+            <div *ngIf="formErrors.parameter" class = "ui-message ui-messages-error ui-corner-all">
+                    <i class="fa fa-close"></i>
+                    {{formErrors.parameter}}
             </div>
         </div>
         <div class="ui-g-12 ui-g-nopad">

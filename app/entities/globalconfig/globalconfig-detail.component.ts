@@ -1,12 +1,14 @@
-import {Component, OnInit, OnDestroy, Input, Output, EventEmitter, forwardRef} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Component, OnInit, OnDestroy, Input, Output, EventEmitter, forwardRef, ViewChild} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 import { Router, ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/primeng';
 import { MessageService} from '../../service/message.service';
 import {Globalconfig} from './globalconfig';
 import {GlobalconfigService} from './globalconfig.service';
-import { SecurityHelper } from '../../support/security-helper';
-import { FieldValidationTags, HieraTag, HieraRefresh,HieraTagCollection } from '../../support/hiera-tag-support';
+import {SecurityHelper } from '../../support/security-helper';
+import {FieldValidationTags, HieraTag, HieraRefresh,HieraTagCollection} from '../../support/hiera-tag-support';
+import {HieraConfigComponent} from '../../support/hiera-config.component';
+
 
 // Value accessor that allows sub components to alter 
 // this component's model without using emit
@@ -33,7 +35,8 @@ export class GlobalconfigDetailComponent implements OnInit, OnDestroy, ControlVa
     @Input() sub : boolean = false;
     @Output() onSaveClicked = new EventEmitter<Globalconfig>();
     @Output() onCancelClicked = new EventEmitter();
-
+    @ViewChild(HieraConfigComponent) hc: HieraConfigComponent;
+    
     constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private globalconfigService: GlobalconfigService) {
     }
 
