@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { HttpModule, Http, Response, Headers, RequestOptions, ResponseContentType } from '@angular/http';
 import { Configuration } from './configuration';
+import { SecurityHelper } from './security-helper';
 
 export class FileDownloader{
     constructor(private http: Http, private settings : Configuration) {}
@@ -8,7 +9,7 @@ export class FileDownloader{
         let txtFileOptions = new RequestOptions({ headers: new Headers({
                                                                         'Content-Type': 'application/json',
                                                                         'Accept': mimeType,
-                                                                        'Authorization': localStorage.getItem('JWTToken')
+                                                                        'Authorization': new SecurityHelper().getAuthToken()
                                                                     }),
                                                                         responseType: ResponseContentType.Blob
                                                                 });
